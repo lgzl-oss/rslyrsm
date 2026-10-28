@@ -209,10 +209,12 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
         <div class="kart yigin"><span class="etiket">Zorluk</span><div class="cipler" id="c-zorluk"></div></div>
       </div>
       <div class="kart yigin">
-        <label class="etiket" for="i-anahtar">Claude API anahtarı</label>
-        <div class="sira"><input id="i-anahtar" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" style="flex:1 1 260px;min-width:0"><button type="button" class="dugme ikincil" id="b-anahtar-goster">Göster</button></div>
+        <span class="etiket">Yapay zekâ</span>
+        <div class="cipler" id="c-saglayici"></div>
+        <label class="etiket" for="i-anahtar" id="anahtarEtiket">Gemini API anahtarı</label>
+        <div class="sira"><input id="i-anahtar" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…" style="flex:1 1 260px;min-width:0"><button type="button" class="dugme ikincil" id="b-anahtar-goster">Göster</button></div>
         <label class="cip" style="align-self:flex-start"><input type="checkbox" id="i-anahtar-hatirla" checked> Bu cihazda hatırla</label>
-        <p class="not">Anahtar yalnızca bu tarayıcıda durur ve doğrudan Anthropic'e gönderilir; oyunculara veya başka bir yere gitmez. Anahtarı <a href="https://platform.claude.com/settings/keys" target="_blank" rel="noopener">Claude Console</a>'dan alabilirsin.</p>
+        <p class="not" id="anahtarNot"></p>
       </div>
     </section>
 
@@ -326,9 +328,11 @@ function pratikBasla(){
 const YZTUR = {genel:'Bilgi sorusu', cumle_tamamlama:'Cümle tamamlama', kelime_anlami:'Kavram / kelime anlamı', dogru_yanlis:'Doğru / yanlış'};
 const ZORLUK = {kolay:'Kolay', orta:'Orta', zor:'Zor'};
 const ayar = { kaynak:'banka', soz:new Set(Object.keys(SOZ).map(Number)), tur:new Set(Object.keys(TUR)),
-  yztur:new Set(['genel','cumle_tamamlama','dogru_yanlis']), zorluk:'orta', adet:15, sure:20 };
+  yztur:new Set(['genel','cumle_tamamlama','dogru_yanlis']), zorluk:'orta', adet:15, sure:20, saglayici:depoAl('nur-saglayici')||'gemini' };
+const SAGLAYICI = {gemini:'Gemini (ücretsiz)', claude:'Claude'};
+const ANAHTAR_DEPO = {gemini:'nur-api-gemini', claude:'nur-api'};
 let onayli=null; // incelemeden geçmiş yapay zekâ soruları
-let dosyaBilgi=null; // {ad, blok} — Claude'a gidecek belge bloğu
+let dosyaBilgi=null; // {ad, tip:'pdf'|'metin', data|metin}
 function cipKur(kap, liste, tip, secili, onDegis){
   kap.replaceChildren();
   liste.forEach(([deger, yazi]) => {
@@ -367,14 +371,28 @@ function ayarCiz(){
   cipKur($('#c-zorluk'), Object.entries(ZORLUK), 'radio', d=>d===ayar.zorluk, d=>{ ayar.zorluk=d; });
   cipKur($('#c-adet'), [[5,'5'],[10,'10'],[15,'15'],[20,'20'],[30,'30']], 'radio', d=>d===ayar.adet, d=>{ ayar.adet=d; ayarDurum(); });
   cipKur($('#c-sure'), [[15,'15 sn'],[20,'20 sn'],[30,'30 sn']], 'radio', d=>d===ayar.sure, d=>{ ayar.sure=d; });
-  const k=depoAl('nur-api'); if(k && !$('#i-anahtar').value) $('#i-anahtar').value=k;
+  cipKur($('#c-saglayici'), Object.entries(SAGLAYICI), 'radio', d=>d===ayar.saglayici, d=>{ ayar.saglayici=d; depoYaz('nur-saglayici',d); saglayiciGoster(true); });
+  saglayiciGoster(!$('#i-anahtar').value);
   sekmeSec(ayar.kaynak);
+}
+function saglayiciGoster(anahtarYukle){
+  const g = ayar.saglayici==='gemini';
+  $('#anahtarEtiket').textContent = g ? 'Gemini API anahtarı' : 'Claude API anahtarı';
+  $('#i-anahtar').placeholder = g ? 'AIza…' : 'sk-ant-…';
+  const n=$('#anahtarNot'); n.replaceChildren();
+  const a=document.createElement('a'); a.target='_blank'; a.rel='noopener';
+  if(g){ a.href='https://aistudio.google.com/apikey'; a.textContent='Google AI Studio';
+    n.append('Ücretsiz anahtarı Google hesabınla ', a, '\'dan alabilirsin; kart gerekmez. Ücretsiz kullanımda Google gönderilen içeriği modellerini geliştirmek için kullanabilir, bu yüzden gizli belge yükleme. Anahtar yalnızca bu tarayıcıda durur.'); }
+  else { a.href='https://platform.claude.com/settings/keys'; a.textContent='Claude Console';
+    n.append('Anahtarı ', a, '\'dan alabilirsin; kullanım API hesabından ücretlendirilir. Anahtar yalnızca bu tarayıcıda durur ve doğrudan Anthropic\'e gönderilir.'); }
+  if(anahtarYukle) $('#i-anahtar').value = depoAl(ANAHTAR_DEPO[ayar.saglayici]) || '';
+  ayarDurum();
 }
 $('#b-kur').addEventListener('click', () => { if(!peerVar) return; ayarCiz(); goster('ayar'); });
 $('#i-konu').addEventListener('input', ayarDurum);
 $('#i-anahtar').addEventListener('input', ayarDurum);
 $('#b-anahtar-goster').addEventListener('click', e => { const i=$('#i-anahtar'); i.type = i.type==='password'?'text':'password'; e.currentTarget.textContent = i.type==='password'?'Göster':'Gizle'; });
-$('#i-anahtar-hatirla').addEventListener('change', e => { if(!e.target.checked){ try{ localStorage.removeItem('nur-api'); }catch(x){} } });
+$('#i-anahtar-hatirla').addEventListener('change', e => { if(!e.target.checked){ try{ localStorage.removeItem(ANAHTAR_DEPO[ayar.saglayici]); }catch(x){} } });
 
 /* ---- dosya okuma ---- */
 function base64Yap(buf){ let s=''; const b=new Uint8Array(buf); for(let i=0;i<b.length;i+=0x8000) s+=String.fromCharCode.apply(null, b.subarray(i,i+0x8000)); return btoa(s); }
@@ -388,7 +406,7 @@ $('#i-dosya').addEventListener('change', async e => {
   try{
     if(uzanti==='pdf'){
       const data=base64Yap(await f.arrayBuffer());
-      dosyaBilgi={ad, blok:{type:'document', source:{type:'base64', media_type:'application/pdf', data}, title:ad, cache_control:{type:'ephemeral'}}};
+      dosyaBilgi={ad, tip:'pdf', data};
       not.textContent=`${ad} hazır (${(f.size/1024/1024).toFixed(1)} MB PDF).`;
     } else if(uzanti==='docx'){
       if(!window.mammoth) await scriptYukle('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js');
@@ -403,7 +421,7 @@ $('#i-dosya').addEventListener('change', async e => {
     metin=(metin||'').replace(/\r/g,'').trim();
     if(metin.length<200){ $('#dosyaNot').textContent='Dosyada soru çıkaracak kadar metin bulunamadı.'; return; }
     const kes = metin.length>600000; if(kes) metin=metin.slice(0,600000);
-    dosyaBilgi={ad, blok:{type:'document', source:{type:'text', media_type:'text/plain', data:metin}, title:ad, cache_control:{type:'ephemeral'}}};
+    dosyaBilgi={ad, tip:'metin', metin};
     $('#dosyaNot').textContent=`${ad} hazır (${metin.length.toLocaleString('tr')} karakter${kes?', ilk kısmı kullanılacak':''}).`;
   }
 });
@@ -435,9 +453,22 @@ function istemMetni(n, turler, haric){
   return `${kaynakKurali}\n\nZorluk: ${ZORLUK[ayar.zorluk]}.\nTam olarak ${n} soru yaz. Kullanılacak türler: ${turler.join(', ')} (türleri dengeli dağıt).` +
     (haric && haric.length ? `\n\nŞu sorular zaten var; bunların aynısını ya da çok benzerini yazma:\n- ${haric.slice(0,60).join('\n- ')}` : '');
 }
+function sonucuIsle(veri){
+  const temiz=((veri&&veri.sorular)||[]).map(soruTemizle).filter(Boolean);
+  if(!temiz.length) throw new Error('Kullanılabilir soru çıkmadı. Konuyu daha net yazıp tekrar dene.');
+  return temiz;
+}
+async function yzSor(n, turler, haric){
+  return ayar.saglayici==='claude' ? claudeSor(n, turler, haric) : geminiSor(n, turler, haric);
+}
 async function claudeSor(n, turler, haric){
   const anahtar=$('#i-anahtar').value.trim();
-  const icerik=[]; if(ayar.kaynak==='dosya' && dosyaBilgi) icerik.push(dosyaBilgi.blok);
+  const icerik=[];
+  if(ayar.kaynak==='dosya' && dosyaBilgi){
+    icerik.push(dosyaBilgi.tip==='pdf'
+      ? {type:'document', source:{type:'base64', media_type:'application/pdf', data:dosyaBilgi.data}, title:dosyaBilgi.ad, cache_control:{type:'ephemeral'}}
+      : {type:'document', source:{type:'text', media_type:'text/plain', data:dosyaBilgi.metin}, title:dosyaBilgi.ad, cache_control:{type:'ephemeral'}});
+  }
   icerik.push({type:'text', text:istemMetni(n, turler, haric)});
   let r;
   try{
@@ -457,9 +488,50 @@ async function claudeSor(n, turler, haric){
   if(j.stop_reason==='refusal') throw new Error('Claude bu konu için soru üretmeyi reddetti. Konuyu değiştirip dene.');
   const metin=(j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
   let veri; try{ veri=JSON.parse(metin); }catch(e){ throw new Error(j.stop_reason==='max_tokens' ? 'Cevap yarıda kesildi. Daha az soru isteyip tekrar dene.' : 'Cevap okunamadı. Tekrar dene.'); }
-  const temiz=(veri.sorular||[]).map(soruTemizle).filter(Boolean);
-  if(!temiz.length) throw new Error('Kullanılabilir soru çıkmadı. Konuyu daha net yazıp tekrar dene.');
-  return temiz;
+  return sonucuIsle(veri);
+}
+const GEMINI_MODELLER=['gemini-3.8-flash','gemini-3.5-flash-lite'];
+const GSEMA={type:'OBJECT',required:['sorular'],properties:{sorular:{type:'ARRAY',items:{type:'OBJECT',
+  required:['tur','soru','secenekler','dogru','aciklama','kaynak'],propertyOrdering:['tur','soru','secenekler','dogru','aciklama','kaynak'],
+  properties:{tur:{type:'STRING',enum:Object.keys(YZTUR)},soru:{type:'STRING'},secenekler:{type:'ARRAY',items:{type:'STRING'}},
+    dogru:{type:'INTEGER',description:'Doğru şıkkın 0 tabanlı sırası'},aciklama:{type:'STRING'},kaynak:{type:'STRING'}}}}}};
+async function geminiSor(n, turler, haric){
+  const anahtar=$('#i-anahtar').value.trim();
+  const parcalar=[];
+  if(ayar.kaynak==='dosya' && dosyaBilgi){
+    if(dosyaBilgi.tip==='pdf') parcalar.push({inline_data:{mime_type:'application/pdf', data:dosyaBilgi.data}});
+    else parcalar.push({text:`<belge ad="${dosyaBilgi.ad.replace(/"/g,'')}">\n${dosyaBilgi.metin}\n</belge>`});
+  }
+  parcalar.push({text:istemMetni(n, turler, haric)});
+  const govde=JSON.stringify({systemInstruction:{parts:[{text:talimat()}]}, contents:[{role:'user', parts:parcalar}],
+    generationConfig:{responseMimeType:'application/json', responseSchema:GSEMA, maxOutputTokens:16000, temperature:0.7}});
+  let sonHata=null;
+  for(const model of GEMINI_MODELLER){
+    let r;
+    try{ r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':anahtar},body:govde}); }
+    catch(e){ throw new Error('Google sunucusuna ulaşılamadı. İnternet bağlantını kontrol et.'); }
+    let j=null; try{ j=await r.json(); }catch(e){}
+    if(!r.ok){
+      const m=(j&&j.error&&j.error.message)||''; const st=(j&&j.error&&j.error.status)||'';
+      if(r.status===400 && /api key/i.test(m)) throw new Error('Gemini API anahtarı geçersiz. AI Studio\'dan anahtarı kontrol et.');
+      if(r.status===403) throw new Error('Bu anahtar Gemini API\'yi kullanamıyor. AI Studio\'da anahtarın etkin olduğunu kontrol et.');
+      if(r.status===400 && /location|region|country/i.test(m)) throw new Error('Gemini API bu bölgeden kullanılamıyor görünüyor.');
+      if(r.status===429 || r.status===404 || r.status===503 || r.status===500){
+        sonHata = r.status===429 ? new Error('Ücretsiz kullanım sınırına ulaşıldı (dakikalık ya da günlük). Bir dakika bekleyip dene; günlük sınır gece yarısı Pasifik saatiyle (TSİ 10:00 civarı) sıfırlanır.')
+                : new Error('Gemini şu an yanıt veremiyor. Biraz sonra tekrar dene.');
+        continue; // yedek modeli dene
+      }
+      throw new Error('İstek reddedildi: '+(m||st||('HTTP '+r.status)));
+    }
+    if(j.promptFeedback && j.promptFeedback.blockReason) throw new Error('Gemini bu içerik için soru üretmeyi reddetti. Konuyu ya da dosyayı değiştirip dene.');
+    const c=(j.candidates||[])[0];
+    if(!c) throw new Error('Cevap boş geldi. Tekrar dene.');
+    const metin=((c.content&&c.content.parts)||[]).filter(p=>typeof p.text==='string' && !p.thought).map(p=>p.text).join('');
+    let veri; try{ veri=JSON.parse(metin); }
+    catch(e){ throw new Error(c.finishReason==='MAX_TOKENS' ? 'Cevap yarıda kesildi. Daha az soru isteyip tekrar dene.' : (c.finishReason==='SAFETY'||c.finishReason==='PROHIBITED_CONTENT' ? 'Gemini bu içerik için soru üretmeyi reddetti.' : 'Cevap okunamadı. Tekrar dene.')); }
+    return sonucuIsle(veri);
+  }
+  throw sonHata || new Error('Gemini şu an yanıt veremiyor.');
 }
 function soruTemizle(q){
   if(!q||typeof q.soru!=='string') return null;
@@ -514,10 +586,10 @@ function incDurum(){
 }
 async function uretVeGoster(){
   const h=$('#ayarHata'), not=$('#uretNot'), b=$('#b-oda-ac'); h.hidden=true;
-  if($('#i-anahtar-hatirla').checked) depoYaz('nur-api',$('#i-anahtar').value.trim());
+  if($('#i-anahtar-hatirla').checked) depoYaz(ANAHTAR_DEPO[ayar.saglayici],$('#i-anahtar').value.trim());
   b.disabled=true; not.hidden=false; not.replaceChildren(el('span','donen'), document.createTextNode(`${ayar.adet} soru hazırlanıyor. Bu genelde 20–60 saniye sürer${ayar.kaynak==='dosya'?'; büyük dosyalarda biraz daha uzun':''}.`));
   try{
-    taslak = await claudeSor(ayar.adet, [...ayar.yztur], null);
+    taslak = await yzSor(ayar.adet, [...ayar.yztur], null);
     goster('inceleme'); incelemeCiz();
   }catch(e){ h.textContent=e.message; h.hidden=false; }
   finally{ not.hidden=true; ayarDurum(); }
@@ -526,14 +598,14 @@ async function tekYenile(i){
   const q=taslak[i]; if(!q||q.uretiliyor) return;
   q.uretiliyor=true; incelemeCiz();
   try{
-    const [yeni]=await claudeSor(1, [q.tur], taslak.map(x=>x.soru));
+    const [yeni]=await yzSor(1, [q.tur], taslak.map(x=>x.soru));
     const at=taslak.indexOf(q); if(at>=0 && yeni) taslak[at]=yeni;
   }catch(e){ q.uretiliyor=false; $('#incDurum').textContent=e.message; }
   q.uretiliyor=false; incelemeCiz();
 }
 $('#b-daha').addEventListener('click', async e => {
   const b=e.currentTarget, d=$('#incDurum'); b.disabled=true; d.replaceChildren(el('span','donen'), document.createTextNode('5 soru daha hazırlanıyor…'));
-  try{ const yeni=await claudeSor(5, [...ayar.yztur], taslak.map(x=>x.soru)); taslak.push(...yeni); d.textContent=`${yeni.length} soru eklendi.`; incelemeCiz(); }
+  try{ const yeni=await yzSor(5, [...ayar.yztur], taslak.map(x=>x.soru)); taslak.push(...yeni); d.textContent=`${yeni.length} soru eklendi.`; incelemeCiz(); }
   catch(err){ d.textContent=err.message; }
   b.disabled=false;
 });
