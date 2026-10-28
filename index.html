@@ -333,7 +333,7 @@ function baglantiAl(conn){
         const q=S.sorular[S.qi];
         if(m.k>=0 && m.k<q.secenekler.length){
           S.cevaplar.set(conn._cid,{k:m.k, t:Math.min(S.T, Date.now()-S.qBas)});
-          if(S.cevaplar.size>=aktifSayisi()) setTimeout(()=>{ if(S&&S.faz==='soru') ac(true); }, 300);
+          if(S.cevaplar.size>=aktifSayisi()) setTimeout(()=>{ if(S&&S.faz==='soru') ac('herkes'); }, 300);
           else if(S.guncel) S.guncel();
         }
       }
@@ -378,7 +378,7 @@ function soruBaslat(){
   for(const o of S.oyuncular.values()) o.son=null;
   if(S.qi>=S.sorular.length){ S.faz='son'; sunucuCiz(); yayinla(); return; }
   S.faz='soru'; S.qBas=Date.now(); sunucuCiz(); yayinla();
-  clearTimeout(S.zaman); S.zaman=setTimeout(()=>{ if(S&&S.faz==='soru') ac(); }, S.T+300);
+  clearTimeout(S.zaman); S.zaman=setTimeout(()=>{ if(S&&S.faz==='soru') ac('sure'); }, S.T+300);
 }
 function ac(oto){
   if(!S || S.faz!=='soru') return; clearTimeout(S.zaman);
@@ -390,7 +390,7 @@ function ac(oto){
     else { o.seri=0; o.son={ok:0,p:0,bos:c?0:1}; }
   }
   S.faz='cevap';
-  if(oto===true){ S.otoBitis=Date.now()+2700; S.otoGecis=setTimeout(()=>{ if(S&&S.faz==='cevap') soruBaslat(); }, 2700); }
+  if(oto==='herkes'||oto==='sure'){ S.otoNeden=oto; S.otoBitis=Date.now()+2700; S.otoGecis=setTimeout(()=>{ if(S&&S.faz==='cevap') soruBaslat(); }, 2700); }
   sunucuCiz(); yayinla();
 }
 function katilmaLinki(){ const u=new URL(location.href); u.search=''; u.hash=''; u.searchParams.set('kod',S.pin); return u.toString(); }
@@ -449,7 +449,7 @@ function sunucuCiz(){
     const kar=el('div','karolar'); q.secenekler.forEach((s,k)=>{ const b=el('div','karo k'+k+(k===q.dogru?'':' soluk')); b.append(el('span','harf',k===q.dogru?'✓':HARF[k]), el('span',null,s), el('span','say',String(say[k]))); kar.append(b); }); v.append(kar);
     v.append(el('p','ozel-not',q.aciklama), el('p','kaynak',kaynakYaz(q)));
     const s=el('div','sira'); const b=el('button','dugme','Sıralamayı göster'); b.type='button'; b.onclick=()=>{ otoIptal(); S.faz='tablo'; sunucuCiz(); yayinla(); }; s.append(b);
-    if(S.otoBitis){ const o=el('span','etiket'); const yaz=()=>{ const k=Math.max(0,Math.ceil((S.otoBitis-Date.now())/1000)); o.textContent = S.qi+1<top ? `Herkes cevapladı · sonraki soru ${k} sn içinde` : `Herkes cevapladı · sonuçlar ${k} sn içinde`; }; yaz(); S.sayacTik=setInterval(yaz,250); s.append(o); }
+    if(S.otoBitis){ const o=el('span','etiket'); const yaz=()=>{ const k=Math.max(0,Math.ceil((S.otoBitis-Date.now())/1000)); const neden = S.otoNeden==='sure' ? 'Süre doldu' : 'Herkes cevapladı'; o.textContent = S.qi+1<top ? `${neden} · sonraki soru ${k} sn içinde` : `${neden} · sonuçlar ${k} sn içinde`; }; yaz(); S.sayacTik=setInterval(yaz,250); s.append(o); }
     v.append(s); b.focus();
     return;
   }
