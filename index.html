@@ -201,7 +201,7 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
       <div class="kart yigin">
         <label class="etiket" for="i-set-dosya">Dosyadan set yükle</label>
         <input id="i-set-dosya" type="file" accept=".json,application/json">
-        <p class="not" id="setDosyaNot">Setler yalnızca bu tarayıcıda saklanır. Başka bir cihazda oynamak ya da yedeklemek için seti “Dosya olarak indir” ile indirip buradan yükleyebilirsin.</p>
+        <p class="not" id="setDosyaNot">Setler yalnızca bu tarayıcıda saklanır. Başka bir cihazda oynamak ya da yedeklemek için seti “Yedek dosya (.json)” ile indirip buradan yükleyebilirsin.</p>
       </div>
     </section>
 
@@ -254,7 +254,7 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
     </div>
     <div class="kart yigin">
       <label class="etiket" for="i-set-ad">Seti kaydet</label>
-      <div class="sira"><input id="i-set-ad" type="text" maxlength="60" placeholder="Set adı" style="flex:1 1 240px;min-width:0"><button class="dugme ikincil" type="button" id="b-set-kaydet">Kaydet</button><button class="dugme ikincil" type="button" id="b-set-indir">Dosya olarak indir</button></div>
+      <div class="sira"><input id="i-set-ad" type="text" maxlength="60" placeholder="Set adı" style="flex:1 1 240px;min-width:0"><button class="dugme ikincil" type="button" id="b-set-kaydet">Kaydet</button><button class="dugme ikincil" type="button" id="b-set-kahoot">Kahoot için indir (.xlsx)</button><button class="dugme ikincil" type="button" id="b-set-indir">Yedek dosya (.json)</button></div>
       <p class="not" id="setKayitNot">Kaydettiğin setler “Oyun kur → Kayıtlı setlerim” altında durur; istediğin zaman tekrar oynayabilirsin.</p>
     </div>
     <div class="sira yapiskan"><button class="dugme" type="button" id="b-onayla">Bu sorularla odayı aç</button><button class="dugme ikincil" type="button" id="b-inc-geri">Ayarlara dön</button><span class="hata" id="incHata" hidden></span></div>
@@ -676,7 +676,7 @@ $('#b-set-kaydet').addEventListener('click', () => {
   const not=$('#setKayitNot'); const set=setNesnesi();
   if(!set.sorular.length){ not.textContent='Kaydedilecek eksiksiz bir soru yok.'; return; }
   const l=setleriAl(); const i=l.findIndex(x=>x.id===set.id); if(i>=0) l[i]=set; else l.unshift(set);
-  if(!setleriYaz(l)){ not.textContent='Kaydedilemedi: tarayıcı depolaması dolu ya da kapalı. Seti “Dosya olarak indir” ile saklayabilirsin.'; return; }
+  if(!setleriYaz(l)){ not.textContent='Kaydedilemedi: tarayıcı depolaması dolu ya da kapalı. Seti “Yedek dosya (.json)” ile saklayabilirsin.'; return; }
   aktifSet={id:set.id, ad:set.ad};
   const eksik=taslak.length-set.sorular.length;
   not.textContent=`“${set.ad}” kaydedildi · ${set.sorular.length} soru${eksik?` (${eksik} eksik soru kaydedilmedi)`:''}.`;
@@ -688,10 +688,49 @@ function dosyaIndir(ad, veri){
   document.body.append(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
 }
 const paket = set => ({uygulama:'nur-yarismasi', surum:1, set});
+/* ---- Kahoot dışa aktarma (.xlsx, Kahoot'un şablon düzeni) ---- */
+const KAHOOT_SURELER=[5,10,20,30,60,90,120,240];
+function kahootSure(sn){ return KAHOOT_SURELER.reduce((a,b)=>Math.abs(b-sn)<Math.abs(a-sn)?b:a); }
+async function kahootIndir(set, notEl){
+  try{
+    if(!window.XLSX) await scriptYukle('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+  }catch(e){ if(notEl) notEl.textContent='Excel kütüphanesi yüklenemedi. İnternet bağlantını kontrol edip tekrar dene.'; return; }
+  const sure=kahootSure(ayar.sure||20);
+  const satirlar=[
+    [null,'Quiz template'],
+    [null,'Set: '+set.ad],
+    [null,'Kahoot! → Create → Add question → Import spreadsheet ile yükleyin.'],
+    [],[],[],[],
+    [null,'Question - max 120 characters','Answer 1 - max 75 characters','Answer 2 - max 75 characters','Answer 3 - max 75 characters','Answer 4 - max 75 characters','Time limit (sec) – 5, 10, 20, 30, 60, 90, 120, or 240 secs','Correct answer(s) - choose at least one']
+  ];
+  let uzunSoru=0, uzunSik=0;
+  (set.sorular||[]).forEach((q,i)=>{
+    const sec=[...q.secenekler]; while(sec.length<4) sec.push(null);
+    if(q.soru.length>120) uzunSoru++;
+    if(q.secenekler.some(x=>x.length>75)) uzunSik++;
+    satirlar.push([i+1, q.soru, ...sec.slice(0,4), sure, String(q.dogru+1)]);
+  });
+  const ws=XLSX.utils.aoa_to_sheet(satirlar);
+  ws['!cols']=[{wch:4},{wch:60},{wch:28},{wch:28},{wch:28},{wch:28},{wch:16},{wch:16}];
+  const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  const ad=(set.ad.replace(/[\\/:*?"<>|]+/g,' ').trim()||'soru-seti')+' - Kahoot.xlsx';
+  XLSX.writeFile(wb, ad);
+  if(notEl){
+    const uyar=[];
+    if(uzunSoru) uyar.push(`${uzunSoru} soru 120 karakterden`);
+    if(uzunSik) uyar.push(`${uzunSik} soruda şıklar 75 karakterden`);
+    notEl.textContent = `Kahoot dosyası indirildi (${(set.sorular||[]).length} soru, soru başına ${sure} sn).` + (uyar.length ? ` Dikkat: ${uyar.join(' ve ')} uzun; Kahoot içe aktarırken bunları kısaltmanı isteyecek.` : '');
+  }
+}
 $('#b-set-indir').addEventListener('click', () => {
   const set=setNesnesi();
   if(!set.sorular.length){ $('#setKayitNot').textContent='İndirilecek eksiksiz bir soru yok.'; return; }
   dosyaIndir(set.ad, paket(set));
+});
+$('#b-set-kahoot').addEventListener('click', () => {
+  const set=setNesnesi();
+  if(!set.sorular.length){ $('#setKayitNot').textContent='İndirilecek eksiksiz bir soru yok.'; return; }
+  kahootIndir(set, $('#setKayitNot'));
 });
 function setOyna(set){
   yzBaglam = set.uretim && set.uretim.kaynak==='konu' ? {kaynak:'konu', konu:set.uretim.konu} : {kaynak:null};
@@ -714,13 +753,15 @@ function setListeCiz(){
     b.append(el('b',null,set.ad), el('span','not',`${(set.sorular||[]).length} soru${ts?' · '+ts:''}${set.kaynak&&set.kaynak!==set.ad?' · '+set.kaynak:''}`));
     const d=el('div','sira');
     const o=el('button','dugme','Oyna'); o.type='button'; o.onclick=()=>setOyna(set);
-    const i=el('button','dugme ikincil kucuk','Dosya olarak indir'); i.type='button'; i.onclick=()=>dosyaIndir(set.ad, paket(set));
+    const kh=el('button','dugme ikincil kucuk','Kahoot için indir (.xlsx)'); kh.type='button'; kh.onclick=()=>kahootIndir(set, notSatir);
+    const i=el('button','dugme ikincil kucuk','Yedek dosya (.json)'); i.type='button'; i.onclick=()=>dosyaIndir(set.ad, paket(set));
+    const notSatir=el('p','not'); notSatir.setAttribute('aria-live','polite');
     const s2=el('button','dugme ikincil kucuk','Sil'); s2.type='button';
     s2.onclick=()=>{
       if(s2.dataset.onay){ setleriYaz(setleriAl().filter(x=>x.id!==set.id)); setListeCiz(); return; }
       s2.dataset.onay='1'; s2.textContent='Silmek için tekrar bas'; setTimeout(()=>{ if(s2.isConnected){ delete s2.dataset.onay; s2.textContent='Sil'; } },4000);
     };
-    d.append(o,i,s2); k.append(b,d); kap.append(k);
+    d.append(o,kh,i,s2); k.append(b,d,notSatir); kap.append(k);
   });
   kap.append(bos);
 }
