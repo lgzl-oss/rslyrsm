@@ -333,7 +333,7 @@ function baglantiAl(conn){
         const q=S.sorular[S.qi];
         if(m.k>=0 && m.k<q.secenekler.length){
           S.cevaplar.set(conn._cid,{k:m.k, t:Math.min(S.T, Date.now()-S.qBas)});
-          if(S.cevaplar.size>=aktifSayisi()) setTimeout(()=>{ if(S&&S.faz==='soru') ac(); }, 600);
+          if(S.cevaplar.size>=aktifSayisi()) setTimeout(()=>{ if(S&&S.faz==='soru') ac(true); }, 300);
           else if(S.guncel) S.guncel();
         }
       }
@@ -371,14 +371,16 @@ function yayinla(){
     try{ o.conn.send({...pk, ben:o.k, cevabim: S.cevaplar.has(cid)? S.cevaplar.get(cid).k : null}); }catch(e){}
   }
 }
+function otoIptal(){ if(!S) return; clearTimeout(S.otoGecis); S.otoGecis=null; S.otoBitis=0; }
 function soruBaslat(){
+  otoIptal();
   S.qi++; S.cevaplar=new Map();
   for(const o of S.oyuncular.values()) o.son=null;
   if(S.qi>=S.sorular.length){ S.faz='son'; sunucuCiz(); yayinla(); return; }
   S.faz='soru'; S.qBas=Date.now(); sunucuCiz(); yayinla();
   clearTimeout(S.zaman); S.zaman=setTimeout(()=>{ if(S&&S.faz==='soru') ac(); }, S.T+300);
 }
-function ac(){
+function ac(oto){
   if(!S || S.faz!=='soru') return; clearTimeout(S.zaman);
   const q=S.sorular[S.qi];
   S.oncekiSira = siralama().map(o=>o.k);
@@ -387,7 +389,9 @@ function ac(){
     if(c && c.k===q.dogru){ o.seri++; const p=Math.round(1000*(1-c.t/S.T/2)) + Math.min(o.seri-1,5)*50; o.puan+=p; o.son={ok:1,p}; }
     else { o.seri=0; o.son={ok:0,p:0,bos:c?0:1}; }
   }
-  S.faz='cevap'; sunucuCiz(); yayinla();
+  S.faz='cevap';
+  if(oto===true){ S.otoBitis=Date.now()+2700; S.otoGecis=setTimeout(()=>{ if(S&&S.faz==='cevap') soruBaslat(); }, 2700); }
+  sunucuCiz(); yayinla();
 }
 function katilmaLinki(){ const u=new URL(location.href); u.search=''; u.hash=''; u.searchParams.set('kod',S.pin); return u.toString(); }
 function qrCiz(kap, metin){
@@ -434,7 +438,7 @@ function sunucuCiz(){
     v.append(ust, el('p','soru-metin',q.soru));
     const kar=el('div','karolar'); q.secenekler.forEach((s,k)=>{ const b=el('div','karo k'+k); b.append(el('span','harf',HARF[k]), el('span',null,s)); kar.append(b); }); v.append(kar);
     const alt=el('div','sira'); const cv=el('span','etiket'); alt.append(cv);
-    const b=el('button','dugme ikincil','Süreyi bitir'); b.type='button'; b.onclick=ac; alt.append(b); v.append(alt);
+    const b=el('button','dugme ikincil','Süreyi bitir'); b.type='button'; b.onclick=()=>ac(); alt.append(b); v.append(alt);
     const guncel=()=>{ const kalan=Math.max(0,S.T-(Date.now()-S.qBas)); sn.textContent=Math.ceil(kalan/1000); say.style.setProperty('--p',kalan/S.T); cv.textContent=`${S.cevaplar.size} / ${aktifSayisi()} oyuncu cevapladı`; };
     S.guncel=guncel; guncel(); S.sayacTik=setInterval(guncel,200);
     return;
@@ -444,7 +448,9 @@ function sunucuCiz(){
     v.append(el('span','etiket',`Soru ${S.qi+1} / ${top} · cevap`), el('p','soru-metin',q.soru));
     const kar=el('div','karolar'); q.secenekler.forEach((s,k)=>{ const b=el('div','karo k'+k+(k===q.dogru?'':' soluk')); b.append(el('span','harf',k===q.dogru?'✓':HARF[k]), el('span',null,s), el('span','say',String(say[k]))); kar.append(b); }); v.append(kar);
     v.append(el('p','ozel-not',q.aciklama), el('p','kaynak',kaynakYaz(q)));
-    const s=el('div','sira'); const b=el('button','dugme','Sıralamayı göster'); b.type='button'; b.onclick=()=>{ S.faz='tablo'; sunucuCiz(); yayinla(); }; s.append(b); v.append(s); b.focus();
+    const s=el('div','sira'); const b=el('button','dugme','Sıralamayı göster'); b.type='button'; b.onclick=()=>{ otoIptal(); S.faz='tablo'; sunucuCiz(); yayinla(); }; s.append(b);
+    if(S.otoBitis){ const o=el('span','etiket'); const yaz=()=>{ const k=Math.max(0,Math.ceil((S.otoBitis-Date.now())/1000)); o.textContent = S.qi+1<top ? `Herkes cevapladı · sonraki soru ${k} sn içinde` : `Herkes cevapladı · sonuçlar ${k} sn içinde`; }; yaz(); S.sayacTik=setInterval(yaz,250); s.append(o); }
+    v.append(s); b.focus();
     return;
   }
   if(S.faz==='tablo'){
@@ -465,7 +471,7 @@ function sunucuCiz(){
 }
 function kapat(){
   if(!S) return;
-  clearInterval(S.yayinTik); clearInterval(S.sayacTik); clearTimeout(S.zaman);
+  clearInterval(S.yayinTik); clearInterval(S.sayacTik); clearTimeout(S.zaman); otoIptal();
   for(const o of S.oyuncular.values()) if(bagliMi(o)){ try{ o.conn.send({t:'durum', e:S.epoch, f:'kapali', pin:S.pin}); }catch(e){} }
   const p=S.peer; setTimeout(()=>{ try{ p.destroy(); }catch(e){} }, 800);
   try{ S.kilit && S.kilit.release(); }catch(e){}
