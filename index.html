@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nur Yarışması</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Risale-i Nur Sözler'den 2–20 kişilik canlı bilgi yarışması. Hesap gerekmez; oda koduyla katılın.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;0,800;1,500&family=Rubik:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: tek ekranlı oyun sahnesi; lacivert gece zemini, varak altını başlıklar, İznik çini renklerinde dört cevap karosu */
+:root{
+  --gece:#101a33; --gece-2:#17244a; --gece-3:#22325f; --cizgi:#33467a;
+  --kagit:#eef0f7; --soluk:#a9b3d1;
+  --varak:#d9b45a; --varak-koyu:#a8873a;
+  --firuze:#1f9e9a; --mercan:#d0533f; --kobalt:#3b63c9; --safran:#d39a1e;
+  --iyi:#3fbf7a; --kotu:#e0675a;
+  --f-baslik:"Alegreya", "Iowan Old Style", Georgia, serif;
+  --f-govde:"Rubik", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--gece);color:var(--kagit);font-family:var(--f-govde);font-size:16px;line-height:1.5;
+  background-image:radial-gradient(1200px 600px at 80% -10%, var(--gece-3) 0%, transparent 60%),radial-gradient(900px 500px at -10% 110%, var(--gece-2) 0%, transparent 60%)}
+.sahne{min-height:100%;max-width:1040px;margin:0 auto;padding-block:20px 40px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  display:flex;flex-direction:column;gap:20px}
+.ust{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.marka{font-family:var(--f-baslik);font-weight:800;font-size:1.35rem;letter-spacing:.01em;color:var(--varak);display:flex;align-items:center;gap:10px}
+.marka svg{width:28px;height:28px}
+.etiket{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--soluk);font-weight:600}
+h1,h2,h3{font-family:var(--f-baslik);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,6vw,3.4rem);font-weight:800}
+h2{font-size:clamp(1.4rem,3.6vw,2rem);font-weight:700}
+p{margin:0}
+.kart{background:var(--gece-2);border:1px solid var(--cizgi);border-radius:14px;padding:20px}
+.dugme{appearance:none;border:0;border-radius:12px;padding:14px 20px;font:600 1rem var(--f-govde);cursor:pointer;
+  background:var(--varak);color:var(--gece);transition:transform .08s ease, filter .15s}
+.dugme:hover{filter:brightness(1.08)}
+.dugme:active{transform:translateY(1px)}
+.dugme.ikincil{background:transparent;color:var(--kagit);border:1px solid var(--cizgi)}
+.dugme:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--varak);outline-offset:2px}
+input[type=text],input[type=tel]{width:100%;font:600 1.25rem var(--f-govde);padding:14px 16px;border-radius:12px;border:1px solid var(--cizgi);background:var(--gece);color:var(--kagit)}
+.pin-giris{font-size:2rem!important;letter-spacing:.35em;text-align:center;font-variant-numeric:tabular-nums}
+.izgara-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.yigin{display:flex;flex-direction:column;gap:12px}
+.sira{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.not{color:var(--soluk);font-size:.9rem}
+.hata{color:var(--kotu);font-size:.92rem}
+.giris{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center}
+.giris .tez{display:flex;flex-direction:column;gap:14px}
+.giris .tez p{color:var(--soluk);max-width:52ch}
+.secimler{display:flex;flex-direction:column;gap:12px}
+.secim{display:flex;gap:14px;align-items:flex-start;text-align:left;padding:18px;border-radius:14px;border:1px solid var(--cizgi);background:var(--gece-2);color:var(--kagit);cursor:pointer;font:inherit}
+.secim:hover{border-color:var(--varak)}
+.secim:disabled{opacity:.5;cursor:not-allowed}
+.secim b{font-family:var(--f-baslik);font-size:1.25rem;display:block}
+.secim span{color:var(--soluk);font-size:.9rem}
+.secim i{font-style:normal;width:40px;height:40px;flex:none;border-radius:10px;display:grid;place-items:center;font-weight:700;color:var(--gece)}
+.cipler{display:flex;flex-wrap:wrap;gap:8px}
+.cip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:1px solid var(--cizgi);cursor:pointer;user-select:none;font-size:.92rem}
+.cip input{accent-color:var(--varak)}
+.cip:has(input:checked){border-color:var(--varak);background:color-mix(in srgb, var(--varak) 14%, transparent)}
+.pin-kutu{font-family:var(--f-govde);font-weight:700;font-size:clamp(3rem,12vw,5.5rem);letter-spacing:.12em;color:var(--varak);font-variant-numeric:tabular-nums;line-height:1}
+.oyuncular{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
+.oyuncu{padding:8px 14px;border-radius:999px;background:var(--gece-3);font-weight:600;animation:gir .3s ease}
+@keyframes gir{from{transform:scale(.8);opacity:.3}to{transform:none;opacity:1}}
+.soru-ust{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.soru-metin{font-family:var(--f-baslik);font-weight:700;font-size:clamp(1.3rem,3.4vw,2.1rem);line-height:1.3;text-wrap:balance}
+.sayac{width:72px;height:72px;flex:none;border-radius:50%;display:grid;place-items:center;font:700 1.7rem var(--f-govde);font-variant-numeric:tabular-nums;
+  background:conic-gradient(var(--varak) calc(var(--p,1)*360deg), var(--gece-3) 0);position:relative}
+.sayac::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--gece)}
+.sayac span{position:relative;z-index:1}
+.karolar{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.karo{display:flex;align-items:center;gap:14px;min-height:84px;padding:16px;border-radius:14px;border:0;text-align:left;color:#fff;font:600 1.05rem var(--f-govde);cursor:pointer;transition:transform .08s, opacity .2s, filter .2s}
+.karo:disabled{cursor:default}
+.karo .harf{width:36px;height:36px;flex:none;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.22);font-weight:700}
+.k0{background:var(--mercan)}.k1{background:var(--kobalt)}.k2{background:var(--safran)}.k3{background:var(--firuze)}
+.karo.soluk{opacity:.28;filter:saturate(.4)}
+.karo.secili{outline:4px solid var(--kagit);outline-offset:2px}
+.karo .say{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;background:rgba(0,0,0,.22);padding:2px 10px;border-radius:999px}
+.ozel-not{border-left:3px solid var(--varak);padding:6px 0 6px 14px;color:var(--kagit);max-width:70ch}
+.kaynak{font-size:.82rem;color:var(--soluk)}
+.tablo{display:flex;flex-direction:column;gap:6px}
+.satir{display:grid;grid-template-columns:36px 1fr auto auto;gap:12px;align-items:center;padding:10px 14px;border-radius:10px;background:var(--gece-2);font-variant-numeric:tabular-nums}
+.satir .no{font-weight:700;color:var(--soluk)}
+.satir .ad{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.satir .art{color:var(--iyi);font-size:.9rem;font-weight:600}
+.satir .puan{font-weight:700;color:var(--varak)}
+.satir.ben{outline:2px solid var(--varak)}
+.durum{font-size:clamp(1.6rem,6vw,2.6rem);font-family:var(--f-baslik);font-weight:800}
+.dogru-renk{color:var(--iyi)}.yanlis-renk{color:var(--kotu)}
+.kursu{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:end;text-align:center}
+.basamak{border-radius:12px 12px 0 0;background:var(--gece-3);padding:14px 8px;display:flex;flex-direction:column;gap:4px;justify-content:flex-end}
+.basamak .ad{font-weight:700;overflow-wrap:anywhere}
+.basamak .yer{font-family:var(--f-baslik);font-size:2rem;font-weight:800;color:var(--varak)}
+.b1{min-height:200px;background:color-mix(in srgb,var(--varak) 28%, var(--gece-3))}.b2{min-height:150px}.b3{min-height:115px}
+.serit{height:6px;border-radius:3px;background:var(--gece-3);overflow:hidden}
+.serit > div{height:100%;background:var(--varak);transition:width .3s}
+@media (max-width:720px){
+  .giris{grid-template-columns:1fr}
+  .karolar{grid-template-columns:1fr}
+  .karo{min-height:64px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.baglanti{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;background:var(--gece);border:1px solid var(--cizgi);border-radius:8px;padding:8px 10px;overflow-wrap:anywhere;min-width:0;flex:1 1 220px;user-select:all}
+.qr{width:180px;max-width:100%;height:auto;border-radius:10px;align-self:flex-start}
+</style>
+
+<div class="sahne">
+  <header class="ust">
+    <div class="marka" aria-label="Nur Yarışması">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="6" width="20" height="20" transform="rotate(45 16 16)"/><rect x="7" y="7" width="18" height="18"/><circle cx="16" cy="16" r="3.2" fill="currentColor"/></g></svg>
+      Nur Yarışması
+    </div>
+    <div class="sira"><span class="etiket" id="ustDurum">Sözler · 1–10</span></div>
+  </header>
+
+  <!-- GİRİŞ -->
+  <main id="v-giris" class="giris">
+    <section class="tez">
+      <span class="etiket">Risale-i Nur · Sözler'den canlı yarışma</span>
+      <h1>Birinci Söz'den Haşir Risalesi'ne, aynı anda aynı soru.</h1>
+      <p>Bir kişi oyunu kurar ve dört haneli oda kodunu paylaşır. Herkes kendi telefonundan veya bilgisayarından, nerede olursa olsun kodla katılır. Doğru ve hızlı cevap daha çok puan getirir; her sorudan sonra sıralama görünür.</p>
+      <p class="kaynak"><span id="soruSayisi"></span> soru · cümle tamamlama, kelime anlamı, temsil ve hakikat, Üstad'ın bakış açısı · 2–20 oyuncu</p>
+    </section>
+    <section class="secimler" aria-label="Ne yapmak istiyorsunuz">
+      <button class="secim" id="b-katil" type="button"><i style="background:var(--firuze)">→</i><div><b>Oyuna katıl</b><span>Oda kodunu ve adını yaz, sunucunun başlatmasını bekle.</span></div></button>
+      <button class="secim" id="b-kur" type="button"><i style="background:var(--varak)">◆</i><div><b>Oyun kur</b><span id="kurNot">Soruları seç, kodu paylaş, ekranı herkese göster.</span></div></button>
+      <button class="secim" id="b-pratik" type="button"><i style="background:var(--kobalt)">✦</i><div><b>Tek başına pratik</b><span>Bağlantı gerekmez; 10 rastgele soru.</span></div></button>
+    </section>
+  </main>
+
+  <!-- KATIL -->
+  <main id="v-katil" class="yigin" hidden>
+    <h2>Oyuna katıl</h2>
+    <form id="f-katil" class="kart yigin" style="max-width:460px" autocomplete="off">
+      <label class="etiket" for="i-pin">Oda kodu</label>
+      <input id="i-pin" class="pin-giris" type="tel" inputmode="numeric" maxlength="4" placeholder="0000" required>
+      <label class="etiket" for="i-ad">Adın</label>
+      <input id="i-ad" type="text" maxlength="18" placeholder="Örn. Zeynep" required>
+      <p class="hata" id="katilHata" hidden></p>
+      <div class="sira"><button class="dugme" type="submit" id="b-katil-git">Katıl</button><button class="dugme ikincil" type="button" data-geri>Vazgeç</button></div>
+    </form>
+  </main>
+
+  <!-- SUNUCU AYAR -->
+  <main id="v-ayar" class="yigin" hidden>
+    <h2>Oyunu hazırla</h2>
+    <div class="izgara-2">
+      <div class="kart yigin">
+        <span class="etiket">Hangi Sözler</span>
+        <div class="cipler" id="c-soz"></div>
+      </div>
+      <div class="kart yigin">
+        <span class="etiket">Soru türleri</span>
+        <div class="cipler" id="c-tur"></div>
+      </div>
+      <div class="kart yigin">
+        <span class="etiket">Soru sayısı</span>
+        <div class="cipler" id="c-adet"></div>
+      </div>
+      <div class="kart yigin">
+        <span class="etiket">Soru başına süre</span>
+        <div class="cipler" id="c-sure"></div>
+      </div>
+    </div>
+    <p class="not" id="havuzNot"></p>
+    <div class="sira"><button class="dugme" id="b-oda-ac" type="button">Odayı aç</button><button class="dugme ikincil" type="button" data-geri>Vazgeç</button></div>
+    <p class="hata" id="ayarHata" hidden></p>
+  </main>
+
+  <!-- SUNUCU EKRANI -->
+  <main id="v-sunucu" class="yigin" hidden></main>
+
+  <!-- OYUNCU EKRANI -->
+  <main id="v-oyuncu" class="yigin" hidden></main>
+
+  <!-- PRATİK -->
+  <main id="v-pratik" class="yigin" hidden></main>
+</div>
+
+
+<script type="application/json" id="bank">[{"id": "S01-001", "soz": 1, "eser": "Sözler", "sayfa": 1, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Bismillâh her hayrın başıdır. Biz dahi ______.\"", "secenekler": ["başta ona başlarız", "sonunda onu anarız", "her işte onu düşünürüz", "onunla duâ ederiz"], "dogru": 0, "aciklama": "Birinci Söz bu cümleyle açılır."}, {"id": "S01-002", "soz": 1, "eser": "Sözler", "sayfa": 1, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "\"Bedevî Arab çöllerinde seyâhat eden adama gerektir ki, bir kabîle reîsinin ______ ve himâyesine girsin.\"", "secenekler": ["çadırına konsun", "ismini alsın", "izini takip etsin", "hediyesini taşısın"], "dogru": 1, "aciklama": "Temsilde reisin ismini almak, Bismillâh demeye karşılık gelir."}, {"id": "S01-003", "soz": 1, "eser": "Sözler", "sayfa": 3, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Allâh nâmına ver, Allâh nâmına al. Allâh nâmına başla, ______.\"", "secenekler": ["Allâh nâmına konuş", "Allâh nâmına bitir", "Allâh nâmına bekle", "Allâh nâmına işle"], "dogru": 3, "aciklama": "Birinci Söz bu tavsiyeyle ve \"Vesselâm\" ile biter."}, {"id": "S01-004", "soz": 1, "eser": "Sözler", "sayfa": 1, "tur": "kelime_tamamlama", "zorluk": 1, "soru": "\"Bütün mevcûdât, lisân-ı ______ ile Bismillâh der.\"", "secenekler": ["hâl", "kāl", "kalb", "hakîkat"], "dogru": 0, "aciklama": "Lisân-ı hâl: hâl dili. Varlıklar hâlleriyle Allah nâmına hareket ettiklerini gösterir."}, {"id": "S01-005", "soz": 1, "eser": "Sözler", "sayfa": 2, "tur": "kelime_tamamlama", "zorluk": 2, "soru": "\"Her bir bostan Bismillâh der. Matbaha-i ______ bir kazan olur.\"", "secenekler": ["kudretten", "hikmetten", "rahmetten", "inâyetten"], "dogru": 0, "aciklama": "Bostan, kudret mutfağından çıkan çeşit çeşit yiyeceklerin piştiği bir kazana benzetilir."}, {"id": "S01-006", "soz": 1, "eser": "Sözler", "sayfa": 1, "tur": "kelime_anlami", "zorluk": 1, "soru": "Birinci Söz'de geçen \"şakî\" kelimesinin anlamı nedir?", "secenekler": ["Dilenci", "Kabile reisi", "Yolcu", "Haydut"], "dogru": 3, "aciklama": "Şakî: haydut, eşkıya."}, {"id": "S01-007", "soz": 1, "eser": "Sözler", "sayfa": 1, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Hâcât\" kelimesinin anlamı nedir?", "secenekler": ["Hâdiseler", "Uzuvlar", "İhtiyaçlar", "Yiyecekler"], "dogru": 2, "aciklama": "Hâcât: ihtiyaçlar (hâcet'in çoğulu)."}, {"id": "S01-008", "soz": 1, "eser": "Sözler", "sayfa": 3, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Belâhet\" kelimesinin anlamı nedir?", "secenekler": ["Fasihlik, güzel konuşma", "Bolluk", "Belâ, musîbet", "Ahmaklık"], "dogru": 3, "aciklama": "Belâhet: ahmaklık. Ebleh: ahmak."}, {"id": "S01-009", "soz": 1, "eser": "Sözler", "sayfa": 2, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Musahhar\" kelimesinin anlamı nedir?", "secenekler": ["Sabah vakti", "İtâat ettirilmiş", "Sihirlenmiş", "Yayılmış"], "dogru": 1, "aciklama": "Musahhar: emre boyun eğdirilmiş, itâat ettirilmiş."}, {"id": "S01-010", "soz": 1, "eser": "Sözler", "sayfa": 2, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Salâbet\" kelimesinin anlamı nedir?", "secenekler": ["Selâmet", "Sıcaklık", "Sağlamlık", "Uyma"], "dogru": 2, "aciklama": "Salâbet: sağlamlık, sertlik."}, {"id": "S01-011", "soz": 1, "eser": "Sözler", "sayfa": 3, "tur": "bakis_acisi", "zorluk": 1, "soru": "Birinci Söz'e göre Allah'ın verdiği nimetlere karşılık bizden istediği \"fiyat\" nedir?", "secenekler": ["Duâ, tövbe ve istiğfar", "Sadaka, oruç ve hac", "Sabır, tevekkül ve kanaat", "Zikir, şükür ve fikir"], "dogru": 3, "aciklama": "Başta Bismillâh zikir, sonda Elhamdülillâh şükür, ortada nimetin kudret mucizesi olduğunu düşünmek fikirdir."}, {"id": "S01-012", "soz": 1, "eser": "Sözler", "sayfa": 1, "tur": "bakis_acisi", "zorluk": 1, "soru": "Birinci Söz'deki temsilde reisin ismini alıp her yerde selâmetle gezen yolcu hangisidir?", "secenekler": ["Mağrur olan", "Mütevâzi olan", "İkisi de", "Hiçbiri"], "dogru": 1, "aciklama": "Mütevâzi yolcu reisin ismini aldı, mağrur olan almadı ve sürekli titredi."}, {"id": "S01-013", "soz": 1, "eser": "Sözler", "sayfa": 2, "tur": "bakis_acisi", "zorluk": 2, "soru": "Birinci Söz'e göre ince köklerin sert taşı delmesi ve yaprakların sıcağa karşı yaş kalması neyi gösterir?", "secenekler": ["Her şeyin Allah nâmına, emir altında hareket ettiğini", "Sebeplerin müstakil olduğunu", "Tesadüfün hâkimiyetini", "Tabiatın kendi kuvvetini"], "dogru": 0, "aciklama": "Bu hâl tabiatperestlerin iddiasına tokat olarak gösterilir; sertlik ve sıcaklık da emir altındadır."}, {"id": "S01-014", "soz": 1, "eser": "Sözler", "sayfa": 3, "tur": "bakis_acisi", "zorluk": 2, "soru": "Birinci Söz'e göre zâhirî nimet vasıtalarını övüp asıl Nimet Sahibi'ni unutmak neye benzetilir?", "secenekler": ["Padişahın hediyesini getiren fakirin ayağını öpüp hediye sahibini tanımamaya", "Hediyeyi saklayıp kimseye göstermemeye", "Hediyeyi başkasına satmaya", "Hediyeyi reddedip geri göndermeye"], "dogru": 0, "aciklama": "Bu, ondan bin derece daha büyük bir ahmaklık olarak nitelenir."}, {"id": "S01-015", "soz": 1, "eser": "Sözler", "sayfa": 2, "tur": "bakis_acisi", "zorluk": 1, "soru": "Birinci Söz'e göre Bismillâh ile hareket eden insan kime benzetilir?", "secenekler": ["Askere kaydolup devlet nâmına hareket eden adama", "Tek başına çöle çıkan yolcuya", "Yolunu kaybetmiş seyyaha", "Kendi malını harcayan tüccara"], "dogru": 0, "aciklama": "Devlet nâmına hareket eden asker hiç kimseden çekinmez; her şeye karşı dayanır."}, {"id": "S02-016", "soz": 2, "eser": "Sözler", "sayfa": 5, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Demek îmân, bir ma‘nevî tûbâ-yı cennet çekirdeğini taşıyor. Küfür ise, ma‘nevî bir ______ tohumunu saklıyor.\"", "secenekler": ["zehr-i hayat", "kuru ağaç", "diken-i dünya", "zakkūm-u cehennem"], "dogru": 3, "aciklama": "İman cennet ağacının, küfür cehennem ağacının tohumunu taşır."}, {"id": "S02-017", "soz": 2, "eser": "Sözler", "sayfa": 5, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Demek selâmet ve emniyet, yalnız ______ ve îmândadır.\"", "secenekler": ["dünyada", "servette", "İslâmiyet'te", "ilimde"], "dogru": 2, "aciklama": "İkinci Söz bu hükümle ve İslâm nimetine hamd ile biter."}, {"id": "S02-018", "soz": 2, "eser": "Sözler", "sayfa": 3, "tur": "kelime_tamamlama", "zorluk": 2, "soru": "\"Biri ______, tâli‘siz bir tarafa; diğeri hudâbîn, bahtiyar diğer tarafa sülûk eder.\"", "secenekler": ["müşfik", "raiyetperver", "hodbîn", "hak-endîş"], "dogru": 2, "aciklama": "Hodbîn: kendini gören, kendini beğenmiş. Hudâbîn: Allah için gören."}, {"id": "S02-019", "soz": 2, "eser": "Sözler", "sayfa": 4, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Bedbîn\" kelimesinin anlamı nedir?", "secenekler": ["Kötümser", "Çâresiz", "Bencil", "Kötü tâlihli"], "dogru": 0, "aciklama": "Bedbîn: her şeyi kötü gören, kötümser. Bedbaht ise kötü tâlihli demektir."}, {"id": "S02-020", "soz": 2, "eser": "Sözler", "sayfa": 4, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Firâk\" kelimesinin anlamı nedir?", "secenekler": ["Pişmanlık", "Son bulma", "Ayrılık", "Kuruntu"], "dogru": 2, "aciklama": "Firâk: ayrılık."}, {"id": "S02-021", "soz": 2, "eser": "Sözler", "sayfa": 4, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Nedâmet\" kelimesinin anlamı nedir?", "secenekler": ["Şenlik", "Ayrılık", "Pişmanlık", "Feryat"], "dogru": 2, "aciklama": "Nedâmet: pişmanlık."}, {"id": "S02-022", "soz": 2, "eser": "Sözler", "sayfa": 4, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Muzlim\" kelimesinin anlamı nedir?", "secenekler": ["Karanlık", "Ümitsiz", "Hüzünlü", "Zâlim"], "dogru": 0, "aciklama": "Muzlim: karanlık."}, {"id": "S02-023", "soz": 2, "eser": "Sözler", "sayfa": 4, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Şehr-âyîn\" kelimesinin anlamı nedir?", "secenekler": ["Şenlik", "Şehir âdeti", "Yas yeri", "Askere alma"], "dogru": 0, "aciklama": "Şehr-âyîn: şehir şenliği, donanma."}, {"id": "S02-024", "soz": 2, "eser": "Sözler", "sayfa": 5, "tur": "bakis_acisi", "zorluk": 1, "soru": "İkinci Söz'e göre mü'minin nazarında insan ve hayvan ölümleri nedir?", "secenekler": ["Ebedî yokluk", "Tesadüfî bir son", "Vazifeden terhis", "Bir ceza"], "dogru": 2, "aciklama": "Vazifesini bitirenler fânî yurttan sevinçle sıkıntısız bir âleme giderler."}, {"id": "S02-025", "soz": 2, "eser": "Sözler", "sayfa": 4, "tur": "bakis_acisi", "zorluk": 1, "soru": "İkinci Söz'e göre kâfir veya gafil fâsıkın nazarında dünya nedir?", "secenekler": ["Umûmî bir matemhâne", "Bir misafirhâne", "Bir ticaretgâh", "Bir zikirhâne"], "dogru": 0, "aciklama": "Onun nazarında canlılar ayrılık ve yokluk tokadıyla ağlayan yetimlerdir."}, {"id": "S02-026", "soz": 2, "eser": "Sözler", "sayfa": 5, "tur": "bakis_acisi", "zorluk": 2, "soru": "İkinci Söz'e göre mü'minin nazarında doğumlar neye karşılık gelir?", "secenekler": ["Bir oyunun başlamasına", "Bir yolculuğun sona ermesine", "Bir yükün omuza binmesine", "Askere alınıp vazife başına gelmeye"], "dogru": 3, "aciklama": "Bütün canlılar birer vazifeli, memnun asker ve memur olarak görülür."}, {"id": "S02-027", "soz": 2, "eser": "Sözler", "sayfa": 4, "tur": "bakis_acisi", "zorluk": 2, "soru": "İkinci Söz'deki temsilde bedbaht yolcunun şenliği matem gibi görmesinin sebebi nedir?", "secenekler": ["Melikin zâlim olması", "Memleketin gerçekten harap olması", "İçindeki çirkinliğin dışına aksetmesi", "Yolunu kaybetmesi"], "dogru": 2, "aciklama": "Arkadaşı ona kalbini temizlemesini, tâ ki musibetli perde nazarından kalksın, söyler."}, {"id": "S03-028", "soz": 3, "eser": "Sözler", "sayfa": 7, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Âhiret gibi dünya saâdeti dahi ibâdette ve ______ asker olmaktadır.\"", "secenekler": ["Allâh'a", "nefse", "hakikate", "devlete"], "dogru": 0, "aciklama": "Üçüncü Söz'ün hülâsası budur."}, {"id": "S03-029", "soz": 3, "eser": "Sözler", "sayfa": 6, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "\"Her hakîkî hasenât gibi, cesâretin dahi menba‘ı ______, ubûdiyettir.\"", "secenekler": ["kuvvettir", "îmândır", "tecrübedir", "ilimdir"], "dogru": 1, "aciklama": "Cesaretin kaynağı iman ve kulluk, korkaklığın kaynağı dalâlettir."}, {"id": "S03-030", "soz": 3, "eser": "Sözler", "sayfa": 6, "tur": "kelime_tamamlama", "zorluk": 2, "soru": "\"Her seyyiât gibi, ______ dahi menba‘ı dalâlettir.\"", "secenekler": ["cebânetin", "kibrin", "hasedin", "gafletin"], "dogru": 0, "aciklama": "Cebânet: korkaklık."}, {"id": "S03-031", "soz": 3, "eser": "Sözler", "sayfa": 6, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Hıffet\" kelimesinin anlamı nedir?", "secenekler": ["Hafiflik", "Korku", "Zarar", "Öz"], "dogru": 0, "aciklama": "Hıffet: hafiflik."}, {"id": "S03-032", "soz": 3, "eser": "Sözler", "sayfa": 6, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Adüvv\" kelimesinin anlamı nedir?", "secenekler": ["Sayı", "Asker", "Düşman", "Âdil"], "dogru": 2, "aciklama": "Adüvv: düşman."}, {"id": "S03-033", "soz": 3, "eser": "Sözler", "sayfa": 6, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Tahassun\" kelimesinin anlamı nedir?", "secenekler": ["Güzelleşme", "Hasret çekme", "Kazanma", "Sığınma"], "dogru": 3, "aciklama": "Tahassun: kaleye girer gibi sığınma."}, {"id": "S03-034", "soz": 3, "eser": "Sözler", "sayfa": 7, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Şekāvet\" kelimesinin anlamı nedir?", "secenekler": ["Şüphe", "Şükür", "Şefkat", "Saadetten mahrumiyet"], "dogru": 3, "aciklama": "Şekāvet: bedbahtlık, saadetten mahrum olma."}, {"id": "S03-035", "soz": 3, "eser": "Sözler", "sayfa": 5, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Hasâret\" kelimesinin anlamı nedir?", "secenekler": ["Cesaret", "Hasret", "Sıcaklık", "Zarar"], "dogru": 3, "aciklama": "Hasâret: zarar, ziyan."}, {"id": "S03-036", "soz": 3, "eser": "Sözler", "sayfa": 6, "tur": "bakis_acisi", "zorluk": 1, "soru": "Üçüncü Söz'deki temsilde askerin taşıdığı çanta ve silâh neyi temsil eder?", "secenekler": ["İlim ve hikmeti", "İbâdet ve takvâyı", "Akıl ve iradeyi", "Mal ve evlâdı"], "dogru": 1, "aciklama": "İbadetin zâhirî bir ağırlığı vardır, fakat mânâsında tarif edilmez bir rahatlık ve hafiflik vardır."}, {"id": "S03-037", "soz": 3, "eser": "Sözler", "sayfa": 6, "tur": "bakis_acisi", "zorluk": 2, "soru": "Üçüncü Söz'deki temsilde askerlerin gittiği yol neyi ifade eder?", "secenekler": ["Hac yolculuğunu", "Dünyadaki ticaret yolunu", "Ruhlar âleminden gelip kabirden geçerek âhirete giden hayat yolunu", "İlim tahsil etme yolunu"], "dogru": 2, "aciklama": "Yol, hayat yoludur."}, {"id": "S03-038", "soz": 3, "eser": "Sözler", "sayfa": 7, "tur": "bakis_acisi", "zorluk": 2, "soru": "Üçüncü Söz'e göre ubûdiyet yolu ile fısk yolu karşılaştırıldığında hangisi doğrudur?", "secenekler": ["İki yolun kâr ve zararı eşittir", "Ubûdiyet yolu zararsızdır ve ondan dokuz ihtimalle ebedî saadet hazinesi vardır", "Ubûdiyet yolu yalnız âhirette fayda verir", "Fısk yolu dünyada daha kârlıdır"], "dogru": 1, "aciklama": "Zararsız yol, on ihtimalden bir ihtimalle olsa bile zararlı yola tercih edilir."}, {"id": "S03-039", "soz": 3, "eser": "Sözler", "sayfa": 6, "tur": "bakis_acisi", "zorluk": 2, "soru": "Üçüncü Söz'e göre kalbi nurlanmış bir âbid, yeryüzü bomba gibi patlasa ne yapar?", "secenekler": ["Kaçacak yer arar", "Korkmaz; kudreti lezzetli bir hayretle seyreder", "Titreyip evhama düşer", "Sebepleri araştırır"], "dogru": 1, "aciklama": "Buna karşılık kalpsiz bir filozof kuyruklu yıldız görse titrer."}, {"id": "S04-040", "soz": 4, "eser": "Sözler", "sayfa": 8, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"O yirmi dört altın ise, yirmi dört sâat her gündeki ______.\"", "secenekler": ["rızıktır", "ibâdettir", "ömürdür", "sermâyedir"], "dogru": 2, "aciklama": "Temsildeki altınlar günlük ömrü ifade eder."}, {"id": "S04-041", "soz": 4, "eser": "Sözler", "sayfa": 8, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"O hâs çiftlik ise cennettir. O istasyon ise ______.\"", "secenekler": ["sırattır", "dünyadır", "kabirdir", "mahşerdir"], "dogru": 2, "aciklama": "Yolculuk kabre, haşre ve ebede gider."}, {"id": "S04-042", "soz": 4, "eser": "Sözler", "sayfa": 8, "tur": "kelime_tamamlama", "zorluk": 1, "soru": "\"O bilet ise ______dır.\"", "secenekler": ["namaz", "oruç", "zekât", "sadaka"], "dogru": 0, "aciklama": "Bir defîne anahtarı hükmündeki bilet namazdır."}, {"id": "S04-043", "soz": 4, "eser": "Sözler", "sayfa": 7, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Mübâyaa\" kelimesinin anlamı nedir?", "secenekler": ["Oturma", "Yolculuk", "Biat etme", "Satın alma"], "dogru": 3, "aciklama": "Mübâyaa: satın alma."}, {"id": "S04-044", "soz": 4, "eser": "Sözler", "sayfa": 8, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Şimendifer\" kelimesinin anlamı nedir?", "secenekler": ["Araba", "Gemi", "Tren", "Uçak"], "dogru": 2, "aciklama": "Şimendifer: tren. Tayyâre: uçak."}, {"id": "S04-045", "soz": 4, "eser": "Sözler", "sayfa": 8, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Muvakkat\" kelimesinin anlamı nedir?", "secenekler": ["Geçici", "Başarılı", "Vakitli", "Kalıcı"], "dogru": 0, "aciklama": "Muvakkat: geçici."}, {"id": "S04-046", "soz": 4, "eser": "Sözler", "sayfa": 8, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Berk\" kelimesinin anlamı nedir?", "secenekler": ["Şimşek", "Rüzgâr", "Yaprak", "Kuvvet"], "dogru": 0, "aciklama": "Bir kısım ehl-i takvâ şimşek gibi bin senelik yolu bir günde keser."}, {"id": "S04-047", "soz": 4, "eser": "Sözler", "sayfa": 8, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Mütedeyyin\" kelimesinin anlamı nedir?", "secenekler": ["Dindar", "Borçlu", "Farklı", "Akıllı"], "dogru": 0, "aciklama": "Mütedeyyin: dinine bağlı, dindar."}, {"id": "S04-048", "soz": 4, "eser": "Sözler", "sayfa": 8, "tur": "bakis_acisi", "zorluk": 1, "soru": "Dördüncü Söz'e göre beş vakit namaz için abdestle birlikte günde ne kadar vakit kâfi gelir?", "secenekler": ["Üç saat", "Beş saat", "Yarım gün", "Bir saat"], "dogru": 3, "aciklama": "Yirmi üç saati dünyaya verip bir saati ebedî hayata vermemek büyük zarardır."}, {"id": "S04-049", "soz": 4, "eser": "Sözler", "sayfa": 8, "tur": "bakis_acisi", "zorluk": 1, "soru": "Dördüncü Söz'deki temsilde bedbaht hizmetkâr istasyona varıncaya kadar kaç altın harcar?", "secenekler": ["On iki", "Yirmi dört", "Yirmi üç", "Bir"], "dogru": 2, "aciklama": "Elinde bir tek altını kalır; arkadaşı onu bilete vermesini tavsiye eder."}, {"id": "S04-050", "soz": 4, "eser": "Sözler", "sayfa": 9, "tur": "bakis_acisi", "zorluk": 2, "soru": "Dördüncü Söz'e göre namaz kılan kimsenin mübah dünyevî amelleri ne olur?", "secenekler": ["Hiçbir kıymet taşımaz", "Güzel bir niyetle ibâdet hükmünü alır", "Namazın sevabını azaltır", "Yalnızca dünyada fayda verir"], "dogru": 1, "aciklama": "Böylece bütün ömür sermayesini âhirete mal edebilir."}, {"id": "S05-051", "soz": 5, "eser": "Sözler", "sayfa": 10, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Ve o ta‘lîm ve ta‘lîmât ise, (başta namaz) ______.\"", "secenekler": ["ilimdir", "ahlâktır", "ibâdettir", "cihaddır"], "dogru": 2, "aciklama": "Harp ise nefis, hevâ ve şeytanlara karşı mücâhededir."}, {"id": "S05-052", "soz": 5, "eser": "Sözler", "sayfa": 11, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "\"Eğer hayât-ı dünyeviyeyi gāye-i maksad yapsan ve ona dâim çalışsan, en ednâ bir ______ bir neferi hükmünde olursun.\"", "secenekler": ["balığın", "arının", "karıncanın", "serçe kuşunun"], "dogru": 3, "aciklama": "Âhireti gaye yaparsa hayvanların büyük bir kumandanı hükmünde olur."}, {"id": "S05-053", "soz": 5, "eser": "Sözler", "sayfa": 11, "tur": "kelime_tamamlama", "zorluk": 1, "soru": "\"Hidâyet ve tevfîki ______'den iste.\"", "secenekler": ["Ahkemü'l-hâkimîn", "Erhamürrâhimîn", "Rabbü'l-âlemîn", "Hayrü'r-râzikîn"], "dogru": 1, "aciklama": "Erhamürrâhimîn: merhamet edenlerin en merhametlisi."}, {"id": "S05-054", "soz": 5, "eser": "Sözler", "sayfa": 9, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Şikemperver\" kelimesinin anlamı nedir?", "secenekler": ["Nefsini seven", "Vazife seven", "Yeme içmeye düşkün", "Eğitimli"], "dogru": 2, "aciklama": "Şikemperver: midesine düşkün."}, {"id": "S05-055", "soz": 5, "eser": "Sözler", "sayfa": 9, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Angarya\" kelimesinin anlamı nedir?", "secenekler": ["Askerî eğitim", "Belirlenmiş yiyecek", "Ücretsiz yaptırılan iş", "Geçim parası"], "dogru": 2, "aciklama": "Asker devletin angaryasını çektiğini söyler, nafakası için çalıştığını söylemez."}, {"id": "S05-056", "soz": 5, "eser": "Sözler", "sayfa": 10, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Kebâir\" kelimesinin anlamı nedir?", "secenekler": ["Kibirliler", "Büyükler", "Farzlar", "Büyük günahlar"], "dogru": 3, "aciklama": "Kebâir: büyük günahlar."}, {"id": "S05-057", "soz": 5, "eser": "Sözler", "sayfa": 11, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Tazarru‘\" kelimesinin anlamı nedir?", "secenekler": ["Fakirlik", "Seçme", "Yalvarma", "Tarla"], "dogru": 2, "aciklama": "Tazarru‘: yalvarıp yakarma."}, {"id": "S05-058", "soz": 5, "eser": "Sözler", "sayfa": 11, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Mezraa\" kelimesinin anlamı nedir?", "secenekler": ["Tarla", "Yalvarma", "Kul", "Yük"], "dogru": 0, "aciklama": "Dünya hayatı âhiret için bir vesile ve tarla yapılmalıdır."}, {"id": "S05-059", "soz": 5, "eser": "Sözler", "sayfa": 10, "tur": "bakis_acisi", "zorluk": 1, "soru": "Beşinci Söz'deki temsilde tabur neyi temsil eder?", "secenekler": ["Bir ailenin fertlerini", "Melekleri", "Bütün insanlığı", "Şu asrın İslâm cemaatini"], "dogru": 3, "aciklama": "Ordu insan toplumunu, tabur bu asrın İslâm cemaatini temsil eder."}, {"id": "S05-060", "soz": 5, "eser": "Sözler", "sayfa": 10, "tur": "bakis_acisi", "zorluk": 2, "soru": "Beşinci Söz'e göre iki vazifeden hangisi \"Padişah'ın\", yani Allah'ın vazifesidir?", "secenekler": ["İbâdet ve tazarru", "Nefisle mücâhede", "Hayatı verip beslemek", "Günahları terk etmek"], "dogru": 2, "aciklama": "Bizim vazifemiz ise hayatı verene ve besleyene ibadet edip yalvarmak, ona tevekkül etmektir."}, {"id": "S05-061", "soz": 5, "eser": "Sözler", "sayfa": 10, "tur": "bakis_acisi", "zorluk": 2, "soru": "Beşinci Söz'e göre helâl rızkın vasıtası nedir?", "secenekler": ["İktidar ve ihtiyar değil, acz ve zaaf", "Güç ve kurnazlık", "Tecrübe ve zekâ", "Çok çalışmak ve biriktirmek"], "dogru": 0, "aciklama": "Bunu anlamak için balıklarla tilkileri, yavrularla canavarları karşılaştırmak yeter."}, {"id": "S05-062", "soz": 5, "eser": "Sözler", "sayfa": 10, "tur": "bakis_acisi", "zorluk": 2, "soru": "Beşinci Söz'e göre namazını kıldıktan sonra rızkını aramak için çalışmak nasıl değerlendirilir?", "secenekler": ["Güzeldir, mertliktir; o da bir ibâdettir", "Sadece zaruret hâlinde câizdir", "Tevekküle aykırıdır", "Gereksiz bir zahmettir"], "dogru": 0, "aciklama": "Başkalarına yük olmamak için bizzat gitmek güzeldir."}, {"id": "S06-063", "soz": 6, "eser": "Sözler", "sayfa": 11, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "Altıncı Söz'deki fermanda padişah şöyle der: \"Elinizde olan emânetimi bana satınız. Tâ sizin için ______.\"", "secenekler": ["çoğaltayım", "muhâfaza edeyim", "saklamayayım", "harcayayım"], "dogru": 1, "aciklama": "Emanet beyhude zayi olmasın diye Sahibine satılması istenir."}, {"id": "S06-064", "soz": 6, "eser": "Sözler", "sayfa": 14, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Zîrâ helâl dâiresi geniştir. Keyfe kâfî gelir. ______ girmeye hiç lüzûm yoktur.\"", "secenekler": ["Gaflete", "Şüpheliye", "Mekruha", "Harâma"], "dogru": 3, "aciklama": "Satış ağır değildir; farzlar az ve hafiftir."}, {"id": "S06-065", "soz": 6, "eser": "Sözler", "sayfa": 12, "tur": "kelime_tamamlama", "zorluk": 2, "soru": "\"Ve o yâver-i ekrem ise, Resûl-ü Kerîm’dir. Ve o fermân-ı ______ ise, Kur’ân-ı Hakîm’dir.\"", "secenekler": ["celîl", "şerîf", "a‘zam", "ahkem"], "dogru": 3, "aciklama": "Fermân-ı ahkem: en sağlam hükmeden buyruk."}, {"id": "S06-066", "soz": 6, "eser": "Sözler", "sayfa": 13, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Meş’ûm\" kelimesinin anlamı nedir?", "secenekler": ["Meşhur", "Kokulu", "Şükreden", "Uğursuz"], "dogru": 3, "aciklama": "Nefis hesabına çalıştırılan akıl meş'ûm, rahatsız edici bir alet olur."}, {"id": "S06-067", "soz": 6, "eser": "Sözler", "sayfa": 11, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Masârıfât\" kelimesinin anlamı nedir?", "secenekler": ["Giderler", "Gelirler", "Ölçüler", "Lüzumlu şeyler"], "dogru": 0, "aciklama": "Masârıfât giderler, vâridât gelirlerdir."}, {"id": "S06-068", "soz": 6, "eser": "Sözler", "sayfa": 11, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Deruhde\" kelimesinin anlamı nedir?", "secenekler": ["Geri döndürme", "Değiştirme", "Boşuna", "Üzerine alma"], "dogru": 3, "aciklama": "Padişah bütün masrafları ve gerekenleri üzerine alır."}, {"id": "S06-069", "soz": 6, "eser": "Sözler", "sayfa": 12, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Mâmelek\" kelimesinin anlamı nedir?", "secenekler": ["Sahip olunan şeyler", "Melekler", "Gelirler", "Memleket"], "dogru": 0, "aciklama": "Çiftlik ve makineler, hayat dairesindeki mâmeleki temsil eder."}, {"id": "S06-070", "soz": 6, "eser": "Sözler", "sayfa": 13, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Kuvve-i zâika\" ne demektir?", "secenekler": ["Konuşma gücü", "Hafıza kuvveti", "Görme duyusu", "Tat alma duyusu"], "dogru": 3, "aciklama": "Dildeki tat alma duyusu Allah'a satılırsa rahmet hazinelerinin mahir bir nazırı olur."}, {"id": "S06-071", "soz": 6, "eser": "Sözler", "sayfa": 12, "tur": "temsil_eslestirme", "zorluk": 1, "soru": "Altıncı Söz'deki temsilde \"yâver-i ekrem\" (padişahın en şerefli yaveri) kimi temsil eder?", "secenekler": ["Cebrâil'i (as)", "Akl-ı selîmi", "Bir mürşidi", "Resûl-i Ekrem'i (asm)"], "dogru": 3, "aciklama": "Ferman ise Kur'ân-ı Hakîm'dir."}, {"id": "S06-072", "soz": 6, "eser": "Sözler", "sayfa": 12, "tur": "temsil_eslestirme", "zorluk": 2, "soru": "Altıncı Söz'deki temsilde \"dalgalı muhârebe meydanı\" neyi temsil eder?", "secenekler": ["Kabir âlemini", "İnsanın kalbini", "Mahşer meydanını", "Fırtınalı dünya yüzünü"], "dogru": 3, "aciklama": "Dünya durmaz, döner, bozulur; her şeyin fâni olduğunu insana düşündürür."}, {"id": "S06-073", "soz": 6, "eser": "Sözler", "sayfa": 12, "tur": "bakis_acisi", "zorluk": 1, "soru": "Altıncı Söz'e göre emâneti Sahibine satmakta kaç mertebe kâr vardır?", "secenekler": ["Yedi", "On", "Üç", "Beş"], "dogru": 3, "aciklama": "Satmamakta ise beş derece hasaret vardır."}, {"id": "S06-074", "soz": 6, "eser": "Sözler", "sayfa": 12, "tur": "bakis_acisi", "zorluk": 2, "soru": "Altıncı Söz'e göre satıştaki \"Birinci Kâr\" nedir?", "secenekler": ["Fâni mal bekā bulur", "Cennet gibi bir fiyat verilir", "Azaların kıymeti binden bine çıkar", "Tevekkülle vicdan rahat eder"], "dogru": 0, "aciklama": "Allah yolunda harcanan geçici ömür bâkiye dönüşür, bâki meyveler verir."}, {"id": "S06-075", "soz": 6, "eser": "Sözler", "sayfa": 13, "tur": "bakis_acisi", "zorluk": 2, "soru": "Altıncı Söz'e göre Allah hesabına çalıştırılan akıl neye dönüşür?", "secenekler": ["Rahmet hazinelerini açan tılsımlı bir anahtara", "Geçmişin acılarını yükleyen bir alete", "Nefsin hizmetkârına", "Sadece dünyevî hesap yapan bir makineye"], "dogru": 0, "aciklama": "Nefis hesabına çalıştırılırsa geçmişin hüzünlerini ve geleceğin korkularını yükleyen uğursuz bir alet olur."}, {"id": "S06-076", "soz": 6, "eser": "Sözler", "sayfa": 13, "tur": "bakis_acisi", "zorluk": 2, "soru": "Altıncı Söz'e göre göz Allah'a satılırsa hangi dereceye çıkar?", "secenekler": ["Geçici güzelliklerin seyircisi", "Kâinat kitabının okuyucusu ve rahmet çiçeklerinin arısı", "Sadece bir pencere", "Nefsin hevesine hizmetkâr"], "dogru": 1, "aciklama": "Satılmazsa nefsin hevesine aracı olan bir hizmetkâr derekesine düşer."}, {"id": "S06-077", "soz": 6, "eser": "Sözler", "sayfa": 14, "tur": "dogru_yanlis", "zorluk": 1, "soru": "Altıncı Söz'e göre Allah'a abd ve asker olmak ağır bir yüktür; bu yüzden çokları satmaktan kaçar.", "secenekler": ["Doğru", "Yanlış"], "dogru": 1, "aciklama": "Böyle bir ağırlık yoktur; Allah'a kul ve asker olmak tarif edilmez lezzetli bir şereftir."}, {"id": "S06-078", "soz": 6, "eser": "Sözler", "sayfa": 12, "tur": "dogru_yanlis", "zorluk": 1, "soru": "Altıncı Söz'deki temsilde emaneti satmayı reddeden adam sonunda herkesin acıdığı bir hâle düşer.", "secenekler": ["Doğru", "Yanlış"], "dogru": 0, "aciklama": "Satan ise padişahın lütfuna mazhar olup has sarayında saadetle yaşar."}, {"id": "S07-079", "soz": 7, "eser": "Sözler", "sayfa": 16, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Bil, o bîçâre asker ise sensin ve insandır. Ve o aslan ise, ______.\"", "secenekler": ["nefistir", "dünyadır", "eceldir", "şeytandır"], "dogru": 2, "aciklama": "Darağacı ise zevâl ve firâktır."}, {"id": "S07-080", "soz": 7, "eser": "Sözler", "sayfa": 17, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "\"Ânın içindir ki, kâmil insanlar fakr ile ______.\"", "secenekler": ["fahr etmişler", "sabretmişler", "dilenmişler", "şikâyet etmişler"], "dogru": 0, "aciklama": "Bu, Allah'a karşı fakrını hissedip yalvarmak demektir; halka dilencilik değil."}, {"id": "S07-081", "soz": 7, "eser": "Sözler", "sayfa": 17, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "\"Yoksa fen ve felsefe, san‘at ve hikmet, o yolda beş para etmez. Onların ışıkları ______ kadardır.\"", "secenekler": ["kabrin kapısına", "aklın sınırına", "ömrün yarısına", "dünyanın sonuna"], "dogru": 0, "aciklama": "Ebedî yolda azık ve ışık ancak Kur'ân'ın emirlerine uyup yasaklarından kaçınmakla elde edilir."}, {"id": "S07-082", "soz": 7, "eser": "Sözler", "sayfa": 17, "tur": "kelime_tamamlama", "zorluk": 2, "soru": "\"Evet, havfta ______ vardır.\"", "secenekler": ["elem", "hikmet", "zillet", "lezzet"], "dogru": 3, "aciklama": "Çocuğun annesinin tokadından korkup yine onun şefkatli göğsüne sığınması örneğiyle açıklanır."}, {"id": "S07-083", "soz": 7, "eser": "Sözler", "sayfa": 15, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Dessâs\" kelimesinin anlamı nedir?", "secenekler": ["Çok aldatıcı", "Kokuşmuş", "Sarhoş edici", "İyilik isteyen"], "dogru": 0, "aciklama": "Sol taraftan gelen şeytan gibi adam dessâstır."}, {"id": "S07-084", "soz": 7, "eser": "Sözler", "sayfa": 15, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Müteaffin\" kelimesinin anlamı nedir?", "secenekler": ["Kokuşmuş", "Afiyette olan", "Temiz", "Derin"], "dogru": 0, "aciklama": "Kokuşmuş iki yara, ilaçla iki güzel kokulu güle dönüşür."}, {"id": "S07-085", "soz": 7, "eser": "Sözler", "sayfa": 15, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Tenezzüh\" kelimesinin anlamı nedir?", "secenekler": ["Uzak durma", "İndirme", "Gezinti", "Alçalma"], "dogru": 2, "aciklama": "Darağacı, iman tılsımıyla tenezzüh için hoş bir salıncağa döner."}, {"id": "S07-086", "soz": 7, "eser": "Sözler", "sayfa": 16, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Sabâvet\" kelimesinin anlamı nedir?", "secenekler": ["Sabah vakti", "Çocukluk", "İhtiyarlık", "Gençlik"], "dogru": 1, "aciklama": "Uzun yolculuk ruhlar âleminden, ana rahminden, çocukluktan, ihtiyarlıktan geçer."}, {"id": "S07-087", "soz": 7, "eser": "Sözler", "sayfa": 17, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Nevâhî\" kelimesinin anlamı nedir?", "secenekler": ["Yenilikler", "Emirler", "Taraflar", "Yasaklananlar"], "dogru": 3, "aciklama": "Evâmir: emirler; nevâhî: yasaklar."}, {"id": "S07-088", "soz": 7, "eser": "Sözler", "sayfa": 16, "tur": "temsil_eslestirme", "zorluk": 1, "soru": "Yedinci Söz'deki temsilde askere verilen \"iki tılsım\" nedir?", "secenekler": ["Allah'a îmân ve âhirete îmân", "Sabır ve şükür", "Namaz ve oruç", "İlim ve amel"], "dogru": 0, "aciklama": "Bu tılsımla ölüm, mü'mini cennet bahçelerine götüren itaatli bir at ve burak suretini alır."}, {"id": "S07-089", "soz": 7, "eser": "Sözler", "sayfa": 16, "tur": "temsil_eslestirme", "zorluk": 2, "soru": "Yedinci Söz'deki temsilde askerin sağ ve solundaki \"iki yara\" neyi temsil eder?", "secenekler": ["Kibir ve hased", "İnsanın aczi ve fakrı", "Hastalık ve ihtiyarlık", "Günah ve gaflet"], "dogru": 1, "aciklama": "Biri hadsiz acz-i beşerî, diğeri nihayetsiz fakr-ı insanîdir."}, {"id": "S07-090", "soz": 7, "eser": "Sözler", "sayfa": 17, "tur": "temsil_eslestirme", "zorluk": 2, "soru": "Yedinci Söz'deki temsilde verilen \"bilet ve senet\" nedir?", "secenekler": ["İlim tahsili", "Başta namaz olarak farzları eda ve büyük günahları terk", "Sadaka ve hayır", "Zikir ve tesbihat"], "dogru": 1, "aciklama": "Beş vakit namaz ve yedi büyük günahı terk az ve hafif, neticesi ise çok büyüktür."}, {"id": "S07-091", "soz": 7, "eser": "Sözler", "sayfa": 16, "tur": "bakis_acisi", "zorluk": 2, "soru": "Yedinci Söz'e göre iki ilaçtan biri sabır ve tevekküldür. Diğeri nedir?", "secenekler": ["Şükür ve kanaat ile talep ve dua", "Tefekkür ve zikir", "Tövbe ve istiğfar", "Oruç ve itikâf"], "dogru": 0, "aciklama": "Yeryüzünü nimet sofrası yapan Cevvâd-ı Kerîm'in misafirine fakr ağır gelmez; hoş bir iştah olur."}, {"id": "S07-092", "soz": 7, "eser": "Sözler", "sayfa": 16, "tur": "bakis_acisi", "zorluk": 3, "soru": "Yedinci Söz'de dessâs adama verilecek cevap nedir?", "secenekler": ["Ölümü, zevâli, aczi ve fakrı kaldıracak çaren varsa göster; yoksa sus", "Senin keyfin bana zarar vermez", "Bir gün düşünüp sana cevap vereyim", "Biraz eğlenip sonra yola çıkarım"], "dogru": 0, "aciklama": "Kâinat mescidinde Kur'ân okunuyor; onu dinleyelim, denir."}, {"id": "S07-093", "soz": 7, "eser": "Sözler", "sayfa": 15, "tur": "dogru_yanlis", "zorluk": 2, "soru": "Yedinci Söz'de Üstad, dessâs adama kendisinin de aldandığını itiraf eder.", "secenekler": ["Doğru", "Yanlış"], "dogru": 0, "aciklama": "Temsil arasında kendisinin de öyle bir dessâsa aldandığını söyler."}, {"id": "S07-094", "soz": 7, "eser": "Sözler", "sayfa": 15, "tur": "hangi_soz", "zorluk": 2, "soru": "Aslan, darağacı, iki yara, iki tılsım ve iki ilaç ile anlatılan temsil hangi Söz'dedir?", "secenekler": ["Sekizinci Söz", "Yedinci Söz", "Üçüncü Söz", "Altıncı Söz"], "dogru": 1, "aciklama": "Yedinci Söz, iman ve âhiret tılsımlarını anlatır."}, {"id": "S06-095", "soz": 6, "eser": "Sözler", "sayfa": 11, "tur": "hangi_soz", "zorluk": 2, "soru": "Padişahın iki adama emanet çiftlik verip onları kendisine satmaya davet ettiği temsil hangi Söz'dedir?", "secenekler": ["Beşinci Söz", "Altıncı Söz", "İkinci Söz", "Dördüncü Söz"], "dogru": 1, "aciklama": "Altıncı Söz, nefis ve malı Allah'a satmanın kârını anlatır."}, {"id": "S04-096", "soz": 4, "eser": "Sözler", "sayfa": 7, "tur": "hangi_soz", "zorluk": 1, "soru": "Yirmi dört altın verilen iki hizmetkârın temsili hangi Söz'dedir?", "secenekler": ["Sekizinci Söz", "Altıncı Söz", "Dördüncü Söz", "Birinci Söz"], "dogru": 2, "aciklama": "Dördüncü Söz namazın kıymetini anlatır."}, {"id": "S02-097", "soz": 2, "eser": "Sözler", "sayfa": 3, "tur": "hangi_soz", "zorluk": 1, "soru": "Biri matemhâne, diğeri şenlik gören iki yolcunun temsili hangi Söz'dedir?", "secenekler": ["Yedinci Söz", "Üçüncü Söz", "Beşinci Söz", "İkinci Söz"], "dogru": 3, "aciklama": "İkinci Söz imandaki saadeti anlatır."}, {"id": "S08-098", "soz": 8, "eser": "Sözler", "sayfa": 18, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "Sekizinci Söz'deki yol başında duran adam şöyle der: \"Sağ yolda kanun ve nizâma tebeiyet mecbûriyeti vardır. Fakat o külfet içinde bir ______ vardır.\"", "secenekler": ["serbestiyet ve hürriyet", "zahmet ve meşakkat", "tehlike ve şekāvet", "emniyet ve saâdet"], "dogru": 3, "aciklama": "Sol yolda serbestlik vardır ama içinde tehlike ve şekâvet vardır."}, {"id": "S08-099", "soz": 8, "eser": "Sözler", "sayfa": 23, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "\"Her kim hayat-ı fâniyeyi esas maksad yapsa, zâhiren bir cennet içinde olsa da, ma‘nen ______.\"", "secenekler": ["fakirdir", "yalnızdır", "gaflettedir", "cehennemdedir"], "dogru": 3, "aciklama": "Ebedî hayata yönelen ise dünyasını cennetin bekleme salonu gibi görür."}, {"id": "S08-100", "soz": 8, "eser": "Sözler", "sayfa": 22, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "Sekizinci Söz'e göre bahçede akıllı kişinin uyduğu kaide: \"Her şeyin ______ bak.\"", "secenekler": ["sonuna", "aslına", "iyisine", "içine"], "dogru": 2, "aciklama": "Murdar şeylere bakmayıp iyi şeylerden istifade eder; \"Hüz mâ safâ, da' mâ keder\" kaidesi de aynı manadadır."}, {"id": "S08-101", "soz": 8, "eser": "Sözler", "sayfa": 22, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "Sekizinci Söz'de Kur'ânî bir hükmün sırrı olarak geçen ifade: \"Fenâlığı kendinden, iyiliği ______ bil.\"", "secenekler": ["sebeplerden", "kaderden", "Allah'tan", "dostundan"], "dogru": 2, "aciklama": "Bahtiyar kardeş hakikatin güzelliğini görüp hakikat Sahibi'nin kemaline hürmet eder."}, {"id": "S08-102", "soz": 8, "eser": "Sözler", "sayfa": 21, "tur": "kelime_tamamlama", "zorluk": 2, "soru": "Bahtiyar kardeşin kuyudaki niyazı: \"Ey bu yerlerin hâkimi! Senin bahtına düştüm. Sana ______ ediyorum.\"", "secenekler": ["hizmet", "itiraz", "şikâyet", "dehâlet"], "dogru": 3, "aciklama": "Dehâlet: sığınma. Bu niyazdan sonra kuyunun duvarı yarılıp bahçeye bir kapı açılır."}, {"id": "S08-103", "soz": 8, "eser": "Sözler", "sayfa": 19, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Tecâhül\" kelimesinin anlamı nedir?", "secenekler": ["Bilmemezlikten gelme", "Cihat etme", "Cahil olma", "Hayal etme"], "dogru": 0, "aciklama": "Bedbaht kardeşin nefsi, ruh ve kalbin feryadına karşı tecâhül eder."}, {"id": "S08-104", "soz": 8, "eser": "Sözler", "sayfa": 19, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Arşın\" ne kadarlık bir uzunluk ölçüsüdür?", "secenekler": ["Yaklaşık 1 metre", "Yaklaşık 5 metre", "Yaklaşık 3 santimetre", "Yaklaşık 68 santimetre"], "dogru": 3, "aciklama": "Kuyunun derinliği altmış arşındır."}, {"id": "S08-105", "soz": 8, "eser": "Sözler", "sayfa": 21, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Et‘ıme\" kelimesinin anlamı nedir?", "secenekler": ["Ağaçlar", "Yiyecekler", "Süsler", "Örnekler"], "dogru": 1, "aciklama": "İncir ağacındaki meyveler, misafirler için hazırlanan yiyeceklere işarettir."}, {"id": "S08-106", "soz": 8, "eser": "Sözler", "sayfa": 20, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Muallak\" kelimesinin anlamı nedir?", "secenekler": ["Yüksek", "Gizli", "Boşlukta asılı duran", "Bağlanmış"], "dogru": 2, "aciklama": "Kardeş, kuyunun ortasında bir ağaca yapışıp havada muallak kalır."}, {"id": "S08-107", "soz": 8, "eser": "Sözler", "sayfa": 21, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Ta‘cîl\" kelimesinin anlamı nedir?", "secenekler": ["Hızlandırma", "Erteleme", "Bekleme", "Süsleme"], "dogru": 0, "aciklama": "Bedbaht kardeş meyveleri yutarak azabını hızlandırır; bahtiyar ise yemeği erteler (te'hîr)."}, {"id": "S08-108", "soz": 8, "eser": "Sözler", "sayfa": 22, "tur": "temsil_eslestirme", "zorluk": 1, "soru": "Sekizinci Söz'deki temsilde ağacın köklerini kesen beyaz ve siyah iki hayvan neyi temsil eder?", "secenekler": ["İman ve küfrü", "İyilik ve kötülüğü", "Gençlik ve ihtiyarlığı", "Gece ve gündüzü"], "dogru": 3, "aciklama": "Ağaç ise ömür müddeti ve hayat maddesidir."}, {"id": "S08-109", "soz": 8, "eser": "Sözler", "sayfa": 22, "tur": "temsil_eslestirme", "zorluk": 1, "soru": "Sekizinci Söz'deki temsilde altmış arşınlık kuyu neyi temsil eder?", "secenekler": ["Kabir âlemini", "Cehennemi", "Dünyanın derinliğini", "İnsan bedeni ve hayat zamanı; altmış arşın ortalama altmış yıllık ömre işarettir"], "dogru": 3, "aciklama": "Aslan ölüm ve ecel, sahra ise arz ve dünyadır."}, {"id": "S08-110", "soz": 8, "eser": "Sözler", "sayfa": 22, "tur": "temsil_eslestirme", "zorluk": 2, "soru": "Sekizinci Söz'deki temsilde kuyunun dibindeki ejderha neyi temsil eder?", "secenekler": ["Ağzı kabir olan berzah yolunu", "Nefs-i emmâreyi", "Dünyanın musibetlerini", "Şeytanı"], "dogru": 0, "aciklama": "O ağız, mü'min için zindandan bir bahçeye açılan kapıdır."}, {"id": "S08-111", "soz": 8, "eser": "Sözler", "sayfa": 22, "tur": "temsil_eslestirme", "zorluk": 2, "soru": "Sekizinci Söz'deki temsilde kuyunun duvarındaki zararlı haşerat neyi temsil eder?", "secenekler": ["Günahları", "Dünya musibetlerini", "Hastalıkları", "Kötü arkadaşları"], "dogru": 1, "aciklama": "Musibetler mü'min için gaflete dalmaması için tatlı ilâhî ikazlar hükmündedir."}, {"id": "S08-112", "soz": 8, "eser": "Sözler", "sayfa": 22, "tur": "bakis_acisi", "zorluk": 2, "soru": "Sekizinci Söz'e göre tek bir incir ağacında binlerce çeşit meyve bulunması neye işarettir?", "secenekler": ["Aşılamanın faydasına", "Tesadüfün gücüne", "Bir şeyden her şeyi, her şeyden bir şeyi yapan Allah'ın has mührüne", "Tabiatın zenginliğine"], "dogru": 2, "aciklama": "Bir topraktan bütün bitkileri, bir sudan bütün hayvanları yapmak her şeyin Yaratıcısına has bir nişandır."}, {"id": "S08-113", "soz": 8, "eser": "Sözler", "sayfa": 23, "tur": "bakis_acisi", "zorluk": 2, "soru": "Sekizinci Söz'e göre ölüm, ehl-i hidâyet için ne demektir?", "secenekler": ["Her şeyin sonu", "Yalnızlık zindanına giriş", "Bütün sevdiklerinden ebedî ayrılık", "Öteki âleme gitmiş dostlara kavuşmaya vesile ve hayat vazifesinden terhis"], "dogru": 3, "aciklama": "Ehl-i dalâlet için ise bütün sevdiklerinden acı bir ebedî ayrılıktır."}, {"id": "S08-114", "soz": 8, "eser": "Sözler", "sayfa": 21, "tur": "bakis_acisi", "zorluk": 3, "soru": "Sekizinci Söz'e göre ağaçtaki meyveleri tatmaya izin vardır ama hayvan gibi yutmaya neden izin yoktur?", "secenekler": ["Çünkü başkalarının hakkıdır", "Çünkü hepsi zehirlidir", "Çünkü sayıları azdır", "Çünkü onlar numûnedir; asıllarına talip ve müşteri olunsun diye tattırılır"], "dogru": 3, "aciklama": "Dünya nimetleri âhiret nimetlerine bir liste ve numunedir."}, {"id": "S08-115", "soz": 8, "eser": "Sözler", "sayfa": 18, "tur": "hangi_soz", "zorluk": 1, "soru": "Kuyuya düşen, ağaca tutunan, iki farenin kökleri kestiği ve dipte ejderhanın beklediği iki kardeşin temsili hangi Söz'dedir?", "secenekler": ["Üçüncü Söz", "Yedinci Söz", "Sekizinci Söz", "Dokuzuncu Söz"], "dogru": 2, "aciklama": "Sekizinci Söz, dinin insan ve dünya için kıymetini anlatır."}, {"id": "S08-116", "soz": 8, "eser": "Sözler", "sayfa": 20, "tur": "dogru_yanlis", "zorluk": 1, "soru": "Sekizinci Söz'de bahtiyar kardeş de kuyuya düşer, ama kardeşinden bin derece daha az dehşete kapılır.", "secenekler": ["Doğru", "Yanlış"], "dogru": 0, "aciklama": "Güzel ahlâkı ona güzel fikir vermiş, güzel fikir de her şeyin güzel yönünü göstermiştir."}, {"id": "S09-117", "soz": 9, "eser": "Sözler", "sayfa": 24, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Demek [tesbîh ve tekbîr ve hamd] namazın ______ hükmündedirler.\"", "secenekler": ["sonuçları", "çekirdekleri", "şartları", "süsleri"], "dogru": 1, "aciklama": "Bu yüzden namazdan sonra bu kelimeler otuz üçer defa tekrar edilir."}, {"id": "S09-118", "soz": 9, "eser": "Sözler", "sayfa": 25, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "\"Nasıl ki insan, şu âlem-i kebîrin bir misâl-i musaggarıdır. Ve Fâtiha-i Şerîfe, şu Kur’ân-ı Azîmüşşân’ın bir timsâl-i münevveridir. Namaz dahi bütün ibâdâtın envâını şâmil bir ______.\"", "secenekler": ["esâs-ı dîniyedir", "mukaddimesidir", "fihriste-i nûrâniyedir", "netîcesidir"], "dogru": 2, "aciklama": "Namaz, bütün ibadet çeşitlerini içine alan nurlu bir fihristtir."}, {"id": "S09-119", "soz": 9, "eser": "Sözler", "sayfa": 24, "tur": "kelime_tamamlama", "zorluk": 2, "soru": "Dokuzuncu Söz'e göre namazın manası Cenâb-ı Hakk'ı tesbîh, ta‘zîm ve ______.", "secenekler": ["tefekkürdür", "şükürdür", "istiğfardır", "zikirdir"], "dogru": 1, "aciklama": "Celâline karşı Sübhânallah, kemâline karşı Allahu Ekber, cemâline karşı Elhamdülillah denir."}, {"id": "S09-120", "soz": 9, "eser": "Sözler", "sayfa": 26, "tur": "kelime_anlami", "zorluk": 1, "soru": "\"Teheccüd\" kelimesinin anlamı nedir?", "secenekler": ["Sabah namazı", "Gece namazı", "Gayret etme", "Teşehhüd"], "dogru": 1, "aciklama": "Teheccüd, kabir gecesinde ve berzah karanlığında ne kadar lüzumlu bir ışık olduğunu bildirir."}, {"id": "S09-121", "soz": 9, "eser": "Sözler", "sayfa": 25, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Ma‘kes\" kelimesinin anlamı nedir?", "secenekler": ["Mahkeme", "Yansıma yeri", "Ters taraf", "Ölçü"], "dogru": 1, "aciklama": "Her namaz vakti ilâhî ihsanların bir yansıma yeridir."}, {"id": "S09-122", "soz": 9, "eser": "Sözler", "sayfa": 26, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Enseb\" kelimesinin anlamı nedir?", "secenekler": ["Soy", "En yüksek", "Nesil", "En uygun"], "dogru": 3, "aciklama": "Farz namaz bu vakitlerde lâyıktır ve en uygundur."}, {"id": "S09-123", "soz": 9, "eser": "Sözler", "sayfa": 27, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Ufûl\" kelimesinin anlamı nedir?", "secenekler": ["Doğma", "Batma", "Yükselme", "Parlama"], "dogru": 1, "aciklama": "İkindi vakti güneşin batmaya meyletmesiyle her şeyin geçici olduğunu ilan eder."}, {"id": "S09-124", "soz": 9, "eser": "Sözler", "sayfa": 25, "tur": "bakis_acisi", "zorluk": 2, "soru": "Dokuzuncu Söz'e göre sabah (fecir) vakti neleri hatırlatır?", "secenekler": ["Güzü, ihtiyarlığı ve Asr-ı Saadeti", "İlkbaharı, insanın ana rahmine düştüğü zamanı ve gök ile yerin yaratılışının ilk gününü", "Yazın ortasını ve gençliğin kemâlini", "Kışı, kabri ve berzahı"], "dogru": 1, "aciklama": "Öğle vakti yaz ortasını ve gençliği, ikindi güzü ve ihtiyarlığı hatırlatır."}, {"id": "S09-125", "soz": 9, "eser": "Sözler", "sayfa": 25, "tur": "bakis_acisi", "zorluk": 2, "soru": "Dokuzuncu Söz'e göre ikindi vakti hangi dönemi hatırlatır?", "secenekler": ["Güz mevsimini, ihtiyarlığı ve Âhirzaman Peygamberinin Asr-ı Saadetini", "Kabri ve berzahı", "Baharı ve doğumu", "Kıyameti ve dünyanın harap oluşunu"], "dogru": 0, "aciklama": "İkindi, hem günlük işlerin neticelenme zamanı hem de büyük nimetlerin yekûnu zamanıdır."}, {"id": "S09-126", "soz": 9, "eser": "Sözler", "sayfa": 26, "tur": "bakis_acisi", "zorluk": 2, "soru": "Dokuzuncu Söz'e göre \"ikinci sabah\" neyi hatırlatır?", "secenekler": ["Yeni bir günün işlerini", "Haşir sabahını", "Baharın gelişini", "Gençliğin dönüşünü"], "dogru": 1, "aciklama": "Gecenin sabahı ve kışın baharı ne kadar kesinse, haşrin sabahı da o kesinliktedir."}, {"id": "S09-127", "soz": 9, "eser": "Sözler", "sayfa": 29, "tur": "bakis_acisi", "zorluk": 3, "soru": "Dokuzuncu Söz'e göre yatsı namazında hangi Peygamber gibi \"batıp gidenleri sevmem\" denir?", "secenekler": ["Hz. Nuh (as)", "Hz. Musa (as)", "Hz. Yunus (as)", "Hz. İbrahim (as)"], "dogru": 3, "aciklama": "Fâni sevdiklere bedel Bâki bir Mabud ve Mahbub'a yönelmek için."}, {"id": "S09-128", "soz": 9, "eser": "Sözler", "sayfa": 30, "tur": "bakis_acisi", "zorluk": 2, "soru": "Dokuzuncu Söz'e göre farz namazın beş vakte tahsis edilmesinin sebebi nedir?", "secenekler": ["Her vaktin büyük bir değişimin başı ve ilâhî icraat ve nimetlerin alâmeti olması", "Güneşin hareketini takip etmek", "İnsanların iş saatlerine uygun olması", "Günün eşit parçalara bölünmesi"], "dogru": 0, "aciklama": "Bu vakitler birer büyük inkılâbın işaretidir; namazın onlara tahsisi tam hikmettir."}, {"id": "S09-129", "soz": 9, "eser": "Sözler", "sayfa": 26, "tur": "dogru_yanlis", "zorluk": 2, "soru": "Dokuzuncu Söz'e göre insanın aklı ona yüksek maksatlar gösterir; fakat eli, ömrü, iktidarı ve sabrı kısadır.", "secenekler": ["Doğru", "Yanlış"], "dogru": 0, "aciklama": "Bu zayıf hâliyle sabah vakti Allah'ın dergâhına namazla başvurmak ne kadar gereklidir."}, {"id": "S09-130", "soz": 9, "eser": "Sözler", "sayfa": 24, "tur": "hangi_soz", "zorluk": 1, "soru": "Beş vakit namazın o vakitlere tahsis edilmesinin hikmetini \"Beş Nükte\" ile anlatan hangi Söz'dür?", "secenekler": ["Sekizinci Söz", "Dördüncü Söz", "Dokuzuncu Söz", "Birinci Söz"], "dogru": 2, "aciklama": "Dokuzuncu Söz namaz vakitlerinin hikmetini anlatır."}, {"id": "S10-131", "soz": 10, "eser": "Zülfikâr", "sayfa": 6, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "Onuncu Söz'deki temsilde emîn arkadaş şöyle der: \"Bir köy muhtarsız olmaz. Bir iğne ______ olmaz.\"", "secenekler": ["kıymetsiz", "hikmetsiz", "sâhibsiz", "ustasız"], "dogru": 3, "aciklama": "Muntazam bir memleketin hâkimsiz olamayacağı böyle gösterilir."}, {"id": "S10-132", "soz": 10, "eser": "Zülfikâr", "sayfa": 42, "tur": "cumle_tamamlama", "zorluk": 1, "soru": "\"Demek şübhesiz dünya bir mezraadır. Mahşer ise bir beyderdir, bir harmandır. Cennet ve cehennem ise, birer ______.\"", "secenekler": ["menzildirler", "meydandırlar", "mahzendirler", "sergidirler"], "dogru": 2, "aciklama": "Dünya tarla, mahşer harman yeri, cennet ve cehennem ambardır."}, {"id": "S10-133", "soz": 10, "eser": "Zülfikâr", "sayfa": 41, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "\"Elhâsıl: Haşre mâni‘, hiç bir şey yoktur. ______ ise her şeydir.\"", "secenekler": ["Muktezî", "Şâhid", "Delil", "Sebep"], "dogru": 0, "aciklama": "Haşre engel yoktur; onu gerektiren ise her şeydir."}, {"id": "S10-134", "soz": 10, "eser": "Zülfikâr", "sayfa": 47, "tur": "cumle_tamamlama", "zorluk": 2, "soru": "\"Bu insan ebed için halk edilmiş ve ebede gidecektir. Bu dünya ona bir misâfirhânedir. Ve âhiretine bir ______.\"", "secenekler": ["imtihan meydanıdır", "mezraadır", "intizâr salonudur", "ticaretgâhtır"], "dogru": 2, "aciklama": "İnsanın ebede uzanan emelleri ve kâinatı kuşatan fikirleri ebed için yaratıldığını gösterir."}, {"id": "S10-135", "soz": 10, "eser": "Zülfikâr", "sayfa": 43, "tur": "kelime_tamamlama", "zorluk": 1, "soru": "Onuncu Söz'de anılan hadis: \"Dünya âhiret ______.\"", "secenekler": ["kapısıdır", "yoludur", "mezraasıdır", "gölgesidir"], "dogru": 2, "aciklama": "Dünyadaki kısa hayatın neticeleri bir mecma-ı ekberde muhasebe için hıfzedilir."}, {"id": "S10-136", "soz": 10, "eser": "Zülfikâr", "sayfa": 47, "tur": "kelime_tamamlama", "zorluk": 2, "soru": "\"Hayr-ı mutlakdan hayır gelir. Cemîl-i Mutlak’dan güzellik gelir. Hakîm-i Mutlak’dan ______ bir şey gelmez.\"", "secenekler": ["abes", "noksan", "çirkin", "şer"], "dogru": 0, "aciklama": "Saray yapıp damını yapmamak gibi abes bir iş Hakîm-i Mutlak'tan gelmez."}, {"id": "S10-137", "soz": 10, "eser": "Zülfikâr", "sayfa": 7, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Temerrüd\" kelimesinin anlamı nedir?", "secenekler": ["Geri dönme", "Kabul etme", "Tereddüt etme", "İnatla direnme"], "dogru": 3, "aciklama": "Temsildeki sersem adam inat ve temerrüd eder."}, {"id": "S10-138", "soz": 10, "eser": "Zülfikâr", "sayfa": 12, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Hulfülva‘d\" ne demektir?", "secenekler": ["Sözünden dönme, vaadi yerine getirmemek", "Tehdit etmek", "Vaadi tekrar etmek", "Söz vermek"], "dogru": 0, "aciklama": "Hulfülva'd ya cehilden ya acizden gelir; Allah ikisinden de münezzehtir."}, {"id": "S10-139", "soz": 10, "eser": "Zülfikâr", "sayfa": 24, "tur": "kelime_anlami", "zorluk": 3, "soru": "\"İstib‘âd\" kelimesinin anlamı nedir?", "secenekler": ["Kulluk etme", "İspat etme", "Akıldan uzak görme", "Uzaklaşma"], "dogru": 2, "aciklama": "Küfür ve dalaletin çoğu istib'âddan, yani akıldan uzak ve muhal görmekten ileri gelir."}, {"id": "S10-140", "soz": 10, "eser": "Zülfikâr", "sayfa": 13, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Meşher\" kelimesinin anlamı nedir?", "secenekler": ["Sergi yeri", "Ay", "Toplantı", "Meşhur kişi"], "dogru": 0, "aciklama": "Dünya, sanat harikalarının sergilendiği bir meşherdir."}, {"id": "S10-141", "soz": 10, "eser": "Zülfikâr", "sayfa": 42, "tur": "kelime_anlami", "zorluk": 2, "soru": "\"Beyder\" kelimesinin anlamı nedir?", "secenekler": ["Harman yeri", "Pazar", "Tarla", "Ambar"], "dogru": 0, "aciklama": "Mahşer bir beyder, yani harman yeridir."}, {"id": "S10-142", "soz": 10, "eser": "Zülfikâr", "sayfa": 6, "tur": "temsil_eslestirme", "zorluk": 2, "soru": "Onuncu Söz'deki temsilde, her saatte gaybdan gelir gibi kıymetli mallarla dolu gelen şimendifer neye işarettir?", "secenekler": ["Yağmura", "Seneye; bahar, rızıklarla dolu bir vagondur", "Ömre", "Nehirlere"], "dogru": 1, "aciklama": "Haşiyede bahar, gaipten gelen bir erzak deposu vagonu olarak anlatılır."}, {"id": "S10-143", "soz": 10, "eser": "Zülfikâr", "sayfa": 17, "tur": "temsil_eslestirme", "zorluk": 2, "soru": "Onuncu Söz'e göre temsildeki sersem adam ile emîn arkadaşının ilk hakikati nedir?", "secenekler": ["Kâfir ile mü'min", "Dünya ile âhiret", "Felsefe ile Kur'ân", "Nefs-i emmâre ile kalp"], "dogru": 3, "aciklama": "İkinci hakikati felsefe şakirdi ile Kur'ân talebesi, üçüncüsü İslâm ümmeti ile küfür milletidir."}, {"id": "S10-144", "soz": 10, "eser": "Zülfikâr", "sayfa": 19, "tur": "temsil_eslestirme", "zorluk": 1, "soru": "Onuncu Söz'deki temsilde fermanı ahaliye okuyan \"yâver-i ekrem\" kimdir?", "secenekler": ["Bir veli", "Hz. İsrâfil (as)", "Resûl-i Ekrem (asm)", "Hz. Âdem (as)"], "dogru": 2, "aciklama": "Güneşin ziyasız olamayacağı gibi ulûhiyet de peygamber göndermeksizin olamaz."}, {"id": "S10-145", "soz": 10, "eser": "Zülfikâr", "sayfa": 9, "tur": "temsil_eslestirme", "zorluk": 2, "soru": "Onuncu Söz'deki temsilde padişahla görüşen \"dairelerin reisleri\" ve onların \"telefonu\" neye işarettir?", "secenekler": ["Peygamberler ve veliler; telefon vahyin ve ilhamın yansıdığı kalptir", "Devlet adamları ve fermanları", "Melekler ve kanatları", "Âlimler ve kitapları"], "dogru": 0, "aciklama": "Kalp o telefonun başı ve kulağı hükmündedir."}, {"id": "S10-146", "soz": 10, "eser": "Zülfikâr", "sayfa": 13, "tur": "temsil_eslestirme", "zorluk": 2, "soru": "Onuncu Söz'deki Onuncu Sûret'te geçen \"nevrûz-u sultânî\" ve çiçekli yeşil sahra neye işarettir?", "secenekler": ["Bayram namazına", "Doğum gününe", "Bahar mevsimine ve baharda yeryüzüne", "Hasat zamanına"], "dogru": 2, "aciklama": "Değişen perdeler, bahardan yaz sonuna kadar tazelenen mevcudat tabakalarıdır."}, {"id": "S10-147", "soz": 10, "eser": "Zülfikâr", "sayfa": 11, "tur": "temsil_eslestirme", "zorluk": 3, "soru": "Onuncu Söz'deki Yedinci Sûret'te, yüksek dağda padişaha mahsus büyük fotoğraf neyi ifade eder?", "secenekler": ["İnsan hafızasını", "Melekleri", "Levh-i Mahfûz'u", "Tarihi"], "dogru": 2, "aciklama": "Küçük hafızalar ve tohumlar, büyük bir Levh-i Mahfûz'un varlığını hissettirir."}, {"id": "S10-148", "soz": 10, "eser": "Zülfikâr", "sayfa": 16, "tur": "bakis_acisi", "zorluk": 1, "soru": "Onuncu Söz kaç Sûret ve kaç Hakikat üzerine kurulmuştur?", "secenekler": ["Beş Sûret ve beş Hakikat", "On Sûret ve on Hakikat", "On iki Sûret ve on iki Hakikat", "Yedi Sûret ve dokuz Hakikat"], "dogru": 2, "aciklama": "On iki sûrete mukabil on iki birbirini destekleyen hakikat ve bir mukaddime vardır."}, {"id": "S10-149", "soz": 10, "eser": "Zülfikâr", "sayfa": 20, "tur": "bakis_acisi", "zorluk": 2, "soru": "Onuncu Söz'e göre kısacık bir ömürde işlenen küfür neden ebedî azaba sebep olur?", "secenekler": ["Kâinatı manasız kılan, bütün esmâyı ve delilleri inkâr eden nihayetsiz bir cinayet olduğu için", "Tövbe edilemediği için", "Ömür kısa olduğu için ceza uzatılır", "Bir kere işlendiği için"], "dogru": 0, "aciklama": "Nihayetsiz cinayet, nihayetsiz azabı gerektirir."}, {"id": "S10-150", "soz": 10, "eser": "Zülfikâr", "sayfa": 20, "tur": "bakis_acisi", "zorluk": 2, "soru": "Onuncu Söz'e göre bu küçücük insan neden bu kadar ehemmiyetlidir?", "secenekler": ["Akıllı bir hayvan olduğu için", "Fıtratının câmiiyetiyle varlıklar içinde bir ustabaşı, İlâhî saltanatın dellalı ve küllî ubûdiyetin mazharı olduğu için", "Sayıca çok olduğu için", "Yeryüzünde yaşadığı için"], "dogru": 1, "aciklama": "Bu yüzden onun amellerinin muhasebesi için dünyanın kapanıp başka bir dairenin açılması garip değildir."}, {"id": "S10-151", "soz": 10, "eser": "Zülfikâr", "sayfa": 28, "tur": "bakis_acisi", "zorluk": 2, "soru": "Onuncu Söz'e göre Resûl-i Ekrem (asm) risaletiyle dünyanın kapısını açtığı gibi neyiyle âhiretin kapısını açar?", "secenekler": ["Ubûdiyeti ve duasıyla", "Ahlâkıyla", "Mucizeleriyle", "Cihadıyla"], "dogru": 0, "aciklama": "Bütün ümmetin salavatları onun ebedî saadet duasına bir âmindir."}, {"id": "S10-152", "soz": 10, "eser": "Zülfikâr", "sayfa": 40, "tur": "bakis_acisi", "zorluk": 2, "soru": "Onuncu Söz'e göre baharda kaç türden fazla mahlûkat haşredilip neşredilir?", "secenekler": ["Üç yüz binden ziyade", "Yüz", "Bin", "On bin"], "dogru": 0, "aciklama": "Bunu yapan Zât'a insanları bir sayha ile haşretmek ağır gelmez."}, {"id": "S10-153", "soz": 10, "eser": "Zülfikâr", "sayfa": 51, "tur": "bakis_acisi", "zorluk": 3, "soru": "Onuncu Söz'ün Hâtime'sine göre bütün insanların haşri neden bir tek insanın haşri gibi kolaydır?", "secenekler": ["Çünkü insanlar azdır", "Allah'ın kudreti zatî olduğu için içine acz giremez; nurâniyet, şeffafiyet, intizam, imtisal ve muvazene sırları bunu gösterir", "Çünkü haşir yavaş yavaş olur", "Çünkü melekler yardım eder"], "dogru": 1, "aciklama": "Bir baharı yaratmak, O'na bir çiçek kadar kolaydır."}, {"id": "S10-154", "soz": 10, "eser": "Zülfikâr", "sayfa": 42, "tur": "bakis_acisi", "zorluk": 3, "soru": "Onuncu Söz'e göre haşri haber verenlerin şahitliği neden inkârcılara üstündür?", "secenekler": ["Sayıca daha çok oldukları için", "Daha yaşlı oldukları için", "Bir meselede ispat edenler inkâr edenlere tercih edilir; iki ehl-i ihtisas binlerce kişiye üstündür", "Daha zengin oldukları için"], "dogru": 2, "aciklama": "Ramazan hilalini gören iki kişi, binlerce inkârcının inkârını hiçe sayar."}, {"id": "S10-155", "soz": 10, "eser": "Zülfikâr", "sayfa": 52, "tur": "bakis_acisi", "zorluk": 3, "soru": "Onuncu Söz'ün sonunda, haşrin akılla tam kavranamamasının sırrı ne olarak gösterilir?", "secenekler": ["Haşir bir hayal olduğundan", "Haşir zamanı gizli olduğundan", "İnsan aklı tamamen yetersiz olduğundan", "Haşr-i a'zam, İsm-i A'zam'ın tecellisiyle olduğundan"], "dogru": 3, "aciklama": "Akıl kendi dar düsturlarıyla kalırsa aciz kalır; Kur'ân feyziyle bahar gibi kolay ispat edilir."}, {"id": "S10-156", "soz": 10, "eser": "Zülfikâr", "sayfa": 36, "tur": "dogru_yanlis", "zorluk": 1, "soru": "Onuncu Söz'e göre güz mevsiminde baharın güzel mahlûkatının gitmesi bir yokluk (idam) değil, vazifeden terhistir.", "secenekler": ["Doğru", "Yanlış"], "dogru": 0, "aciklama": "Aynı zamanda yeni gelecek vazifedarlara yer boşaltmaktır."}, {"id": "S10-157", "soz": 10, "eser": "Zülfikâr", "sayfa": 5, "tur": "dogru_yanlis", "zorluk": 2, "soru": "Onuncu Söz'ün ihtarına göre risaledeki hikâyeler hayalîdir ve sadece süs içindir.", "secenekler": ["Doğru", "Yanlış"], "dogru": 1, "aciklama": "Hikâyelerin manaları sonlarındaki hakikatlerdir; hayali değil, doğru hakikatlerdir."}, {"id": "S10-158", "soz": 10, "eser": "Zülfikâr", "sayfa": 48, "tur": "dogru_yanlis", "zorluk": 2, "soru": "Onuncu Söz'e göre hayal kuvvesine bir milyon yıl ömür ve dünya saltanatı verilse ama sonunda yok olacağı söylense, \"oh\" yerine \"âh\" der.", "secenekler": ["Doğru", "Yanlış"], "dogru": 0, "aciklama": "En büyük fâni, insanın en küçük cihazını bile doyuramaz."}, {"id": "S10-159", "soz": 10, "eser": "Zülfikâr", "sayfa": 6, "tur": "hangi_soz", "zorluk": 1, "soru": "Haşri, cennet gibi bir memlekete giden iki adamın temsiliyle ve on iki Hakikat ile ispat eden Söz hangisidir?", "secenekler": ["Dokuzuncu Söz", "Altıncı Söz", "Onuncu Söz", "Sekizinci Söz"], "dogru": 2, "aciklama": "Haşir Risalesi olarak da bilinir."}]</script>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+(function(){
+"use strict";
+const BANK = JSON.parse(document.getElementById('bank').textContent);
+const SOZ = {1:'Birinci',2:'İkinci',3:'Üçüncü',4:'Dördüncü',5:'Beşinci',6:'Altıncı',7:'Yedinci',8:'Sekizinci',9:'Dokuzuncu',10:'Onuncu'};
+const TUR = {cumle_tamamlama:'Cümle tamamlama',kelime_tamamlama:'Kelime tamamlama',kelime_anlami:'Kelime anlamı',bakis_acisi:"Üstad'ın bakış açısı",temsil_eslestirme:'Temsil ve hakikat',dogru_yanlis:'Doğru / yanlış',hangi_soz:'Hangi Söz?'};
+const HARF = ['A','B','C','D'];
+const MAKS = 20;
+const ONEK = 'risale-nur-yarisma-v1-';
+const $ = s => document.querySelector(s);
+const el = (tag, cls, txt) => { const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; };
+const views = ['giris','katil','ayar','sunucu','oyuncu','pratik'];
+function goster(v){ views.forEach(x => $('#v-'+x).hidden = x!==v); window.scrollTo(0,0); }
+function karistir(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function kaynakYaz(q){ return `${SOZ[q.soz]} Söz · ${q.eser}, s. ${q.sayfa} · ${TUR[q.tur]||''}`; }
+function rastgele(n){ const a=new Uint8Array(n); crypto.getRandomValues(a); return [...a].map(x=>(x%36).toString(36)).join(''); }
+function depoAl(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function depoYaz(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+const CID = depoAl('nur-cid') || (()=>{ const c=rastgele(16); depoYaz('nur-cid',c); return c; })();
+const PeerK = window.Peer || (window.peerjs && window.peerjs.Peer);
+const peerVar = typeof PeerK === 'function';
+$('#soruSayisi').textContent = BANK.length;
+document.querySelectorAll('[data-geri]').forEach(b => b.addEventListener('click', () => goster('giris')));
+if(!peerVar){
+  $('#b-kur').disabled=true; $('#b-katil').disabled=true;
+  $('#kurNot').textContent='Bağlantı kütüphanesi yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.';
+}
+const PEER_AYAR = { debug:0, config:{ iceServers:[
+  {urls:'stun:stun.l.google.com:19302'},
+  {urls:['turn:eu-0.turn.peerjs.com:3478','turn:us-0.turn.peerjs.com:3478'], username:'peerjs', credential:'peerjsp'}
+]}};
+function hataMetni(e){
+  const t=e&&e.type;
+  if(t==='peer-unavailable') return 'Bu kodla açık bir oyun bulunamadı. Kodu kontrol et; sunucunun sayfası açık olmalı.';
+  if(t==='network'||t==='server-error'||t==='socket-error'||t==='socket-closed') return 'Bağlantı sunucusuna ulaşılamadı. İnternet bağlantını kontrol edip tekrar dene.';
+  if(t==='browser-incompatible') return 'Bu tarayıcı canlı oyunu desteklemiyor. Chrome, Safari veya Firefox\'un güncel sürümünü dene.';
+  return 'Bağlantı kurulamadı'+(t?` (${t})`:'')+'. Tekrar dene.';
+}
+
+/* ---------------- PRATİK ---------------- */
+$('#b-pratik').addEventListener('click', () => pratikBasla());
+function pratikBasla(){
+  const sorular = karistir(BANK).slice(0,10);
+  let i=0, puan=0, dogruSay=0;
+  const v = $('#v-pratik');
+  function ciz(){
+    v.replaceChildren();
+    if(i>=sorular.length){
+      v.append(el('span','etiket','Pratik bitti'), el('h2',null,`${sorular.length} sorudan ${dogruSay} doğru`), el('p','durum',`${puan} puan`));
+      const s=el('div','sira'); const b1=el('button','dugme','Yeni pratik'); b1.type='button'; b1.onclick=pratikBasla;
+      const b2=el('button','dugme ikincil','Ana ekran'); b2.type='button'; b2.onclick=()=>goster('giris'); s.append(b1,b2); v.append(s); return;
+    }
+    const q=sorular[i]; const T=20000; const bas=performance.now();
+    const ust=el('div','soru-ust'); ust.append(el('span','etiket',`Soru ${i+1} / ${sorular.length} · ${TUR[q.tur]}`));
+    const say=el('div','sayac'); const sn=el('span',null,'20'); say.append(sn); ust.append(say);
+    v.append(ust, el('p','soru-metin',q.soru));
+    const kar=el('div','karolar'); let bitti=false;
+    const butonlar = q.secenekler.map((s,k)=>{ const b=el('button','karo k'+k); b.type='button'; b.append(el('span','harf',HARF[k]), el('span',null,s)); b.onclick=()=>sec(k); kar.append(b); return b; });
+    v.append(kar);
+    const alt=el('div','yigin'); v.append(alt);
+    const tik=setInterval(()=>{ const kalan=Math.max(0,T-(performance.now()-bas)); sn.textContent=Math.ceil(kalan/1000); say.style.setProperty('--p',kalan/T); if(kalan<=0) sec(-1); },200);
+    function sec(k){
+      if(bitti) return; bitti=true; clearInterval(tik);
+      const t=performance.now()-bas, ok=k===q.dogru;
+      const p = ok ? Math.round(1000*(1-Math.min(t,T)/T/2)) : 0; puan+=p; if(ok) dogruSay++;
+      butonlar.forEach((b,j)=>{ b.disabled=true; if(j!==q.dogru) b.classList.add('soluk'); if(j===k) b.classList.add('secili'); });
+      alt.append(el('p','durum '+(ok?'dogru-renk':'yanlis-renk'), ok?`Doğru · +${p}`:(k<0?'Süre doldu':'Yanlış')), el('p','ozel-not',q.aciklama), el('p','kaynak',kaynakYaz(q)));
+      const b=el('button','dugme',i+1<sorular.length?'Sonraki soru':'Sonucu gör'); b.type='button'; b.onclick=()=>{i++;ciz();}; alt.append(b); b.focus();
+    }
+  }
+  goster('pratik'); ciz();
+}
+
+/* ---------------- SUNUCU ---------------- */
+const ayar = { soz:new Set(Object.keys(SOZ).map(Number)), tur:new Set(Object.keys(TUR)), adet:15, sure:20 };
+function cipKur(kap, liste, tip, secili, onDegis){
+  kap.replaceChildren();
+  liste.forEach(([deger, yazi]) => {
+    const l=el('label','cip'); const inp=document.createElement('input'); inp.type=tip; inp.name=kap.id; inp.id=kap.id+'-'+deger; inp.value=deger; inp.checked=secili(deger);
+    inp.addEventListener('change',()=>onDegis(deger, inp.checked)); l.append(inp, document.createTextNode(yazi)); kap.append(l);
+  });
+}
+function havuz(){ return BANK.filter(q => ayar.soz.has(q.soz) && ayar.tur.has(q.tur)); }
+function havuzNot(){ const n=havuz().length; $('#havuzNot').textContent = `Seçimine uyan ${n} soru var; oyunda ${Math.min(n,ayar.adet)} tanesi rastgele sorulacak.`; $('#b-oda-ac').disabled = n<3; }
+function ayarCiz(){
+  cipKur($('#c-soz'), Object.entries(SOZ).map(([k,v])=>[Number(k), v+' Söz']), 'checkbox', d=>ayar.soz.has(d), (d,c)=>{ c?ayar.soz.add(d):ayar.soz.delete(d); havuzNot(); });
+  cipKur($('#c-tur'), Object.entries(TUR), 'checkbox', d=>ayar.tur.has(d), (d,c)=>{ c?ayar.tur.add(d):ayar.tur.delete(d); havuzNot(); });
+  cipKur($('#c-adet'), [[10,'10'],[15,'15'],[20,'20'],[30,'30']], 'radio', d=>d===ayar.adet, d=>{ ayar.adet=d; havuzNot(); });
+  cipKur($('#c-sure'), [[15,'15 sn'],[20,'20 sn'],[30,'30 sn']], 'radio', d=>d===ayar.sure, d=>{ ayar.sure=d; });
+  havuzNot();
+}
+$('#b-kur').addEventListener('click', () => { if(!peerVar) return; ayarCiz(); goster('ayar'); });
+
+function peerAc(id){
+  return new Promise((res,rej)=>{
+    const p = id ? new PeerK(id, PEER_AYAR) : new PeerK(PEER_AYAR);
+    const t=setTimeout(()=>{ try{p.destroy();}catch(e){} rej({type:'network'}); }, 15000);
+    p.once('open',()=>{ clearTimeout(t); res(p); });
+    p.once('error',e=>{ clearTimeout(t); try{p.destroy();}catch(x){} rej(e); });
+  });
+}
+
+let S=null;
+$('#b-oda-ac').addEventListener('click', async () => {
+  const h=$('#ayarHata'), b=$('#b-oda-ac'); h.hidden=true; b.disabled=true; b.textContent='Oda açılıyor…';
+  let peer=null, pin=null, sonHata=null;
+  for(let d=0; d<6 && !peer; d++){
+    pin=String(1000+Math.floor(Math.random()*9000));
+    try{ peer=await peerAc(ONEK+pin); }catch(e){ sonHata=e; if(e.type!=='unavailable-id') break; }
+  }
+  b.disabled=false; b.textContent='Odayı aç';
+  if(!peer){ h.textContent=hataMetni(sonHata); h.hidden=false; return; }
+  S = { peer, pin, sorular:karistir(havuz()).slice(0,ayar.adet), T:ayar.sure*1000, faz:'lobi', qi:-1, qBas:0,
+        oyuncular:new Map(), // cid -> {k, ad, puan, seri, son, conn}
+        cevaplar:new Map(), epoch:Date.now(), sayac:0 };
+  peer.on('connection', conn => baglantiAl(conn));
+  peer.on('disconnected', () => { if(S && S.peer===peer && !peer.destroyed) setTimeout(()=>{ try{ peer.reconnect(); }catch(e){} }, 1500); });
+  peer.on('error', e => { if(e.type==='peer-unavailable') return; console.warn('peer', e.type); });
+  S.yayinTik=setInterval(yayinla,2000);
+  try{ if(navigator.wakeLock) S.kilit=await navigator.wakeLock.request('screen'); }catch(e){}
+  goster('sunucu'); sunucuCiz();
+});
+
+function baglantiAl(conn){
+  conn.on('data', m => {
+    if(!S || !m || typeof m!=='object') return;
+    if(m.t==='katil'){
+      const cid = typeof m.cid==='string' ? m.cid.slice(0,32) : null; if(!cid) return;
+      const ad = String(m.ad||'').replace(/\s+/g,' ').trim().slice(0,18) || 'Oyuncu';
+      let o=S.oyuncular.get(cid);
+      if(!o){
+        if(S.oyuncular.size>=MAKS){ try{ conn.send({t:'dolu', maks:MAKS}); }catch(e){} setTimeout(()=>conn.close(),500); return; }
+        o={k:'o'+(++S.sayac), ad, puan:0, seri:0, son:null, conn:null}; S.oyuncular.set(cid,o);
+      }
+      if(o.conn && o.conn!==conn){ try{ o.conn.close(); }catch(e){} }
+      o.conn=conn; o.ad=ad; conn._cid=cid;
+      sunucuCiz(); yayinla();
+    } else if(m.t==='cevap'){
+      const o=conn._cid && S.oyuncular.get(conn._cid); if(!o) return;
+      if(S.faz==='soru' && m.qi===S.qi && Number.isInteger(m.k) && !S.cevaplar.has(conn._cid)){
+        const q=S.sorular[S.qi];
+        if(m.k>=0 && m.k<q.secenekler.length){
+          S.cevaplar.set(conn._cid,{k:m.k, t:Math.min(S.T, Date.now()-S.qBas)});
+          if(S.cevaplar.size>=aktifSayisi()) setTimeout(()=>{ if(S&&S.faz==='soru') ac(); }, 600);
+          else if(S.guncel) S.guncel();
+        }
+      }
+    }
+  });
+  conn.on('close', () => {
+    if(!S) return; const o=conn._cid && S.oyuncular.get(conn._cid);
+    if(o && o.conn===conn){ o.conn=null; if(S.faz==='lobi') S.oyuncular.delete(conn._cid); sunucuCiz(); yayinla(); }
+  });
+  conn.on('error', ()=>{});
+}
+function bagliMi(o){ return o.conn && o.conn.open; }
+function aktifSayisi(){ let n=0; for(const o of S.oyuncular.values()) if(bagliMi(o)) n++; return Math.max(1,n); }
+function siralama(){ return [...S.oyuncular.entries()].map(([cid,o])=>({cid,...o})).sort((a,b)=>b.puan-a.puan || a.ad.localeCompare(b.ad,'tr')); }
+
+function durumPaketi(){
+  const q = S.qi>=0 ? S.sorular[S.qi] : null;
+  const pk = { t:'durum', e:S.epoch, f:S.faz, pin:S.pin, top:S.sorular.length, qi:S.qi, T:S.T };
+  if(q && (S.faz==='soru'||S.faz==='cevap'||S.faz==='tablo')){
+    pk.q = { s:q.soru, o:q.secenekler, tur:q.tur, soz:q.soz, eser:q.eser, sy:q.sayfa };
+    if(S.faz==='soru') pk.kalan = Math.max(0, S.T-(Date.now()-S.qBas));
+  }
+  if(S.faz==='cevap'||S.faz==='tablo'){
+    pk.d=q.dogru; pk.a=q.aciklama;
+    const say=[0,0,0,0]; for(const c of S.cevaplar.values()) say[c.k]++; pk.say=say;
+  }
+  pk.o = siralama().map(o=>({p:o.k, n:o.ad, s:o.puan, l:o.son}));
+  return pk;
+}
+function yayinla(){
+  if(!S) return;
+  const pk=durumPaketi();
+  for(const [cid,o] of S.oyuncular){
+    if(!bagliMi(o)) continue;
+    try{ o.conn.send({...pk, ben:o.k, cevabim: S.cevaplar.has(cid)? S.cevaplar.get(cid).k : null}); }catch(e){}
+  }
+}
+function soruBaslat(){
+  S.qi++; S.cevaplar=new Map();
+  for(const o of S.oyuncular.values()) o.son=null;
+  if(S.qi>=S.sorular.length){ S.faz='son'; sunucuCiz(); yayinla(); return; }
+  S.faz='soru'; S.qBas=Date.now(); sunucuCiz(); yayinla();
+  clearTimeout(S.zaman); S.zaman=setTimeout(()=>{ if(S&&S.faz==='soru') ac(); }, S.T+300);
+}
+function ac(){
+  if(!S || S.faz!=='soru') return; clearTimeout(S.zaman);
+  const q=S.sorular[S.qi];
+  S.oncekiSira = siralama().map(o=>o.k);
+  for(const [cid,o] of S.oyuncular){
+    const c=S.cevaplar.get(cid);
+    if(c && c.k===q.dogru){ o.seri++; const p=Math.round(1000*(1-c.t/S.T/2)) + Math.min(o.seri-1,5)*50; o.puan+=p; o.son={ok:1,p}; }
+    else { o.seri=0; o.son={ok:0,p:0,bos:c?0:1}; }
+  }
+  S.faz='cevap'; sunucuCiz(); yayinla();
+}
+function katilmaLinki(){ const u=new URL(location.href); u.search=''; u.hash=''; u.searchParams.set('kod',S.pin); return u.toString(); }
+function qrCiz(kap, metin){
+  if(typeof window.qrcode!=='function') return;
+  try{
+    const qr=qrcode(0,'M'); qr.addData(metin); qr.make();
+    const n=qr.getModuleCount(), c=document.createElement('canvas'), olc=6, kenar=4;
+    c.width=c.height=(n+kenar*2)*olc; c.className='qr'; c.setAttribute('role','img'); c.setAttribute('aria-label','Katılma bağlantısının karekodu');
+    const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height); x.fillStyle='#101a33';
+    for(let r=0;r<n;r++) for(let k=0;k<n;k++) if(qr.isDark(r,k)) x.fillRect((k+kenar)*olc,(r+kenar)*olc,olc,olc);
+    kap.append(c);
+  }catch(e){}
+}
+function sunucuCiz(){
+  const v=$('#v-sunucu'); v.replaceChildren(); clearInterval(S.sayacTik); S.guncel=null;
+  const top=S.sorular.length;
+  $('#ustDurum').textContent = `Oda ${S.pin}`;
+  if(S.faz==='lobi'){
+    const ust=el('div','izgara-2');
+    const sol=el('div','kart yigin');
+    sol.append(el('span','etiket','Oda kodu'), el('div','pin-kutu',S.pin));
+    const link=katilmaLinki();
+    const lk=el('div','sira'); const lt=el('code','baglanti',link); const kb=el('button','dugme ikincil','Bağlantıyı kopyala'); kb.type='button';
+    kb.onclick=()=>{ navigator.clipboard.writeText(link).then(()=>{kb.textContent='Kopyalandı';},()=>{ const r=document.createRange(); r.selectNodeContents(lt); const s=getSelection(); s.removeAllRanges(); s.addRange(r); }); };
+    lk.append(lt,kb); sol.append(el('p','not','Oyuncular bu bağlantıyı açıp adını yazar ya da sayfada “Oyuna katıl”a basıp kodu girer. Bu sekme oyunu yönetiyor; yarışma bitene kadar kapatma.'), lk);
+    qrCiz(sol, link);
+    const sag=el('div','kart yigin');
+    const n=S.oyuncular.size;
+    sag.append(el('span','etiket',`Katılanlar · ${n} / ${MAKS}`));
+    const ol=el('div','oyuncular'); for(const o of S.oyuncular.values()) ol.append(el('span','oyuncu',o.ad));
+    if(!n) ol.append(el('p','not','Henüz kimse katılmadı.'));
+    sag.append(ol);
+    ust.append(sol,sag); v.append(ust);
+    v.append(el('p','not',`${top} soru · soru başına ${S.T/1000} saniye · doğru ve hızlı cevap en çok 1000 puan, art arda doğrulara seri bonusu.`));
+    const s=el('div','sira'); const b=el('button','dugme','Yarışmayı başlat'); b.type='button'; b.disabled=n<1; b.onclick=soruBaslat;
+    const k=el('button','dugme ikincil','Odayı kapat'); k.type='button'; k.onclick=kapat;
+    s.append(b,k); v.append(s);
+    return;
+  }
+  const q=S.sorular[S.qi];
+  if(S.faz==='soru'){
+    const ust=el('div','soru-ust'); ust.append(el('span','etiket',`Soru ${S.qi+1} / ${top} · ${TUR[q.tur]}`));
+    const say=el('div','sayac'); const sn=el('span'); say.append(sn); ust.append(say);
+    v.append(ust, el('p','soru-metin',q.soru));
+    const kar=el('div','karolar'); q.secenekler.forEach((s,k)=>{ const b=el('div','karo k'+k); b.append(el('span','harf',HARF[k]), el('span',null,s)); kar.append(b); }); v.append(kar);
+    const alt=el('div','sira'); const cv=el('span','etiket'); alt.append(cv);
+    const b=el('button','dugme ikincil','Süreyi bitir'); b.type='button'; b.onclick=ac; alt.append(b); v.append(alt);
+    const guncel=()=>{ const kalan=Math.max(0,S.T-(Date.now()-S.qBas)); sn.textContent=Math.ceil(kalan/1000); say.style.setProperty('--p',kalan/S.T); cv.textContent=`${S.cevaplar.size} / ${aktifSayisi()} oyuncu cevapladı`; };
+    S.guncel=guncel; guncel(); S.sayacTik=setInterval(guncel,200);
+    return;
+  }
+  if(S.faz==='cevap'){
+    const say=[0,0,0,0]; for(const c of S.cevaplar.values()) say[c.k]++;
+    v.append(el('span','etiket',`Soru ${S.qi+1} / ${top} · cevap`), el('p','soru-metin',q.soru));
+    const kar=el('div','karolar'); q.secenekler.forEach((s,k)=>{ const b=el('div','karo k'+k+(k===q.dogru?'':' soluk')); b.append(el('span','harf',k===q.dogru?'✓':HARF[k]), el('span',null,s), el('span','say',String(say[k]))); kar.append(b); }); v.append(kar);
+    v.append(el('p','ozel-not',q.aciklama), el('p','kaynak',kaynakYaz(q)));
+    const s=el('div','sira'); const b=el('button','dugme','Sıralamayı göster'); b.type='button'; b.onclick=()=>{ S.faz='tablo'; sunucuCiz(); yayinla(); }; s.append(b); v.append(s); b.focus();
+    return;
+  }
+  if(S.faz==='tablo'){
+    v.append(el('span','etiket',`Soru ${S.qi+1} / ${top} sonrası`), el('h2',null,'Sıralama'));
+    v.append(tabloCiz(siralama(), null, S.oncekiSira));
+    const s=el('div','sira'); const b=el('button','dugme',S.qi+1<top?'Sonraki soru':'Sonucu göster'); b.type='button'; b.onclick=soruBaslat; s.append(b); v.append(s); b.focus();
+    return;
+  }
+  if(S.faz==='son'){
+    const sr=siralama();
+    v.append(el('span','etiket','Yarışma bitti'), el('h2',null,'Kürsü'), kursuCiz(sr));
+    if(sr.length>3) v.append(tabloCiz(sr.slice(3), null, null, 3));
+    const s=el('div','sira');
+    const b=el('button','dugme','Aynı oyuncularla yeni tur'); b.type='button';
+    b.onclick=()=>{ S.sorular=karistir(havuz()).slice(0,ayar.adet); S.qi=-1; S.epoch=Date.now(); for(const [cid,o] of [...S.oyuncular]){ if(!bagliMi(o)) S.oyuncular.delete(cid); else {o.puan=0;o.seri=0;o.son=null;} } S.faz='lobi'; sunucuCiz(); yayinla(); };
+    const k=el('button','dugme ikincil','Odayı kapat'); k.type='button'; k.onclick=kapat; s.append(b,k); v.append(s);
+  }
+}
+function kapat(){
+  if(!S) return;
+  clearInterval(S.yayinTik); clearInterval(S.sayacTik); clearTimeout(S.zaman);
+  for(const o of S.oyuncular.values()) if(bagliMi(o)){ try{ o.conn.send({t:'durum', e:S.epoch, f:'kapali', pin:S.pin}); }catch(e){} }
+  const p=S.peer; setTimeout(()=>{ try{ p.destroy(); }catch(e){} }, 800);
+  try{ S.kilit && S.kilit.release(); }catch(e){}
+  S=null; $('#ustDurum').textContent='Sözler · 1–10'; goster('giris');
+}
+function tabloCiz(liste, ben, onceki, bas=0){
+  const t=el('div','tablo');
+  liste.forEach((o,i)=>{
+    const key=o.k||o.p;
+    const r=el('div','satir'+(ben&&key===ben?' ben':''));
+    const son=o.son||o.l;
+    let art='';
+    if(onceki){ const eski=onceki.indexOf(key); if(eski>i) art='▲ '+(eski-i); }
+    r.append(el('span','no',String(bas+i+1)), el('span','ad',o.ad||o.n), el('span','art', son&&son.ok?`+${son.p}`:art), el('span','puan',String(o.puan??o.s)));
+    t.append(r);
+  });
+  if(!liste.length) t.append(el('p','not','Henüz puan yok.'));
+  return t;
+}
+function kursuCiz(sr){
+  const k=el('div','kursu');
+  [[1,'b2'],[0,'b1'],[2,'b3']].forEach(([i,c])=>{ const o=sr[i]; const b=el('div','basamak '+c); if(o){ b.append(el('span','yer',String(i+1)), el('span','ad',o.ad||o.n), el('span','puan',String(o.puan??o.s)+' puan')); } k.append(b); });
+  return k;
+}
+
+/* ---------------- OYUNCU ---------------- */
+function katilAc(pin){ const ad=depoAl('nur-ad'); if(ad) $('#i-ad').value=ad; if(pin) $('#i-pin').value=pin; goster('katil'); (pin?$('#i-ad'):$('#i-pin')).focus(); }
+$('#b-katil').addEventListener('click', () => { if(peerVar) katilAc(''); });
+let P=null;
+$('#f-katil').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const h=$('#katilHata'); h.hidden=true;
+  const pin=$('#i-pin').value.replace(/\D/g,''); const ad=$('#i-ad').value.replace(/\s+/g,' ').trim().slice(0,18);
+  if(pin.length!==4){ h.textContent='Oda kodu dört rakamdır.'; h.hidden=false; return; }
+  if(!ad){ h.textContent='Diğer oyuncuların göreceği bir ad yaz.'; h.hidden=false; return; }
+  depoYaz('nur-ad',ad);
+  const b=$('#b-katil-git'); b.disabled=true; b.textContent='Bağlanıyor…';
+  try{ await baglan(pin, ad); goster('oyuncu'); $('#ustDurum').textContent=`Oda ${pin}`; oyuncuCiz(); }
+  catch(e){ h.textContent=hataMetni(e); h.hidden=false; if(P){ try{P.peer.destroy();}catch(x){} P=null; } }
+  b.disabled=false; b.textContent='Katıl';
+});
+async function baglan(pin, ad){
+  const peer = P && P.peer && !P.peer.destroyed && P.peer.open ? P.peer : await peerAc(null);
+  if(!P) P={pin, ad, d:null, cevap:null, qi:-1, bitis:0, epoch:null, koptu:false};
+  P.peer=peer; P.pin=pin; P.ad=ad; P.koptu=false;
+  await new Promise((res,rej)=>{
+    const conn=peer.connect(ONEK+pin, {reliable:true});
+    const t=setTimeout(()=>rej({type:'peer-unavailable'}), 12000);
+    const hataDinle = e => { if(e.type==='peer-unavailable'){ clearTimeout(t); rej(e); } };
+    peer.on('error', hataDinle);
+    conn.on('open', ()=>{ clearTimeout(t); peer.off('error', hataDinle); P.conn=conn; conn.send({t:'katil', ad, cid:CID}); res(); });
+    conn.on('data', m => mesajAl(conn, m));
+    conn.on('close', () => { if(P && P.conn===conn && P.d && P.d.f!=='kapali'){ P.koptu=true; oyuncuCiz(); } });
+    conn.on('error', ()=>{});
+  });
+}
+function mesajAl(conn, d){
+  if(!P || P.conn!==conn || !d || typeof d!=='object') return;
+  if(d.t==='dolu'){ P.dolu=true; oyuncuCiz(); return; }
+  if(d.t!=='durum') return;
+  const yeniSoru = d.qi!==P.qi || d.e!==P.epoch;
+  if(d.f==='soru' && (yeniSoru || !P.d || P.d.f!=='soru')){ P.cevap = (d.cevabim ?? null); P.bitis=Date.now()+(d.kalan||0); }
+  else if(d.f==='soru' && typeof d.kalan==='number'){ const yb=Date.now()+d.kalan; if(Math.abs(yb-P.bitis)>1500) P.bitis=yb; if(d.cevabim!=null) P.cevap=d.cevabim; }
+  const fazDegisti = !P.d || P.d.f!==d.f || yeniSoru || P.koptu;
+  P.koptu=false; P.qi=d.qi; P.epoch=d.e; P.d=d;
+  if(fazDegisti) oyuncuCiz(); else oyuncuGuncelle();
+}
+function benimSiram(){ if(!P||!P.d||!P.d.o) return null; const i=P.d.o.findIndex(o=>o.p===P.d.ben); return i<0?null:{i, o:P.d.o[i]}; }
+function ayrilDugmesi(v, yazi='Ayrıl'){ const b=el('button','dugme ikincil',yazi); b.type='button'; b.onclick=ayril; v.append(b); }
+function oyuncuCiz(){
+  const v=$('#v-oyuncu'); v.replaceChildren(); clearInterval(P.sayacTik); P.guncelle=null;
+  const d=P.d;
+  if(P.dolu){ v.append(el('h2',null,'Oda dolu'), el('p','not',`Bu odada en çok ${MAKS} kişi yarışabilir. Sunucudan yeni bir oda açmasını isteyebilirsin.`)); ayrilDugmesi(v,'Ana ekran'); return; }
+  if(P.koptu){
+    v.append(el('span','etiket',`Oda ${P.pin} · ${P.ad}`), el('h2',null,'Bağlantı koptu'), el('p','not','Puanın sunucuda duruyor. Tekrar bağlanınca kaldığın yerden devam edersin.'));
+    const s=el('div','sira'); const b=el('button','dugme','Tekrar bağlan'); b.type='button'; const h=el('p','hata'); h.hidden=true;
+    b.onclick=async()=>{ b.disabled=true; b.textContent='Bağlanıyor…'; try{ await baglan(P.pin,P.ad); }catch(e){ h.textContent=hataMetni(e); h.hidden=false; b.disabled=false; b.textContent='Tekrar bağlan'; } };
+    s.append(b); ayrilDugmesi(s); v.append(s,h); return;
+  }
+  if(!d){ v.append(el('span','etiket',`Oda ${P.pin} · ${P.ad}`), el('h2',null,'Bağlandın'), el('p','not','Sunucudan bilgi bekleniyor…')); ayrilDugmesi(v); return; }
+  if(d.f==='kapali'){ v.append(el('h2',null,'Sunucu odayı kapattı'), el('p','not','Yeni bir oyun için sunucudan yeni kodu iste.')); ayrilDugmesi(v,'Ana ekran'); return; }
+  if(d.f==='lobi'){
+    v.append(el('span','etiket',`Oda ${P.pin}`), el('h2',null,`Hazırsın, ${P.ad}.`), el('p','not',`${d.top} soru seni bekliyor. Sunucu başlatınca ilk soru burada belirecek.`));
+    const ol=el('div','oyuncular'); (d.o||[]).forEach(o=>ol.append(el('span','oyuncu',o.n))); v.append(el('span','etiket',`Katılanlar · ${(d.o||[]).length}`), ol);
+    ayrilDugmesi(v); return;
+  }
+  const q=d.q;
+  if(d.f==='soru'){
+    const ust=el('div','soru-ust'); ust.append(el('span','etiket',`Soru ${d.qi+1} / ${d.top} · ${TUR[q.tur]||''}`));
+    const say=el('div','sayac'); const sn=el('span'); say.append(sn); ust.append(say);
+    v.append(ust, el('p','soru-metin',q.s));
+    const kar=el('div','karolar'); const durum=el('p','not');
+    const bs=q.o.map((s,k)=>{ const b=el('button','karo k'+k); b.type='button'; b.append(el('span','harf',HARF[k]), el('span',null,s)); b.onclick=()=>cevapla(k); kar.append(b); return b; });
+    v.append(kar, durum);
+    const guncel=()=>{
+      const kalan=Math.max(0,P.bitis-Date.now()); sn.textContent=Math.ceil(kalan/1000); say.style.setProperty('--p', d.T? kalan/d.T : 0);
+      const kilit = P.cevap!==null || kalan<=0;
+      bs.forEach((b,k)=>{ b.disabled=kilit; b.classList.toggle('soluk', P.cevap!==null && k!==P.cevap); b.classList.toggle('secili', k===P.cevap); });
+      durum.textContent = P.cevap!==null ? 'Cevabın gönderildi. Diğerleri bekleniyor.' : (kalan<=0 ? 'Süre doldu.' : '');
+    };
+    P.guncelle=guncel; guncel(); P.sayacTik=setInterval(guncel,200);
+    return;
+  }
+  if(d.f==='cevap'||d.f==='tablo'){
+    const bs=benimSiram(); const son=bs&&bs.o.l; const ok=son&&son.ok;
+    v.append(el('span','etiket',`Soru ${d.qi+1} / ${d.top}`));
+    v.append(el('p','durum '+(ok?'dogru-renk':'yanlis-renk'), ok?`Doğru · +${son.p}`:(son&&son.bos?'Cevap vermedin':'Yanlış')));
+    if(bs) v.append(el('p','not',`${bs.i+1}. sıradasın · ${bs.o.s} puan`));
+    const kar=el('div','karolar'); q.o.forEach((s,k)=>{ const b=el('div','karo k'+k+(k===d.d?'':' soluk')+(k===P.cevap?' secili':'')); b.append(el('span','harf',k===d.d?'✓':HARF[k]), el('span',null,s), el('span','say',String((d.say||[])[k]||0))); kar.append(b); }); v.append(kar);
+    if(d.a) v.append(el('p','ozel-not',d.a));
+    v.append(el('p','kaynak',`${SOZ[q.soz]} Söz · ${q.eser}, s. ${q.sy}`));
+    if(d.f==='tablo') v.append(el('h2',null,'Sıralama'), tabloCiz(d.o, d.ben));
+    return;
+  }
+  if(d.f==='son'){
+    const bs=benimSiram();
+    v.append(el('span','etiket','Yarışma bitti'), el('h2',null, bs?`${bs.i+1}. oldun · ${bs.o.s} puan`:'Sonuçlar'), kursuCiz(d.o), tabloCiz(d.o, d.ben));
+    ayrilDugmesi(v);
+  }
+}
+function oyuncuGuncelle(){ if(P.d.f==='soru' && P.guncelle) P.guncelle(); else oyuncuCiz(); }
+function cevapla(k){
+  if(!P||!P.d||P.d.f!=='soru'||P.cevap!==null||Date.now()>P.bitis||!P.conn||!P.conn.open) return;
+  P.cevap=k; if(P.guncelle) P.guncelle();
+  try{ P.conn.send({t:'cevap', qi:P.d.qi, k}); }catch(e){ P.cevap=null; if(P.guncelle) P.guncelle(); }
+}
+function ayril(){ if(P){ clearInterval(P.sayacTik); try{ P.conn && P.conn.close(); }catch(e){} try{ P.peer && P.peer.destroy(); }catch(e){} P=null; } $('#ustDurum').textContent='Sözler · 1–10'; goster('giris'); }
+
+/* bağlantıyla gelindiyse kod hazır */
+const kod = new URLSearchParams(location.search).get('kod');
+if(kod && /^\d{4}$/.test(kod) && peerVar) katilAc(kod);
+window.addEventListener('beforeunload', e => { if(S && S.faz!=='son'){ e.preventDefault(); e.returnValue=''; } });
+})();
+
+</script>
+</body>
+</html>
