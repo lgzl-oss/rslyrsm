@@ -139,6 +139,9 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
 .set .bilgi{min-width:0;display:flex;flex-direction:column;gap:2px}
 .set .bilgi b{font-family:var(--f-baslik);font-size:1.15rem;overflow-wrap:anywhere}
 .inc.yeni{border-color:var(--varak)}
+.sayac-kh{align-self:flex-end;font-size:.8rem;color:var(--soluk);font-variant-numeric:tabular-nums;margin-top:-6px}
+.sayac-kh.asim{color:var(--kotu);font-weight:700}
+.inc input.asim,.inc textarea.asim{border-color:var(--kotu)}
 </style>
 
 <div class="sahne">
@@ -220,7 +223,9 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
       </div>
       <div class="izgara-2">
         <div class="kart yigin"><span class="etiket">Soru türleri</span><div class="cipler" id="c-yztur"></div></div>
-        <div class="kart yigin"><span class="etiket">Zorluk</span><div class="cipler" id="c-zorluk"></div></div>
+        <div class="kart yigin"><span class="etiket">Zorluk</span><div class="cipler" id="c-zorluk"></div>
+          <label class="cip" style="align-self:flex-start"><input type="checkbox" id="i-kahoot"> Kahoot için üret</label>
+          <p class="not">İşaretlersen sorular Kahoot sınırına göre kısa yazılır: soru en çok 119, şık en çok 74 karakter.</p></div>
       </div>
       <div class="kart yigin">
         <span class="etiket">Yapay zekâ</span>
@@ -245,6 +250,8 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
   <main id="v-inceleme" class="yigin" hidden>
     <div class="soru-ust"><div class="yigin" style="gap:4px"><span class="etiket" id="incKaynak"></span><h2 id="incBaslik">Soruları gözden geçir</h2></div></div>
     <p class="not">Yapay zekâ hata yapabilir. Her soruyu oku; doğru şıkkı işaretli olanı kontrol et, gerekirse düzelt, sil ya da yeniden ürettir. Oyunda şıkların sırası karıştırılır.</p>
+    <label class="cip" style="align-self:flex-start"><input type="checkbox" id="i-kahoot-inc"> Kahoot sınırlarını göster (soru 119, şık 74 karakter)</label>
+    <p class="hata" id="incKahoot" hidden></p>
     <div id="incListe" class="yigin"></div>
     <div class="sira">
       <button class="dugme ikincil" type="button" id="b-elle-coktan">+ Çoktan seçmeli soru ekle</button>
@@ -352,7 +359,7 @@ function pratikBasla(){
 const YZTUR = {genel:'Bilgi sorusu', cumle_tamamlama:'Cümle tamamlama', kelime_anlami:'Kavram / kelime anlamı', dogru_yanlis:'Doğru / yanlış'};
 const ZORLUK = {kolay:'Kolay', orta:'Orta', zor:'Zor'};
 const ayar = { kaynak:'banka', soz:new Set(Object.keys(SOZ).map(Number)), tur:new Set(Object.keys(TUR)),
-  yztur:new Set(['genel','cumle_tamamlama','dogru_yanlis']), zorluk:'orta', adet:15, sure:20, saglayici:depoAl('nur-saglayici')||'gemini' };
+  yztur:new Set(['genel','cumle_tamamlama','dogru_yanlis']), zorluk:'orta', kahoot:depoAl('nur-kahoot')==='1', adet:15, sure:20, saglayici:depoAl('nur-saglayici')||'gemini' };
 const SAGLAYICI = {gemini:'Gemini (ücretsiz)', claude:'Claude'};
 const ANAHTAR_DEPO = {gemini:'nur-api-gemini', claude:'nur-api'};
 let onayli=null; // incelemeden geçmiş yapay zekâ soruları
@@ -398,6 +405,7 @@ function ayarCiz(){
   cipKur($('#c-tur'), Object.entries(TUR), 'checkbox', d=>ayar.tur.has(d), (d,c)=>{ c?ayar.tur.add(d):ayar.tur.delete(d); ayarDurum(); });
   cipKur($('#c-yztur'), Object.entries(YZTUR), 'checkbox', d=>ayar.yztur.has(d), (d,c)=>{ c?ayar.yztur.add(d):ayar.yztur.delete(d); ayarDurum(); });
   cipKur($('#c-zorluk'), Object.entries(ZORLUK), 'radio', d=>d===ayar.zorluk, d=>{ ayar.zorluk=d; });
+  const kc=$('#i-kahoot'); kc.checked=ayar.kahoot; kc.onchange=()=>{ ayar.kahoot=kc.checked; depoYaz('nur-kahoot', kc.checked?'1':'0'); };
   cipKur($('#c-adet'), [[5,'5'],[10,'10'],[15,'15'],[20,'20'],[30,'30']], 'radio', d=>d===ayar.adet, d=>{ ayar.adet=d; ayarDurum(); });
   cipKur($('#c-sure'), [[15,'15 sn'],[20,'20 sn'],[30,'30 sn']], 'radio', d=>d===ayar.sure, d=>{ ayar.sure=d; });
   cipKur($('#c-saglayici'), Object.entries(SAGLAYICI), 'radio', d=>d===ayar.saglayici, d=>{ ayar.saglayici=d; depoYaz('nur-saglayici',d); saglayiciGoster(true); });
@@ -467,7 +475,7 @@ function talimat(){
     'Kurallar:',
     '- Her sorunun tek ve tartışmasız bir doğru cevabı olsun. Yanlış şıklar inandırıcı ama kesinlikle yanlış olsun.',
     '- "Hepsi", "Hiçbiri", "A ve B" gibi şıklar kullanma. Şıkların uzunlukları birbirine yakın olsun; doğru şık en uzun şık olmasın.',
-    '- Soru metni en fazla 220 karakter, her şık en fazla 90 karakter olsun; oyuncular telefondan, süreyle cevaplıyor.',
+    (ayar.kahoot ? '- ÇOK ÖNEMLİ: Sorular Kahoot\'a aktarılacak. Soru metni boşluklar dahil EN FAZLA 119 karakter, her şık EN FAZLA 74 karakter olsun. Yazdıktan sonra uzunluğu kontrol et; uzunsa kısalt. Cümle tamamlama sorularında da bu sınır geçerli.' : '- Soru metni en fazla 220 karakter, her şık en fazla 90 karakter olsun; oyuncular telefondan, süreyle cevaplıyor.'),
     '- Türler: genel = 4 şıklı bilgi sorusu; cumle_tamamlama = boşluğu "______" ile gösterilen cümle, 4 şık; kelime_anlami = bir kavram veya kelimenin anlamı, 4 şık; dogru_yanlis = bir önerme, şıklar tam olarak ["Doğru","Yanlış"].',
     '- Doğru cevabın yerini sorudan soruya değiştir.',
     '- aciklama: doğru cevabın neden doğru olduğunu 1-2 cümleyle anlat.',
@@ -565,6 +573,8 @@ async function geminiSor(n, turler, haric){
   }
   throw sonHata || new Error('Gemini şu an yanıt veremiyor.');
 }
+const KAHOOT_SORU=119, KAHOOT_SIK=74;
+function kahootUygun(q){ return q.soru.trim().length<=KAHOOT_SORU && q.secenekler.every(x=>x.trim().length<=KAHOOT_SIK); }
 function soruTemizle(q){
   if(!q||typeof q.soru!=='string') return null;
   const tur = YZTUR[q.tur] ? q.tur : 'genel';
@@ -587,6 +597,7 @@ let taslak=[];
 const SIK_RENK=['k0','k1','k2','k3'];
 function incelemeCiz(){
   $('#incKaynak').textContent=incKaynak;
+  $('#i-kahoot-inc').checked=ayar.kahoot;
   $('#b-daha').hidden = !yzBaglam.kaynak;
   $('#incBaslik').textContent=`${taslak.length} soruyu gözden geçir`;
   const l=$('#incListe'); l.replaceChildren();
@@ -597,12 +608,17 @@ function incelemeCiz(){
     const yb=el('button','dugme ikincil kucuk','Yeniden üret'); yb.type='button'; yb.onclick=()=>tekYenile(i); yb.hidden=!yzBaglam.kaynak;
     const sb=el('button','dugme ikincil kucuk','Sil'); sb.type='button'; sb.onclick=()=>{ taslak.splice(i,1); incelemeCiz(); };
     btn.append(yb,sb); ust.append(btn); k.append(ust);
-    const ta=document.createElement('textarea'); ta.rows=2; ta.id=`inc-${i}-soru`; ta.value=q.soru; ta.setAttribute('aria-label',`Soru ${i+1} metni`); ta.oninput=()=>{ q.soru=ta.value; incDurum(); }; k.append(ta);
+    const ta=document.createElement('textarea'); ta.rows=2; ta.id=`inc-${i}-soru`; ta.value=q.soru; ta.setAttribute('aria-label',`Soru ${i+1} metni`);
+    const say=el('span','sayac-kh');
+    const sayGuncel=()=>{ const n=q.soru.trim().length; say.textContent=`${n} / ${KAHOOT_SORU}`; say.classList.toggle('asim', n>KAHOOT_SORU); say.hidden=!ayar.kahoot; };
+    ta.oninput=()=>{ q.soru=ta.value; sayGuncel(); incDurum(); }; sayGuncel(); k.append(ta, say);
     q.secenekler.forEach((s,j)=>{
       const r=el('div','sik');
       const rd=document.createElement('input'); rd.type='radio'; rd.name=`inc-${i}-dogru`; rd.id=`inc-${i}-d${j}`; rd.checked=j===q.dogru; rd.setAttribute('aria-label',`${HARF[j]} şıkkı doğru`); rd.onchange=()=>{ q.dogru=j; };
       const h=el('span','harf '+SIK_RENK[j], HARF[j]);
-      const inp=document.createElement('input'); inp.type='text'; inp.id=`inc-${i}-s${j}`; inp.value=s; inp.readOnly=q.tur==='dogru_yanlis'; inp.setAttribute('aria-label',`${HARF[j]} şıkkı`); inp.oninput=()=>{ q.secenekler[j]=inp.value; incDurum(); };
+      const inp=document.createElement('input'); inp.type='text'; inp.id=`inc-${i}-s${j}`; inp.value=s; inp.readOnly=q.tur==='dogru_yanlis'; inp.setAttribute('aria-label',`${HARF[j]} şıkkı`);
+      const sikKontrol=()=>inp.classList.toggle('asim', ayar.kahoot && q.secenekler[j].trim().length>KAHOOT_SIK); sikKontrol();
+      inp.oninput=()=>{ q.secenekler[j]=inp.value; sikKontrol(); incDurum(); };
       r.append(rd,h,inp); k.append(r);
     });
     const ac=document.createElement('input'); ac.type='text'; ac.className='aciklama-g'; ac.id=`inc-${i}-aciklama`; ac.value=q.aciklama; ac.placeholder='Açıklama (cevaptan sonra gösterilir)'; ac.setAttribute('aria-label','Açıklama'); ac.oninput=()=>{ q.aciklama=ac.value; };
@@ -617,6 +633,8 @@ function incDurum(){
   const b=$('#b-onayla'); b.disabled = !taslak.length || bozuk>0 || taslak.some(q=>q.uretiliyor);
   b.textContent = taslak.length ? `${taslak.length} soruyla odayı aç` : 'Bu sorularla odayı aç';
   const h=$('#incHata'); h.hidden = !bozuk; h.textContent = bozuk ? `${bozuk} soruda boş ya da birbirinin aynısı şık var.` : '';
+  const kh=$('#incKahoot'); const uzun = ayar.kahoot ? taslak.filter(q=>!kahootUygun(q)).length : 0;
+  kh.hidden=!uzun; kh.textContent = uzun ? `${uzun} soru Kahoot sınırını aşıyor (soru ${KAHOOT_SORU}, şık ${KAHOOT_SIK} karakter). Oyunda sorun olmaz; Kahoot'a aktarmadan önce kısalt.` : '';
 }
 async function uretVeGoster(){
   const h=$('#ayarHata'), not=$('#uretNot'), b=$('#b-oda-ac'); h.hidden=true;
@@ -662,6 +680,7 @@ function elleEkle(tur){
   if(ta){ ta.scrollIntoView({block:'center'}); ta.focus(); }
 }
 $('#b-elle-coktan').addEventListener('click', ()=>elleEkle('genel'));
+$('#i-kahoot-inc').addEventListener('change', e=>{ ayar.kahoot=e.target.checked; depoYaz('nur-kahoot', ayar.kahoot?'1':'0'); incelemeCiz(); });
 $('#b-elle-dy').addEventListener('click', ()=>elleEkle('dogru_yanlis'));
 
 /* ---- kayıtlı setler ---- */
