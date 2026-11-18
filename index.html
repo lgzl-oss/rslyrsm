@@ -821,6 +821,29 @@ function setListeCiz(){
     d.append(o,kh,i,s2); k.append(b,d,notSatir); kap.append(k);
   });
   kap.append(bos);
+  const pk=el('div','yigin'); kap.append(pk); paylasilanCiz(pk);
+}
+/* ---- Paylaşılan setler: stüdyonun GitHub'a yazdığı liste (herkes okuyabilir) ---- */
+const PAYLASIM_URL='https://raw.githubusercontent.com/lgzl-oss/rslyrsm/main/sets/liste.json';
+async function paylasilanSetler(){
+  try{ const r=await fetch(PAYLASIM_URL+'?t='+Date.now(),{cache:'no-store'}); if(!r.ok) return []; const v=await r.json(); return Array.isArray(v&&v.setler)?v.setler:[]; }catch(e){ return []; }
+}
+function setNormalize(s){
+  return {id:String(s.id||('p'+rastgele(6))), ad:String(s.ad||'Paylaşılan set').slice(0,60), kaynak:String(s.kaynak||''), uretim:null, tarih:s.tarih||new Date().toISOString(),
+    sorular:(s.sorular||[]).map(q=>{ const t=soruTemizle({...q, kaynak:q.kaynak}); return t?{tur:t.tur,soru:t.soru,secenekler:t.secenekler,dogru:t.dogru,aciklama:t.aciklama,kaynakNot:t.kaynakNot}:null; }).filter(Boolean)};
+}
+async function paylasilanCiz(kap){
+  const bas=el('p','etiket','Paylaşılan setler'); kap.append(bas);
+  const yuk=el('p','not','Yükleniyor…'); kap.append(yuk);
+  const liste=(await paylasilanSetler()).map(setNormalize).filter(x=>x.sorular.length);
+  yuk.remove();
+  if(!liste.length){ kap.append(el('p','not','Henüz paylaşılan set yok.')); return; }
+  liste.forEach(set=>{
+    const k=el('div','kart set'); const b=el('div','bilgi');
+    b.append(el('b',null,set.ad), el('span','not',`${set.sorular.length} soru · herkes görebilir`));
+    const o=el('button','dugme','Oyna'); o.type='button'; o.onclick=()=>setOyna(set);
+    const d=el('div','sira'); d.append(o); k.append(b,d); kap.append(k);
+  });
 }
 $('#i-set-dosya').addEventListener('change', async e => {
   const f=e.target.files[0], not=$('#setDosyaNot'); if(!f) return;
