@@ -165,6 +165,7 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
       <button class="secim" id="b-katil" type="button"><i style="background:var(--firuze)">→</i><div><b>Oyuna katıl</b><span>Oda kodunu ve adını yaz, sunucunun başlatmasını bekle.</span></div></button>
       <button class="secim" id="b-kur" type="button"><i style="background:var(--varak)">◆</i><div><b>Oyun kur</b><span id="kurNot">Soruları seç, kodu paylaş, ekranı herkese göster.</span></div></button>
       <button class="secim" id="b-pratik" type="button"><i style="background:var(--kobalt)">✦</i><div><b>Tek başına pratik</b><span>Bağlantı gerekmez; 10 rastgele soru.</span></div></button>
+      <button class="secim" id="b-sunum" type="button"><i style="background:var(--mercan)">▶</i><div><b>Sunum yap</b><span>Stüdyoda hazırladığın sunumu tam ekranda göster.</span></div></button>
     </section>
   </main>
 
@@ -180,6 +181,22 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
       <div class="sira"><button class="dugme" type="submit" id="b-katil-git">Katıl</button><button class="dugme ikincil" type="button" data-geri>Vazgeç</button></div>
     </form>
   </main>
+
+  <!-- SUNUM -->
+  <main id="v-sunum" class="yigin" hidden>
+    <h2>Sunum yap</h2>
+    <section class="kart yigin" style="max-width:640px">
+      <p class="not">Stüdyodan “Sunum dosyası (HTML)” olarak indirdiğin dosyayı seç. Sunum bu tarayıcıda açılır; ok tuşları ya da ekrana dokunarak ilerlersin.</p>
+      <label class="etiket" for="i-sunum-dosya">Sunum dosyası (.html)</label>
+      <input id="i-sunum-dosya" type="file" accept=".html,.htm,text/html">
+      <p class="hata" id="sunumHata" hidden></p>
+      <div class="sira"><button class="dugme ikincil" type="button" data-geri>Geri</button></div>
+    </section>
+  </main>
+  <div id="sunumAlan" style="display:none;position:fixed;inset:0;z-index:50;background:#000;flex-direction:column">
+    <div class="sira" style="justify-content:flex-end;padding:8px"><button class="dugme ikincil kucuk" type="button" id="b-sunum-tam">Tam ekran</button><button class="dugme ikincil kucuk" type="button" id="b-sunum-kapat">Kapat</button></div>
+    <iframe id="sunumCerceve" title="Sunum" sandbox="allow-scripts allow-fullscreen" allow="fullscreen" style="flex:1;width:100%;border:0"></iframe>
+  </div>
 
   <!-- SUNUCU AYAR -->
   <main id="v-ayar" class="yigin" hidden>
@@ -292,7 +309,7 @@ const MAKS = 20;
 const ONEK = 'risale-nur-yarisma-v1-';
 const $ = s => document.querySelector(s);
 const el = (tag, cls, txt) => { const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; };
-const views = ['giris','katil','ayar','inceleme','sunucu','oyuncu','pratik'];
+const views = ['giris','katil','ayar','inceleme','sunucu','oyuncu','pratik','sunum'];
 function goster(v){ views.forEach(x => $('#v-'+x).hidden = x!==v); window.scrollTo(0,0); }
 function karistir(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
 function turAdi(t){ return TUR[t] || (typeof YZTUR!=='undefined' && YZTUR[t]) || ''; }
@@ -305,6 +322,27 @@ const PeerK = window.Peer || (window.peerjs && window.peerjs.Peer);
 const peerVar = typeof PeerK === 'function';
 $('#soruSayisi').textContent = BANK.length;
 document.querySelectorAll('[data-geri]').forEach(b => b.addEventListener('click', () => goster('giris')));
+/* ---- Sunum yap: stüdyo sunum dosyası (kendi kendine yeten HTML) tam ekranda açılır ---- */
+let sunumUrl = null;
+$('#b-sunum').addEventListener('click', () => goster('sunum'));
+$('#i-sunum-dosya').addEventListener('change', async e => {
+  const f = e.target.files[0], hata = $('#sunumHata'); hata.hidden = true; if (!f) return;
+  try {
+    const metin = await f.text();
+    if (!/window\.KURSU_DECK\s*=/.test(metin)) throw new Error('Bu dosya bir sunum değil. Stüdyodan “Sunum dosyası (HTML)” olarak indirdiğin .html dosyasını seç.');
+    if (sunumUrl) URL.revokeObjectURL(sunumUrl);
+    sunumUrl = URL.createObjectURL(new Blob([metin], { type: 'text/html' }));
+    const c = $('#sunumCerceve'); c.src = sunumUrl;
+    c.addEventListener('load', () => { try { c.contentWindow.focus(); } catch (x) {} }, { once: true });
+    $('#sunumAlan').style.display = 'flex';
+  } catch (err) { hata.textContent = err.message; hata.hidden = false; }
+  e.target.value = '';
+});
+$('#b-sunum-kapat').addEventListener('click', () => {
+  $('#sunumAlan').style.display = 'none'; $('#sunumCerceve').src = 'about:blank';
+  if (sunumUrl) { URL.revokeObjectURL(sunumUrl); sunumUrl = null; }
+});
+$('#b-sunum-tam').addEventListener('click', () => { const c = $('#sunumCerceve'); if (c.requestFullscreen) c.requestFullscreen(); });
 if(!peerVar){
   $('#b-kur').disabled=true; $('#b-katil').disabled=true;
   $('#kurNot').textContent='Bağlantı kütüphanesi yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.';
