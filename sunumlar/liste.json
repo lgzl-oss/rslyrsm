@@ -1,0 +1,48 @@
+{
+ "surum": 1,
+ "guncelleme": "2026-11-18T21:02:11.746321+00:00",
+ "sunumlar": [
+  {
+   "id": "birinci-soz",
+   "ad": "Birinci Söz",
+   "dosya": "birinci-soz.html",
+   "slayt": 20,
+   "tarih": "2026-11-18T21:02:11.712395+00:00"
+  },
+  {
+   "id": "gafil-kafaya-bir-tokmak",
+   "ad": "Gâfil Kafaya Bir Tokmak",
+   "dosya": "gafil-kafaya-bir-tokmak.html",
+   "slayt": 36,
+   "tarih": "2026-11-18T21:02:11.718556+00:00"
+  },
+  {
+   "id": "penceredeki-sinema",
+   "ad": "Penceredeki Sinema",
+   "dosya": "penceredeki-sinema.html",
+   "slayt": 23,
+   "tarih": "2026-11-18T21:02:11.728446+00:00"
+  },
+  {
+   "id": "ey-mutesekki-sen-nesin",
+   "ad": "Ey Müteşekkî! Sen Nesin?",
+   "dosya": "ey-mutesekki-sen-nesin.html",
+   "slayt": 14,
+   "tarih": "2026-11-18T21:02:11.732415+00:00"
+  },
+  {
+   "id": "gokten-inen-mucevherler",
+   "ad": "Gökten İnen Mücevherler",
+   "dosya": "gokten-inen-mucevherler.html",
+   "slayt": 14,
+   "tarih": "2026-11-18T21:02:11.738018+00:00"
+  },
+  {
+   "id": "kisin-ardindaki-dirilis",
+   "ad": "Kışın Ardındaki Diriliş",
+   "dosya": "kisin-ardindaki-dirilis.html",
+   "slayt": 15,
+   "tarih": "2026-11-18T21:02:11.746298+00:00"
+  }
+ ]
+}
