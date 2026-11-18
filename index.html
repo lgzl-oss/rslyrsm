@@ -202,13 +202,26 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
   <!-- SUNUM -->
   <main id="v-sunum" class="yigin" hidden>
     <h2>Sunum yap</h2>
-    <section class="kart yigin" style="max-width:640px">
-      <p class="not">Stüdyodan “Sunum dosyası (HTML)” olarak indirdiğin dosyayı seç. Sunum bu tarayıcıda açılır; ok tuşları ya da ekrana dokunarak ilerlersin.</p>
-      <label class="etiket" for="i-sunum-dosya">Sunum dosyası (.html)</label>
-      <input id="i-sunum-dosya" type="file" accept=".html,.htm,text/html">
-      <p class="hata" id="sunumHata" hidden></p>
-      <div class="sira"><button class="dugme ikincil" type="button" data-geri>Geri</button></div>
+    <section class="kart yigin" style="max-width:820px">
+      <span class="etiket">Paylaşılan sunumlar</span>
+      <div id="sunumListe" class="yigin"><p class="not">Yükleniyor…</p></div>
     </section>
+    <section class="kart yigin" style="max-width:820px">
+      <label class="etiket" for="i-sunum-dosya">Bilgisayarından sunum aç (.html)</label>
+      <input id="i-sunum-dosya" type="file" accept=".html,.htm,text/html">
+      <p class="not">Stüdyoda Dosya → “Sunum dosyası (HTML) indir” ile aldığın dosyayı seç.</p>
+      <div id="sunumSecili" class="yigin" hidden>
+        <p><b id="sunumSeciliAd"></b> <span class="not" id="sunumSeciliBilgi"></span></p>
+        <div id="sunumAnahtarKutu" class="yigin">
+          <label class="etiket" for="i-gh-anahtar-s">GitHub erişim anahtarı (paylaşmak için)</label>
+          <input id="i-gh-anahtar-s" type="password" autocomplete="off" placeholder="github_pat_…">
+        </div>
+        <div class="sira"><button class="dugme" type="button" id="b-sunum-ac">Sun</button><button class="dugme ikincil" type="button" id="b-sunum-paylas">Paylaşılan sunumlara ekle</button></div>
+        <p class="not" id="sunumPaylasNot" aria-live="polite"></p>
+      </div>
+      <p class="hata" id="sunumHata" hidden></p>
+    </section>
+    <div class="sira"><button class="dugme ikincil" type="button" data-geri>Geri</button></div>
   </main>
   <div id="sunumAlan" style="display:none;position:fixed;inset:0;z-index:50;background:#000;flex-direction:column">
     <div class="sira" style="justify-content:flex-end;padding:8px"><button class="dugme ikincil kucuk" type="button" id="b-sunum-tam">Tam ekran</button><button class="dugme ikincil kucuk" type="button" id="b-sunum-kapat">Kapat</button></div>
@@ -339,26 +352,73 @@ const PeerK = window.Peer || (window.peerjs && window.peerjs.Peer);
 const peerVar = typeof PeerK === 'function';
 $('#soruSayisi').textContent = BANK.length;
 document.querySelectorAll('[data-geri]').forEach(b => b.addEventListener('click', () => goster('giris')));
-/* ---- Sunum yap: stüdyo sunum dosyası (kendi kendine yeten HTML) tam ekranda açılır ---- */
-let sunumUrl = null;
-$('#b-sunum').addEventListener('click', () => goster('sunum'));
+/* ---- Sunum yap: paylaşılan sunumlar (sunumlar/liste.json) ya da bilgisayardan açılan dosya ---- */
+let sunumUrl = null, seciliSunum = null;
+function sunumAc(src){
+  const c = $('#sunumCerceve'); c.src = src;
+  c.addEventListener('load', () => { try { c.contentWindow.focus(); } catch (x) {} }, { once: true });
+  $('#sunumAlan').style.display = 'flex';
+}
+function sunumCoz(metin){
+  const i = metin.indexOf('window.KURSU_DECK=');
+  if (i < 0) throw new Error('Bu dosya bir sunum değil. Stüdyodan “Sunum dosyası (HTML)” olarak indirdiğin .html dosyasını seç.');
+  let ad = 'Sunum', slayt = 0;
+  try { const j = metin.indexOf('<' + '/script>', i); const d = JSON.parse(metin.slice(i + 18, j).trim().replace(/;$/, '')); ad = String(d.title || ad); slayt = (d.slides || []).length; } catch (e) {}
+  return { ad, slayt };
+}
+async function sunumListeCiz(){
+  const kap = $('#sunumListe'); kap.replaceChildren(el('p','not','Yükleniyor…'));
+  let liste = [];
+  try { const r = await fetch('sunumlar/liste.json?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) { const v = await r.json(); liste = Array.isArray(v && v.sunumlar) ? v.sunumlar : []; } } catch (e) {}
+  kap.replaceChildren();
+  if (!liste.length) { kap.append(el('p','not','Henüz paylaşılan sunum yok.')); return; }
+  liste.forEach(x => {
+    const k = el('div','kart set'); const b = el('div','bilgi');
+    b.append(el('b', null, x.ad), el('span','not', `${x.slayt ? x.slayt + ' slayt · ' : ''}herkes görebilir`));
+    const d = el('div','sira');
+    const o = el('button','dugme','Sun'); o.type = 'button'; o.onclick = () => sunumAc('sunumlar/' + encodeURIComponent(x.dosya));
+    d.append(o);
+    if (ghAnahtar()) {
+      const y = el('button','dugme ikincil kucuk','Listeden kaldır'); y.type = 'button';
+      y.onclick = async () => {
+        if (!y.dataset.onay) { y.dataset.onay = '1'; y.textContent = 'Kaldırmak için tekrar bas'; setTimeout(() => { if (y.isConnected) { delete y.dataset.onay; y.textContent = 'Listeden kaldır'; } }, 4000); return; }
+        y.disabled = true; y.textContent = 'Kaldırılıyor…';
+        try { await sunumKaldir(ghAnahtar(), x.id); k.remove(); }
+        catch (e) { y.disabled = false; y.textContent = e.message || 'Kaldırılamadı'; }
+      };
+      d.append(y);
+    }
+    k.append(b, d); kap.append(k);
+  });
+}
+$('#b-sunum').addEventListener('click', () => { goster('sunum'); sunumListeCiz(); });
 $('#i-sunum-dosya').addEventListener('change', async e => {
-  const f = e.target.files[0], hata = $('#sunumHata'); hata.hidden = true; if (!f) return;
+  const f = e.target.files[0], hata = $('#sunumHata'); hata.hidden = true; e.target.value = ''; if (!f) return;
   try {
-    const metin = await f.text();
-    if (!/window\.KURSU_DECK\s*=/.test(metin)) throw new Error('Bu dosya bir sunum değil. Stüdyodan “Sunum dosyası (HTML)” olarak indirdiğin .html dosyasını seç.');
+    const metin = await f.text(); const bilgi = sunumCoz(metin);
+    seciliSunum = { ...bilgi, metin };
     if (sunumUrl) URL.revokeObjectURL(sunumUrl);
     sunumUrl = URL.createObjectURL(new Blob([metin], { type: 'text/html' }));
-    const c = $('#sunumCerceve'); c.src = sunumUrl;
-    c.addEventListener('load', () => { try { c.contentWindow.focus(); } catch (x) {} }, { once: true });
-    $('#sunumAlan').style.display = 'flex';
-  } catch (err) { hata.textContent = err.message; hata.hidden = false; }
-  e.target.value = '';
+    $('#sunumSeciliAd').textContent = bilgi.ad; $('#sunumSeciliBilgi').textContent = bilgi.slayt ? ` · ${bilgi.slayt} slayt` : '';
+    $('#sunumAnahtarKutu').hidden = !!ghAnahtar(); $('#sunumPaylasNot').textContent = ''; $('#b-sunum-paylas').disabled = false;
+    $('#sunumSecili').hidden = false;
+  } catch (err) { $('#sunumSecili').hidden = true; seciliSunum = null; hata.textContent = err.message; hata.hidden = false; }
 });
-$('#b-sunum-kapat').addEventListener('click', () => {
-  $('#sunumAlan').style.display = 'none'; $('#sunumCerceve').src = 'about:blank';
-  if (sunumUrl) { URL.revokeObjectURL(sunumUrl); sunumUrl = null; }
+$('#b-sunum-ac').addEventListener('click', () => { if (sunumUrl) sunumAc(sunumUrl); });
+$('#b-sunum-paylas').addEventListener('click', async () => {
+  const btn = $('#b-sunum-paylas'), not = $('#sunumPaylasNot'), hata = $('#sunumHata'); hata.hidden = true;
+  if (!seciliSunum) return;
+  const girilen = $('#i-gh-anahtar-s').value.trim(); const anahtar = girilen || ghAnahtar();
+  if (!anahtar) { hata.textContent = 'Paylaşmak için GitHub erişim anahtarını gir.'; hata.hidden = false; return; }
+  btn.disabled = true; not.textContent = 'Yükleniyor… (birkaç MB, biraz sürebilir)';
+  try {
+    await sunumYayinla(anahtar, seciliSunum);
+    if (girilen) depoYaz(GH_DEPO, girilen);
+    $('#i-gh-anahtar-s').value = ''; $('#sunumAnahtarKutu').hidden = true;
+    not.textContent = `“${seciliSunum.ad}” paylaşılan sunumlara eklendi. Bir iki dakika içinde herkesin listesinde görünür.`;
+  } catch (err) { btn.disabled = false; not.textContent = ''; hata.textContent = err.message || 'Paylaşılamadı.'; hata.hidden = false; }
 });
+$('#b-sunum-kapat').addEventListener('click', () => { $('#sunumAlan').style.display = 'none'; $('#sunumCerceve').src = 'about:blank'; });
 $('#b-sunum-tam').addEventListener('click', () => { const c = $('#sunumCerceve'); if (c.requestFullscreen) c.requestFullscreen(); });
 if(!peerVar){
   $('#b-kur').disabled=true; $('#b-katil').disabled=true;
@@ -1250,6 +1310,44 @@ async function ghYaz(anahtar, mesaj, degistir){
     if((r.status===409||r.status===422) && i===0) continue;
     throw new Error(ghHataMetni(r.status));
   }
+}
+const GH_DEPO_API='https://api.github.com/repos/lgzl-oss/rslyrsm';
+async function ghApi(anahtar, yol, opts={}){
+  let r; try{ r=await fetch(GH_DEPO_API+yol,{...opts, cache:'no-store', headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+anahtar,'X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'}}); }
+  catch(e){ throw new Error('GitHub’a ulaşılamadı; internet bağlantını kontrol et.'); }
+  if(!r.ok) throw Object.assign(new Error(ghHataMetni(r.status)),{durum:r.status});
+  return r.status===204?null:r.json();
+}
+async function ghCommit(anahtar, mesaj, girdiler){
+  const ref=await ghApi(anahtar,'/git/ref/heads/main'); const temel=ref.object.sha;
+  const c=await ghApi(anahtar,'/git/commits/'+temel);
+  const t=await ghApi(anahtar,'/git/trees',{method:'POST', body:JSON.stringify({base_tree:c.tree.sha, tree:girdiler})});
+  const y=await ghApi(anahtar,'/git/commits',{method:'POST', body:JSON.stringify({message:mesaj, tree:t.sha, parents:[temel]})});
+  await ghApi(anahtar,'/git/refs/heads/main',{method:'PATCH', body:JSON.stringify({sha:y.sha})});
+}
+async function sunumManifest(anahtar){
+  try{ const j=await ghApi(anahtar,'/contents/sunumlar/liste.json'); const d=JSON.parse(b64uCoz(j.content)); if(!Array.isArray(d.sunumlar)) d.sunumlar=[]; return d; }
+  catch(e){ if(e.durum===404) return {surum:1, sunumlar:[]}; throw e; }
+}
+function slugYap(t){ const m={ç:'c',ğ:'g',ı:'i',ö:'o',ş:'s',ü:'u',â:'a',î:'i',û:'u'}; return String(t).toLocaleLowerCase('tr').replace(/[çğıöşüâîû]/g,c=>m[c]).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,50)||'sunum'; }
+async function sunumYayinla(anahtar, sunum){
+  const man=await sunumManifest(anahtar);
+  const blob=await ghApi(anahtar,'/git/blobs',{method:'POST', body:JSON.stringify({content:b64Kod(sunum.metin), encoding:'base64'})});
+  const id=slugYap(sunum.ad)+'-'+Date.now().toString(36), dosya=id+'.html';
+  const eski=man.sunumlar.filter(x=>x.ad===sunum.ad);
+  man.sunumlar=man.sunumlar.filter(x=>x.ad!==sunum.ad); man.sunumlar.unshift({id, ad:sunum.ad, dosya, slayt:sunum.slayt||0, tarih:new Date().toISOString()});
+  man.surum=1; man.guncelleme=new Date().toISOString();
+  await ghCommit(anahtar,'Sunum: '+sunum.ad,[
+    {path:'sunumlar/'+dosya, mode:'100644', type:'blob', sha:blob.sha},
+    {path:'sunumlar/liste.json', mode:'100644', type:'blob', content:JSON.stringify(man,null,1)+'\n'},
+    ...eski.map(x=>({path:'sunumlar/'+x.dosya, mode:'100644', type:'blob', sha:null}))]);
+}
+async function sunumKaldir(anahtar, id){
+  const man=await sunumManifest(anahtar); const x=man.sunumlar.find(z=>z.id===id); if(!x) return;
+  man.sunumlar=man.sunumlar.filter(z=>z.id!==id); man.guncelleme=new Date().toISOString();
+  await ghCommit(anahtar,'Sunum kaldırıldı: '+x.ad,[
+    {path:'sunumlar/liste.json', mode:'100644', type:'blob', content:JSON.stringify(man,null,1)+'\n'},
+    {path:'sunumlar/'+x.dosya, mode:'100644', type:'blob', sha:null}]);
 }
 let gelenSet=null;
 function yayinlaAc(set, hataMetni){
