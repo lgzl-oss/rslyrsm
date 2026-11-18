@@ -1,7 +1,204 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-18T20:55:08.518Z",
+ "guncelleme": "2026-11-18T20:55:55.773Z",
  "setler": [
+  {
+   "id": "setmwmloq0z",
+   "ad": "Penceredeki Sinema",
+   "kaynak": "Stüdyo",
+   "tarih": "2026-11-18T20:55:46.633Z",
+   "sorular": [
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Sunuma göre Meyve Risalesi, hatıranın yaşandığı Eskişehir hapsinde kaleme alınmıştır.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 1,
+     "aciklama": "Birinci slaytın notunda hatıranın Eskişehir hapishanesinde yaşandığı, Meyve Risalesi'nin ise sekiz dokuz sene sonra Denizli hapsinde kaleme alındığı belirtilir.",
+     "kaynak": "Slayt 1"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Birden manevî bir ______ ile elli sene sonraki vaziyetleri bana göründü.\"",
+     "secenekler": [
+      "pencere",
+      "sinema",
+      "ayna",
+      "rüya"
+     ],
+     "dogru": 1,
+     "aciklama": "Üçüncü slayttaki alıntıda Üstad, elli sene sonraki vaziyetleri \"manevî bir sinema ile\" gördüğünü söyler. Dersin adı da buradan gelir.",
+     "kaynak": "Slayt 3"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunumda \"Benim bildiğimi bilseydiniz az güler, çok ağlardınız\" hadisi hangi fikre bağlanır?",
+     "secenekler": [
+      "Bayram eğlencelerinin hapishaneden duyulduğuna",
+      "Pencerede gülenlerle ağlayanın aynı bahçeye baktığına; aradaki farkın göz değil bilgi olduğuna",
+      "Gülmenin her hâlükârda yasak olduğuna",
+      "Gençlerin büyüklerini dinlemesi gerektiğine"
+     ],
+     "dogru": 1,
+     "aciklama": "Dördüncü slaytın açıklamasında \"Pencerede gülenlerle ağlayan aynı bahçeye bakıyordu. Aradaki fark göz değil, bilgiydi\" denir.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Nasıl ki bu yaz ve güzün âhiri kıştır; öyle de gençlik yazı ve ihtiyarlık güzünün arkası, ______.\"",
+     "secenekler": [
+      "hüzün ve gurbet güzüdür",
+      "haşir ve cennet baharıdır",
+      "kabir ve berzah kışıdır",
+      "ölüm ve fena gecesidir"
+     ],
+     "dogru": 2,
+     "aciklama": "Beşinci slayttaki alıntı \"…ihtiyarlık güzünün arkası, kabir ve berzah kışıdır\" diye biter. Üstad mevsimlerin kesin sırasını ömrün sırasına delil yapar.",
+     "kaynak": "Slayt 5"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunuma göre Rûm Sûresi 54. âyette dikkat edilecek incelik nedir?",
+     "secenekler": [
+      "İhtiyarlığın gençlikten daha kıymetli olduğu",
+      "Kuvvetin insanın kendi malı olduğu",
+      "Kuvvetin iki zaafın arasına konduğu; insanın asıl hâlinin güçsüzlük, kuvvetin ise bir müddet için emanet olduğu",
+      "Güçsüzlüğün yalnız çocuklukta görüldüğü"
+     ],
+     "dogru": 2,
+     "aciklama": "Altıncı slaytın notunda \"Kuvvet, iki zaafın arasına konmuş. İnsanın asıl hâli güçsüzlüktür; kuvvet ona bir müddet için emanet edilmiştir\" denir.",
+     "kaynak": "Slayt 6"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Gençlik Rehberi'nden: \"Sizdeki gençlik ______.\"",
+     "secenekler": [
+      "ebedî kalacak",
+      "bir emanettir",
+      "kat'iyen gidecek",
+      "size bir sermayedir"
+     ],
+     "dogru": 2,
+     "aciklama": "Yedinci slayttaki alıntı \"Sizdeki gençlik kat'iyen gidecek\" cümlesiyle başlar. Notta bunun tartışmaya açık olmayan bir hüküm olduğu vurgulanır.",
+     "kaynak": "Slayt 7"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Sefahet\" kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Uzun vadeli ümit",
+      "İnatçılık",
+      "Yolu kaybetmek",
+      "Hafiflik, aklın hafiflemesi"
+     ],
+     "dogru": 3,
+     "aciklama": "Sekizinci slaytın notunda sefahetin \"sefeh\" kökünden geldiği ve hafiflik, aklın hafiflemesi demek olduğu açıklanır. Yolu kaybetmek ise dalaletin anlamıdır.",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sekizinci Söz'deki kuyu temsilinde ağacın kökünü kemiren siyah ve beyaz iki fare neyi temsil eder?",
+     "secenekler": [
+      "Dünya ve âhireti",
+      "Gençlik ve ihtiyarlığı",
+      "Gece ve gündüzü",
+      "Ecel ve kabri"
+     ],
+     "dogru": 2,
+     "aciklama": "Dokuzuncu slaytın notunda temsil açılırken \"Siyah ve beyaz iki fare, gece ve gündüzdür\" denir.",
+     "kaynak": "Slayt 9"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"İntizar salonu\" tabirinin anlamı nedir?",
+     "secenekler": [
+      "Bekleme salonu",
+      "Ziyafet salonu",
+      "Matem salonu",
+      "Ders salonu"
+     ],
+     "dogru": 0,
+     "aciklama": "On birinci slaytın notunda \"İntizar salonu tabirine dikkat edin; bekleme salonu demek\" denir. İman gözüyle geçmiş, böyle bir salon olarak görünür.",
+     "kaynak": "Slayt 11"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"…bir Rahmân-ı Rahîm'in ziyafetleri kurulmuş ve ihsanlarının sergileri açılmış. Oraya ______ var.\"",
+     "secenekler": [
+      "sevkiyat",
+      "davet",
+      "ziyafet",
+      "intizar"
+     ],
+     "dogru": 0,
+     "aciklama": "On ikinci slayttaki alıntıda \"Oraya sevkiyat var\" geçer. Notta imanın lügatinde ölümün adının idam değil, sevkiyat yani bir yerden bir yere nakil olduğu anlatılır.",
+     "kaynak": "Slayt 12"
+    },
+    {
+     "tur": "genel",
+     "soru": "Ölmek üzere olan evlada ilaç içirip onu kurtaran \"Lokman-ı Hakîm gibi\" doktor, temsilin hakikat tarafında neye karşılık gelir?",
+     "secenekler": [
+      "Hapishanedeki ders arkadaşlarına",
+      "Gençliğe",
+      "Hakikat-i imana",
+      "Akla"
+     ],
+     "dogru": 2,
+     "aciklama": "On dördüncü slayttaki alıntıda \"Birden hakikat-i iman, Lokman-ı Hakîm gibi, … mezaristana, kalb penceresinden bir ışık verdi\" denir. Temsildeki doktorun hakikatteki karşılığı imandır.",
+     "kaynak": "Slayt 14"
+    },
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Üstad ikinci itiraza \"Hayvan gibi olmamalısın\" diyerek bir ahlâk nasihatiyle cevap verir.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 1,
+     "aciklama": "On altıncı slaytın notunda Üstad'ın \"olmamalısın\" değil \"olamazsın\" dediği belirtilir. Bunun bir ahlâk nasihati değil, bir imkânsızlık tespiti olduğu vurgulanır.",
+     "kaynak": "Slayt 16"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunuma göre akıl Mâlik-i Hakikîsine satılıp O'nun hesabına çalıştırılırsa ne olur?",
+     "secenekler": [
+      "Kâinattaki rahmet hazinelerini ve hikmet definelerini açan tılsımlı bir anahtar olur",
+      "Geçmişin hüznünü ve geleceğin korkusunu başa yükleyen bir yük olur",
+      "Hayvan gibi düşünmeden yaşamayı mümkün kılar",
+      "Sahibini sarhoşluğa ve eğlenceye kaçırır"
+     ],
+     "dogru": 0,
+     "aciklama": "On yedinci slaytın notunda aklın Allah hesabına çalıştırılınca \"tılsımlı bir anahtar\" olduğu, nefis hesabına çalıştırılınca ise yüke dönüştüğü anlatılır: \"Alet aynı alettir; yük de olur, anahtar da.\"",
+     "kaynak": "Slayt 17"
+    },
+    {
+     "tur": "genel",
+     "soru": "Üstad'a göre bir Müslüman neden \"ecnebi dinsizleri gibi\" de olamaz?",
+     "secenekler": [
+      "Çünkü bütün peygamberleri, Allah'ı ve kemalâtı Âhirzaman Peygamberi ile bilmiştir; onu inkâr ederse hiçbirini kabul etmez",
+      "Çünkü ecnebiler daha çalışkandır",
+      "Çünkü ecnebi dinsizlerin geçmişi ve geleceği yoktur",
+      "Çünkü Müslüman, inkâr edince kolayca başka bir dine geçer"
+     ],
+     "dogru": 0,
+     "aciklama": "On dokuzuncu slayttaki cevapta \"Çünkü bütün peygamberleri ve Allah'ı ve kemalâtı, onunla bilmiş\" denir. Notta da bu halka koparsa Müslümanın elinde hiçbir şey kalmadığı açıklanır.",
+     "kaynak": "Slayt 19"
+    },
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Üstad, hapishanedeki arkadaşlarına \"ders arkadaşlarım\" diye hitap eder ve hapishaneye \"Medrese-i Yusufiye\" der.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 0,
+     "aciklama": "Yirmi birinci slayttaki alıntıda \"İşte ey bu Medrese-i Yusufiyede benim ders arkadaşlarım!\" hitabı geçer. Notta Üstad'ın onlara \"mahpuslar\" demediği vurgulanır.",
+     "kaynak": "Slayt 21"
+    }
+   ]
+  },
   {
    "id": "setmwmlnaqs",
    "ad": "Gâfil Kafaya Bir Tokmak",
