@@ -1,7 +1,206 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-18T20:56:49.721Z",
+ "guncelleme": "2026-11-18T20:57:46.519Z",
  "setler": [
+  {
+   "id": "setmwmlr44v",
+   "ad": "Kışın Ardındaki Diriliş",
+   "kaynak": "Stüdyo",
+   "tarih": "2026-11-18T20:57:36.115Z",
+   "sorular": [
+    {
+     "tur": "genel",
+     "soru": "Onuncu Söz'ü açan Rûm Sûresi 30/50. ayete göre yeryüzünün ölümünün ardından diriltilmesi neyin misalidir?",
+     "secenekler": [
+      "İnsan ömrünün kısalığının",
+      "Dünyanın sonsuza kadar böyle kalacağının",
+      "Ölülerin de öylece diriltilmesinin",
+      "Sadece mevsimlerin düzenli değişmesinin"
+     ],
+     "dogru": 2,
+     "aciklama": "Ayet mealinde 'Bunu yapan, elbette ölüleri de öylece diriltecektir' denir. Konuşmacı notu da kışın ölü görünen toprağın diriltilmesini ölülerin diriltilmesinin misali olarak açıklar.",
+     "kaynak": "Slayt 3"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunuma göre ayetteki 'Bak' emri bize ne söylemektedir?",
+     "secenekler": [
+      "Tefekkür et",
+      "Sabret",
+      "Şükret",
+      "Acele et"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 3'ün notunda ayetin iki şey söylediği belirtilir: 'Bak, yani tefekkür et; ve gördüğünden görmediğine geç.'",
+     "kaynak": "Slayt 3"
+    },
+    {
+     "tur": "genel",
+     "soru": "Onuncu Söz'ün hikâyesinde iki adamın gittiği 'Cennet gibi güzel memleket' neyi temsil eder?",
+     "secenekler": [
+      "Cenneti",
+      "Dünyayı",
+      "Kabri",
+      "Âhireti"
+     ],
+     "dogru": 1,
+     "aciklama": "Alıntıda memleketin yanına '(şu dünyaya işarettir)' diye yazılmıştır. Not da 'Memleket dünyadır' der.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "genel",
+     "soru": "Temsilde 'İmanın bakışı' memleketin her yerinde neyi görür?",
+     "secenekler": [
+      "Kendi emeğinin karşılığını",
+      "Sadece tesadüfî bir kalabalığı",
+      "Sahipsiz kalmış malları",
+      "Bir Padişahın düzenini"
+     ],
+     "dogru": 3,
+     "aciklama": "Slayt 5'te imanın bakışı 'Her yerde bir Padişahın düzenini görür' diye anlatılır. Her şeyi sahipsiz sanmak ise gafletin bakışıdır.",
+     "kaynak": "Slayt 5"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "Sunumda geçen 'bâb' kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Menzil",
+      "Kapı",
+      "Delil",
+      "Yol"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 6'nın notunda 'Her hakikat bir bâb, yani kapıdır' denilerek kelimenin anlamı verilir.",
+     "kaynak": "Slayt 6"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunumdaki özete göre 'Kerem ve Rahmet' kapısının ana fikri nedir?",
+     "secenekler": [
+      "Sonsuz ikram, ebedî bir ikram yurdunu ister",
+      "Burada ertelenen hesap, büyük bir mahkemeyi gösterir",
+      "Ebedî bir saltanat, geçici bir misafirhane ile bitmez",
+      "Her bahar, büyük dirilişin küçük bir provasıdır"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 7'de Kerem ve Rahmet kapısı 'Sonsuz ikram, ebedî bir ikram yurdunu ister' diye özetlenir. Diğer seçenekler öteki üç kapıya aittir.",
+     "kaynak": "Slayt 7"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Üçüncü Hakikat'ten alıntıyı tamamlayın: \"Ehl-i dalâletin çoğu ceza almadan, ehl-i hidayetin de çoğu ______ buradan göçüp gidiyorlar.\"",
+     "secenekler": [
+      "mükâfat görmeden",
+      "hesap vermeden",
+      "imtihan olmadan",
+      "saadet bulmadan"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 8'deki alıntıda ifade 'ehl-i hidayetin de çoğu mükâfat görmeden buradan göçüp gidiyorlar' şeklindedir.",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunuma göre insanın içindeki adalet özlemi neye işaret eder?",
+     "secenekler": [
+      "Adaletin hiçbir zaman gerçekleşmeyeceğine",
+      "İnsanın hayal gücünün genişliğine",
+      "Mutlak bir adaletin varlığına",
+      "Dünya mahkemelerinin yeterli olduğuna"
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 9'un notunda 'Susuzluk suyun varlığını gösterdiği gibi, adalet özlemi de mutlak bir adaletin varlığına işaret eder' denir.",
+     "kaynak": "Slayt 9"
+    },
+    {
+     "tur": "genel",
+     "soru": "Dokuzuncu Hakikat'ten alıntıyı tamamlayın: \"Haşr-i ______ görüyoruz ki, beş altı gün zarfında, küçük ve büyük hayvanat ve nebatattan, üç yüz binden ziyade envâı haşredip neşrediyor.\"",
+     "secenekler": [
+      "dünyevîde",
+      "baharîde",
+      "ekberde",
+      "kübrâda"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 10'daki alıntı 'Haşr-i baharîde görüyoruz ki' diye başlar. Not da baharın büyük haşrin her yıl sergilenen bir misali olduğunu açıklar.",
+     "kaynak": "Slayt 10"
+    },
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Sunuma göre kışı toprağın altında geçiren tohum gerçekten ölmüştür ve içinde hiçbir şey kalmamıştır.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 11'in notunda tohumun dışarıdan bakana ölü göründüğü, oysa içinde koca bir ağacın programının saklı olduğu belirtilir.",
+     "kaynak": "Slayt 11"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Yedinci Hakikat'ten alıntıyı tamamlayın: \"… beşerin … amelleri ve fiilleri muhafaza edilmesin, ______, adalet terazisinde tartılmasın, şayeste ceza ve mükâfat çekmesin?\"",
+     "secenekler": [
+      "muhasebe eleğinden geçirilmesin",
+      "mizan içinde muhafaza edilmesin",
+      "Mahkeme-i Kübrâya bırakılmasın",
+      "kemâl-i intizam ile korunmasın"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 12'deki alıntıda ifade 'muhafaza edilmesin, muhasebe eleğinden geçirilmesin, adalet terazisinde tartılmasın' şeklinde geçer.",
+     "kaynak": "Slayt 12"
+    },
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Sunumda, uçağın kara kutusunun son dakikayı bile kaydetmesi, amellerimizin de kaydedildiğini düşünmek için bir örnek olarak verilmiştir.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 13'te kara kutu örneği verilir. Ardından 'İnsanın küçük cihazları bu kadar saklarken amellerimiz zayi mi olacak?' diye sorulur.",
+     "kaynak": "Slayt 13"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "Sunumda geçen 'bekâ' kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Yok olmamak",
+      "İhtiyaç",
+      "Dua etmek",
+      "Kulluk"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 14'ün notunda 'İnsanın en derin ihtiyacı bekâdır, yani yok olmamak' denilerek anlamı verilir.",
+     "kaynak": "Slayt 14"
+    },
+    {
+     "tur": "genel",
+     "soru": "Beşinci Hakikat'ten alıntıyı tamamlayın: \"o hacet ise, insanı esfel-i sâfilînden âlâ-yı ______ çıkarıyor\"",
+     "secenekler": [
+      "sâfilîne",
+      "illiyyîne",
+      "Cennete",
+      "semâvâta"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 14'teki alıntıda 'insanı esfel-i sâfilînden âlâ-yı illiyyîne çıkarıyor' ifadesi geçer.",
+     "kaynak": "Slayt 14"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunumun kapanışına göre baharın bıraktığı 'mektubu' okuyabilen kalp ölümü nasıl görür?",
+     "secenekler": [
+      "Bir son değil, bir kapı olarak",
+      "Hiç düşünülmemesi gereken bir konu olarak",
+      "Korkulacak bir karanlık olarak",
+      "Kaçınılmaz bir son olarak"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 15'in notunda 'Bu mektubu okuyabilen kalp, ölümü bir son değil, bir kapı olarak görür' denir. Bu, sunumun başındaki 'Ölüm bir son mu, bir kapı mı?' sorusunun cevabıdır.",
+     "kaynak": "Slayt 15"
+    }
+   ]
+  },
   {
    "id": "setmwmlpq2z",
    "ad": "Gökten İnen Mücevherler",
