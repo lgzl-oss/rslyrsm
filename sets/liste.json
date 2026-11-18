@@ -1,5 +1,205 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-18T17:34:16.020778Z",
- "setler": []
+ "guncelleme": "2026-11-18T20:52:52.873Z",
+ "setler": [
+  {
+   "id": "setmwmdy7z0",
+   "ad": "Birinci Söz",
+   "kaynak": "Stüdyo",
+   "tarih": "2026-11-18T17:19:18.312Z",
+   "sorular": [
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Sunuma göre ilk Sözler, yalnız âlimlerin anlayabileceği ağır bir ilmî dille yazılmıştır.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 1'in notunda, Üstad'ın ifadesiyle ilk Sözlerin avam lisanıyla, yani herkesin anlayacağı bir dille yazıldığı belirtilir. Bu yüzden Birinci Söz hem çocuğa hem âlime hitap eder.",
+     "kaynak": "Slayt 1"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Boşluğu doldurun: \"Bil ey nefsim! Şu mübarek kelime İslâm nişanı olduğu gibi, bütün mevcudatın ______ vird-i zebanıdır.\"",
+     "secenekler": [
+      "ruh-u maneviyle",
+      "lisan-ı haliyle",
+      "sırr-ı hikmetiyle",
+      "lisan-ı kaliyle"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 3'teki alıntıda Bismillah'ın bütün mevcudatın \"lisan-ı haliyle\" vird-i zebanı olduğu söylenir. Lisan-ı hal, konuşmayan bir şeyin duruşuyla ve yaptığı işle bir şey anlatmasıdır.",
+     "kaynak": "Slayt 3"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunumda Alak Sûresi'nin ilk âyeti (\"Yaratan Rabbinin adıyla oku!\") hangi fikre bağlanır?",
+     "secenekler": [
+      "Okumak, yani ilim bile Rabbin ismiyle başlamalıdır.",
+      "Nasihat önce söyleyenin kendi nefsine yapılmalıdır.",
+      "Nimetin bedeli yalnız şükürdür.",
+      "Zâhirî mün'imleri övmek ahmaklıktır."
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 4'ün notunda, insanın en şerefli işi olan okumanın ve ilmin bile Rabbin ismiyle başlaması gerektiği anlatılır. İlk vahiy, ilk kelimesinde kimin namına iş yapacağımızı öğretir.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "genel",
+     "soru": "Boşluğu doldurun: \"Bedevî Arap çöllerinde seyahat eden adama gerektir ki, bir kabile reisinin ismini alsın ve ______ girsin.\"",
+     "secenekler": [
+      "hizmetine",
+      "kervanına",
+      "çadırına",
+      "himayesine"
+     ],
+     "dogru": 3,
+     "aciklama": "Slayt 5'teki alıntıda yolcunun reisin ismini alıp \"himayesine\" girmesi gerektiği söylenir. Himaye, notta koruma diye açıklanır.",
+     "kaynak": "Slayt 5"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunuma göre Bismillah'ın sağladığı iki kurtuluştan \"bütün kâinatın dilenciliğinden kurtuluş\" neyin ilacıdır?",
+     "secenekler": [
+      "Gafletin",
+      "Aczin",
+      "Gururun",
+      "Fakrın"
+     ],
+     "dogru": 3,
+     "aciklama": "Slayt 7'nin notunda dilencilikten kurtuluşun fakrın, titremekten kurtuluşun ise aczin ilacı olduğu açıklanır.",
+     "kaynak": "Slayt 7"
+    },
+    {
+     "tur": "genel",
+     "soru": "Boşluğu doldurun: \"Bu kelime öyle mübarek bir definedir ki, senin nihayetsiz aczin ve fakrın, seni nihayetsiz kudrete, rahmete rabtedip, Kadîr-i Rahîm'in dergâhında aczi, fakrı en makbul bir ______ yapar.\"",
+     "secenekler": [
+      "nişan",
+      "vesile",
+      "şefaatçi",
+      "hazine"
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 8'deki metne göre Bismillah, aczi ve fakrı Kadîr-i Rahîm'in dergâhında en makbul bir \"şefaatçi\" yapar. Not, bu hazineden zayıf taraflarımızın şefaatçi olarak çıktığını anlatır.",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Perva\" kelimesinin anlamı nedir?",
+     "secenekler": [
+      "İtaat ve bağlılık",
+      "Korku ve çekinme",
+      "Kuvvet ve kudret",
+      "Koruma, himaye"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 9'un notunda perva \"korku ve çekinme\" diye açıklanır. \"Pervası kalmaz\" da kimseden çekinmez demektir.",
+     "kaynak": "Slayt 9"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunumda Hûd Sûresi 41. âyet (\"Onun yürümesi de durması da Allah'ın adıyladır\") hangi fikrin misali olarak getirilir?",
+     "secenekler": [
+      "Kur'an'ın yüz on üç sûresi Besmele ile açılır.",
+      "Nimetin bedeli zikir, fikir ve şükürdür.",
+      "Bismillah ile hareket edenin hiçbir şeyden pervası kalmaz.",
+      "Allah namına vermeyen gafillerden almamalıyız."
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 10'un notu, Bismillah ile hareket edenin hiçbir şeyden pervası kalmayacağının en büyük misalini Nuh tufanında gösterir. Gemi kendi namına değil, Allah'ın ismiyle yüzmektedir.",
+     "kaynak": "Slayt 10"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Boşluğu doldurun: \"Demek her bir ağaç Bismillah der. Hazine-i rahmet meyvelerinden ellerini dolduruyorlar, ______.\"",
+     "secenekler": [
+      "bizlere süt çeşmesi oluyorlar",
+      "bizlere tablacılık ediyorlar",
+      "Rezzak namına ikram ediyorlar",
+      "her şeye karşı dayanıyorlar"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 11'deki alıntı \"bizlere tablacılık ediyorlar\" diye biter. Notta tablacı, başında tablayla yemek taşıyıp sofraya ikram getiren kimse olarak açıklanır.",
+     "kaynak": "Slayt 11"
+    },
+    {
+     "tur": "genel",
+     "soru": "Asker ile çekirdek tablosundan çıkarılan kural nedir?",
+     "secenekler": [
+      "Çekirdek, içindeki programla ağacı kendi başına meydana getirir.",
+      "Gücünü aşan işi yapan, kendi namına değil, bir başkasının namına yapıyor demektir.",
+      "Her şey kendi kuvvetiyle ve kendi namına iş görür.",
+      "Askerlik kuvveti, tabiattaki kuvvetten daha üstündür."
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 12'nin hakikat kısmında ve notunda bu kural açıkça verilir. Askerde bunu hemen anlarız; çekirdekte ise alıştığımız için görmeyiz.",
+     "kaynak": "Slayt 12"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunumdaki alıntıda \"her bir bostan\" neye benzetilir?",
+     "secenekler": [
+      "Matbaha-i kudretten bir kazana",
+      "Bir padişahın kıymettar hediyesine",
+      "Bir kabile reisinin çadırına",
+      "Rahmet feyzinden bir süt çeşmesine"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 13'te \"Her bir bostan Bismillah der. Matbaha-i kudretten bir kazan olur\" denir. Süt çeşmesi benzetmesi ise bostan için değil, hayvanlar için kullanılır.",
+     "kaynak": "Slayt 13"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Musahhar\" kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Delinmiş, yarılmış",
+      "Sertleşmiş, katılaşmış",
+      "Boyun eğmiş, emre verilmiş",
+      "Kurumuş, solmuş"
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 15'in notunda musahhar \"boyun eğmiş, emre verilmiş\" diye açıklanır. Alıntıdaki \"Her şey onlara musahhar olur\" ifadesi taşın köke boyun eğmesini anlatır.",
+     "kaynak": "Slayt 15"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Boşluğu doldurun: \"O Mün'im-i Hakikî … bedel istediği fiat ise üç şeydir: ______.\"",
+     "secenekler": [
+      "Biri zikir, biri dua, biri hizmettir",
+      "Biri namaz, biri oruç, biri zekâttır",
+      "Biri zikir, biri şükür, biri fikirdir",
+      "Biri sabır, biri şükür, biri tevekküldür"
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 17'deki Elcevap kısmında fiatın üç şey olduğu söylenir: zikir, şükür ve fikir. Başta Bismillah zikir, âhirde Elhamdülillah şükür, ortada nimetleri düşünmek ise fikirdir.",
+     "kaynak": "Slayt 17"
+    },
+    {
+     "tur": "genel",
+     "soru": "Padişahın hediyesi temsilinde, hediyeyi getiren \"miskin adam\" neyi temsil eder?",
+     "secenekler": [
+      "Zâhirî mün'imleri, yani görünüşte nimet verenleri",
+      "Mün'im-i Hakikî'yi",
+      "Tabiiyyunu",
+      "Mağrur nefsi"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 19'daki alıntıda miskin adamın ayağını öpmek, zâhirî mün'imleri medhetmeye benzetilir. Notta zâhirî mün'imler anne baba, fırıncı, inek ve ağaç gibi görünüşte nimet verenler olarak açıklanır.",
+     "kaynak": "Slayt 19"
+    },
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Birinci Söz, \"Allah namına ver, Allah namına al, Allah namına başla, Allah namına işle\" ifadesiyle sona erer.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 20'de bu dört fiil Söz'ün son cümlesi olarak verilir. Notta cümlenin \"Vesselâm\" ile bittiği belirtilir.",
+     "kaynak": "Slayt 20"
+    }
+   ]
+  }
+ ]
 }
