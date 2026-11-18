@@ -788,7 +788,8 @@ $('#i-set-dosya').addEventListener('change', async e => {
   const f=e.target.files[0], not=$('#setDosyaNot'); if(!f) return;
   try{
     const v=JSON.parse(await f.text());
-    const gelen = v && v.set ? [v.set] : (Array.isArray(v) ? v : (v && Array.isArray(v.sorular) ? [v] : []));
+    const soruDizisi = Array.isArray(v) && v.length && v.every(x => x && typeof x.soru === 'string');
+    const gelen = v && v.set ? [v.set] : soruDizisi ? [{ad:f.name.replace(/\.json$/i,''), sorular:v}] : (Array.isArray(v) ? v : (v && Array.isArray(v.sorular) ? [v] : []));
     const l=setleriAl(); let eklenen=0;
     for(const set of gelen){
       const sorular=(set.sorular||[]).map(q=>{ const t=soruTemizle({...q, kaynak:q.kaynakNot}); return t?{tur:t.tur,soru:t.soru,secenekler:t.secenekler,dogru:t.dogru,aciklama:t.aciklama,kaynakNot:t.kaynakNot}:null; }).filter(Boolean);
