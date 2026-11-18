@@ -1,7 +1,206 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-18T20:55:55.773Z",
+ "guncelleme": "2026-11-18T20:56:49.721Z",
  "setler": [
+  {
+   "id": "setmwmlpq2z",
+   "ad": "Gökten İnen Mücevherler",
+   "kaynak": "Stüdyo",
+   "tarih": "2026-11-18T20:56:36.527Z",
+   "sorular": [
+    {
+     "tur": "kelime_anlami",
+     "soru": "Sunuma göre \"mücevher\" kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Bir ustanın yaptığı en güzel eser",
+      "Küçük şeyleri büyük gösteren bir alet",
+      "Elmas, pırlanta, inci gibi çok değerli, çok güzel taşlar",
+      "Gökten yağan beyaz kar"
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 1'in notunda mücevher, \"Elmas, pırlanta, inci gibi çok değerli, çok güzel taşlar\" diye açıklanır. Ders, kar tanelerini gökten inen mücevherlere benzetir.",
+     "kaynak": "Slayt 1"
+    },
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Wilson Bentley'nin ailesi ona 15. yaş gününde bir fotoğraf makinesi hediye etti.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 3'e göre 15. yaş gününde ona hediye edilen şey bir mikroskoptu. Fotoğraf makinesini daha sonra, kar tanesini çizmeyi başaramayınca aldı.",
+     "kaynak": "Slayt 3"
+    },
+    {
+     "tur": "genel",
+     "soru": "Wilson Bentley kar tanelerini önce çizmeye çalıştı ama başaramadı. Sunuma göre bu hikâyeden hangi ders çıkar?",
+     "secenekler": [
+      "Kar taneleri asla fotoğraflanamaz.",
+      "Resim çizmek fotoğraf çekmekten daha kolaydır.",
+      "İlk denemede başaramayan kişi başka bir işe yönelmelidir.",
+      "Bir şeyi çok merak eden ve sabreden insan, sonunda başarır."
+     ],
+     "dogru": 3,
+     "aciklama": "Slayt 4'ün notunda Wilson'ın ilk denemede başaramayıp vazgeçmediği anlatılır. Ardından \"Bir şeyi çok merak eden ve sabreden insan, sonunda başarır\" dersi verilir.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Wilson Bentley elli yıl boyunca 5.000'den fazla kar tanesi inceledi.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 5'te Bentley'nin elli yıl boyunca, her kış, beş binden fazla kar tanesi incelediği söylenir.",
+     "kaynak": "Slayt 5"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Wilson Bentley'nin sözünü tamamlayın: \"Her bir kar tanesi kristal bir tasarım şaheseriydi ve ______.\"",
+     "secenekler": [
+      "hiçbir tasarım tekrarlanmamaktaydı",
+      "bütün tasarımlar birbirine benzemekteydi",
+      "hepsi altı kollu bir yıldızdı",
+      "her tasarım birkaç saniyede kaybolmaktaydı"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 6'daki alıntı aynen şöyledir: \"Her bir kar tanesi kristal bir tasarım şaheseriydi ve hiçbir tasarım tekrarlanmamaktaydı.\"",
+     "kaynak": "Slayt 6"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "Sunuma göre \"şaheser\" kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Her an yaratmak ve idare etmek",
+      "Bir şeyin düşünülerek, planlanarak çizilmesi",
+      "Bir ustanın yaptığı en güzel eser",
+      "Bir şeyi gösteren işaret"
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 6'nın notunda \"Şaheser ne demek? Bir ustanın yaptığı en güzel eser demek\" denir. \"Planlanarak çizilmek\" ise tasarım kelimesinin anlamıdır.",
+     "kaynak": "Slayt 6"
+    },
+    {
+     "tur": "genel",
+     "soru": "Karşılaştırmada fabrikanın yaptığı bin oyuncak arabanın hepsi neden birbirinin aynısıdır?",
+     "secenekler": [
+      "Makine tek bir kalıpla çalıştığı için",
+      "Fabrikada çok usta ressamlar çalıştığı için",
+      "Fabrika bir günde sadece bir araba yaptığı için",
+      "Arabalar kar tanelerinden yapıldığı için"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 7'nin notunda fabrikanın ürettiği arabaların aynı olmasının sebebi olarak \"makine tek bir kalıpla çalışır\" gösterilir. Bu durum, hepsi farklı inen kar taneleriyle karşılaştırılır.",
+     "kaynak": "Slayt 7"
+    },
+    {
+     "tur": "genel",
+     "soru": "Peygamber Efendimizin sözünü tamamlayın: \"Allah güzeldir, ______ sever.\"",
+     "secenekler": [
+      "iyiliği",
+      "güzeli",
+      "karı",
+      "çiçekleri"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 8'in notunda hadis \"Allah güzeldir, güzeli sever\" şeklinde geçer. Kar tanesinin güzelliği bu sözle bağlantılı anlatılır.",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunuma göre kar tanelerinin desenleri farklı olduğu hâlde hepsinin altı kolu olması neyi gösterir?",
+     "secenekler": [
+      "Onları yapanın her şeyi bir ölçüyle yarattığını",
+      "Kar tanelerinin rastgele oluştuğunu",
+      "Kar tanelerinin bir fabrikada yapıldığını",
+      "Rüzgârın onları aynı şekilde kestiğini"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 8'de \"Hepimizin altı kolu var: O her şeyi ölçüyle yaratır\" maddesi yer alır. Notta da \"Rastgele değil, ölçülü\" denir.",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Delil\" kelimesi anlatılırken karda görülen ayak izi örneği verilir. Bu örnekte ayak izi neyi gösterir?",
+     "secenekler": [
+      "Karın eriyeceğini",
+      "Karın çok derin olduğunu",
+      "Oradan birinin geçtiğini",
+      "Orada kardan adam yapıldığını"
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 9'un notunda ayak izi görülünce \"Buradan biri geçmiş\" denildiği anlatılır. Ayak izi oradan geçenin delilidir; kar taneleri de Rabbimizin sanatının delilidir.",
+     "kaynak": "Slayt 9"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Göklerde ve yerde nice deliller vardır ki, onlar bu delillerden yüzlerini çevirip geçerler.\" (Yûsuf Sûresi, 12/105) ayeti sunumda hangi fikre bağlanır?",
+     "secenekler": [
+      "Bakmak başka, görmek başka",
+      "Kar toprağa yorgan olur",
+      "Kar tanesi eriyince kaybolur",
+      "Herkes her şeyi O'ndan ister"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 9'un başlığı \"Bakmak başka, görmek başka\"dır. Notta insanların delillere bakmadan geçtiği anlatılır ve \"görenlerden olalım\" denir.",
+     "kaynak": "Slayt 9"
+    },
+    {
+     "tur": "genel",
+     "soru": "Rahmân Sûresi'ndeki \"O her an kâinatta tasarruf etmektedir\" ifadesi sunumda nasıl açıklanır?",
+     "secenekler": [
+      "Rabbimiz her an iş başındadır; her an yaratır, her an idare eder.",
+      "Rabbimiz dünyayı bir kere yaratıp bırakmıştır.",
+      "Rabbimiz eski kar tanelerinin kopyalarını gönderir.",
+      "Rabbimiz sadece kışın kar yaratır."
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 10'un notunda tasarruf etmek, \"Rabbimiz her an iş başında; her an yaratıyor, her an idare ediyor\" diye açıklanır. Her kar yağışında yepyeni desenlerin inmesi buna örnek gösterilir.",
+     "kaynak": "Slayt 10"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunuma göre kimsenin görmediği dağ tepelerine düşen ve birkaç saniyede eriyen kar taneleri bize ne öğretir?",
+     "secenekler": [
+      "Kısa süren şeyler özenle yapılmaya değmez.",
+      "Görülmeyen yerlere düşen kar taneleri daha az güzeldir.",
+      "Rabbimiz her şeyi en güzel şekilde yaratır; küçük olsa da, kısa sürse de.",
+      "Eriyen bir desen birkaç gün sonra geri gelir."
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 11'in notunda kimsenin görmediği yerlere düşen kar tanelerinin de aynı güzellikte olduğu söylenir. Ardından \"Rabbimiz ise her şeyi en güzel şekilde yaratır; küçük olsa da, kısa sürse de\" denir.",
+     "kaynak": "Slayt 11"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Kar bize hediyedir\" slaytındaki maddeyi tamamlayın: \"Hediye alan ne der? ______!\"",
+     "secenekler": [
+      "Âmin",
+      "Elhamdülillah",
+      "Maşallah",
+      "Sübhânallah"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 12'deki son madde \"Hediye alan ne der? Elhamdülillah!\" şeklindedir. Notta Rabbimize teşekkür etmeye şükür dendiği anlatılır.",
+     "kaynak": "Slayt 12"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Kapanış duasını tamamlayın: \"Allah'ım, kar tanelerini süslediğin gibi ______. Âmin.\"",
+     "secenekler": [
+      "gökyüzünü de yıldızlarla süsle",
+      "kalplerimizi de iman ile süsle",
+      "bize her kış kar gönder",
+      "evlerimizi de kar ile süsle"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 14'teki dua aynen şöyledir: \"Allah'ım, kar tanelerini süslediğin gibi kalplerimizi de iman ile süsle. Âmin.\"",
+     "kaynak": "Slayt 14"
+    }
+   ]
+  },
   {
    "id": "setmwmloq0z",
    "ad": "Penceredeki Sinema",
