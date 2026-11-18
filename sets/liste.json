@@ -1,7 +1,206 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-18T20:52:52.873Z",
+ "guncelleme": "2026-11-18T20:55:08.518Z",
  "setler": [
+  {
+   "id": "setmwmlnaqs",
+   "ad": "Gâfil Kafaya Bir Tokmak",
+   "kaynak": "Stüdyo",
+   "tarih": "2026-11-18T20:54:35.330Z",
+   "sorular": [
+    {
+     "tur": "genel",
+     "soru": "Hâtime şu cümleyle açılıyor: \"Gafil kafaya bir ______ ve bir ders-i ibrettir.\" Boşluğa hangi kelime gelir?",
+     "secenekler": [
+      "ışık",
+      "tokmak",
+      "kamçı",
+      "nasihat"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 2'deki alıntı \"Gafil kafaya bir tokmak ve bir ders-i ibrettir.\" şeklindedir. Dersin başlığı da bu cümleden gelir.",
+     "kaynak": "Slayt 2"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "İbret kelimesinin kökü olan \"ubûr\" kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Karşıya geçmek",
+      "Hatırlamak, anmak",
+      "Korkmak, çekinmek",
+      "Uyanmak, dirilmek"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 3'te ibretin kökünün ubûr, yani karşıya geçmek olduğu anlatılır. İbret almak, gördüğünden görmediğine geçmektir.",
+     "kaynak": "Slayt 3"
+    },
+    {
+     "tur": "genel",
+     "soru": "Haşr Sûresi 59/2'deki \"Fa'tebirû yâ ülil ebsâr\" ayetinde ibret alması istenenler kimlerdir?",
+     "secenekler": [
+      "Servet sahipleri",
+      "Göz sahipleri",
+      "İlim sahipleri",
+      "Basiret sahipleri"
+     ],
+     "dogru": 3,
+     "aciklama": "Slayt 4'te ayetin meali \"Ey basiret sahipleri, ibret alın!\" olarak verilir. Konuşmacı, hitabın göz sahiplerine değil basiret sahiplerine olduğuna dikkat çeker.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Sunuma göre uyutan şefkat sahtedir, uyandıran sertlik ise hakiki şefkattir.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 0,
+     "aciklama": "Slayt 6'da \"Uyutan şefkat sahtedir; uyandıran sertlik hakiki şefkattir\" denir. Hâtime'nin sert üslubu rahmetin tokmağı olarak açıklanır.",
+     "kaynak": "Slayt 6"
+    },
+    {
+     "tur": "genel",
+     "soru": "Hâtime'nin başındaki \"Vemel hayâtüd-dünyâ illâ metâul gurûr\" ayetinin Risale'deki meali nedir?",
+     "secenekler": [
+      "Ey basiret sahipleri, ibret alın!",
+      "Kişi sevdiğiyle beraberdir.",
+      "Dünya hayatı, aldatıcı bir menfaatten başka birşey değildir.",
+      "Her nefis ölümü tadacaktır."
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 7'de Âl-i İmrân 3/185'in bu parçasının dipnot meali \"Dünya hayatı, aldatıcı bir menfaatten başka birşey değildir.\" olarak verilir.",
+     "kaynak": "Slayt 7"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Gurûr\" kelimesinin sunumda verilen anlamı nedir?",
+     "secenekler": [
+      "Özlemek, şiddetle arzu etmek",
+      "Kullanılıp tüketilen eşya",
+      "Kibirlenmek, büyüklenmek",
+      "Aldanmak; geçiciyi kalıcı sanmak"
+     ],
+     "dogru": 3,
+     "aciklama": "Slayt 8'de gurûr için \"Aldanmak; geçiciyi kalıcı sanmak\" açıklaması yapılır. Metâ ise kullanılıp tüketilen eşyadır.",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunuma göre dünyanın üç yüzünden hangisi \"aldatıcı\" olarak nitelenir?",
+     "secenekler": [
+      "Çalışma ve ticarete bakan yüzü",
+      "Nefse ve fâni lezzetlere bakan yüzü",
+      "Âhiretin tarlası olan yüzü",
+      "Esmâ-i İlâhiyenin aynası olan yüzü"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 9'da aynası olan yüzün güzel, tarla olan yüzün kıymetli olduğu söylenir. Aldatan yüz ise nefse ve fâni lezzetlere bakan yüzdür.",
+     "kaynak": "Slayt 9"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"EY GAFLETE DALIP ve bu hayatı tatlı görüp ve ______, dünyaya talip bedbaht nefsim! Bilir misin, neye benzersin?\" Boşluğa ne gelir?",
+     "secenekler": [
+      "ölümü unutup",
+      "âhireti unutup",
+      "Rabbini unutup",
+      "dostlarını unutup"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 12'deki Hâtime'nin ilk hitabında \"âhireti unutup\" ifadesi geçer. Bu ifade slayt 13'teki dört basamağın üçüncüsüdür.",
+     "kaynak": "Slayt 12"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Koca gövdesi dışarıda; avcı görür. Yalnız o, ______, görmez.\" Boşluğa ne gelir?",
+     "secenekler": [
+      "başını yere eğmiş",
+      "avcıdan kaçmaya çalışmış",
+      "kanatlarını kapamış",
+      "gözünü kum içinde kapamış"
+     ],
+     "dogru": 3,
+     "aciklama": "Slayt 15'teki devekuşu temsilinin alıntısı \"Yalnız o, gözünü kum içinde kapamış, görmez.\" şeklindedir.",
+     "kaynak": "Slayt 15"
+    },
+    {
+     "tur": "genel",
+     "soru": "Devekuşu temsilinde \"avcı\" neyi temsil eder?",
+     "secenekler": [
+      "Şeytanı",
+      "Dünyayı",
+      "Nefsi",
+      "Ölümü"
+     ],
+     "dogru": 3,
+     "aciklama": "Slayt 16'da temsilin unsurları eşleştirilir ve \"Avcı: ölümdür\" denir.",
+     "kaynak": "Slayt 16"
+    },
+    {
+     "tur": "genel",
+     "soru": "Barla'daki iki adam temsilinde \"İstanbul\" neyi temsil eder?",
+     "secenekler": [
+      "Oyalandığımız fâni şeyler",
+      "Şu dünya",
+      "Dostların gittiği âlem, kabrin öbür tarafı",
+      "Buradaki son bağlarımız"
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 22'deki anahtarlarda İstanbul, dostların gittiği âlem, yani kabrin öbür tarafı olarak açıklanır. Barla ise şu dünyayı temsil eder.",
+     "kaynak": "Slayt 22"
+    },
+    {
+     "tur": "dogru_yanlis",
+     "soru": "Sunuma göre Barla'daki iki adamın dış hayatları birbirinden tamamen farklıdır.",
+     "secenekler": [
+      "Doğru",
+      "Yanlış"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 25'te iki adamın dış hayatının tamamen aynı olduğu, değişen tek şeyin içlerindeki bilgi olduğu vurgulanır.",
+     "kaynak": "Slayt 25"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunumda \"Kişi sevdiğiyle beraberdir\" hadis-i şerifi hangi fikirle ilişkilendirilir?",
+     "secenekler": [
+      "Musibetlerin günahlara kefaret olduğu",
+      "Birinci adamın kavuşma ümidinin güçlendiği",
+      "Gafletin tekrarla geldiği",
+      "İkinci adamın misafire tutunmasının haklı olduğu"
+     ],
+     "dogru": 1,
+     "aciklama": "Slayt 26'da bu hadisin birinci adamın ümidini güçlendirdiği söylenir. Sevdiklerimizle kavuşmanın yolu, onların sevdiği güzellikleri yaşamaktır.",
+     "kaynak": "Slayt 26"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Merdâne kabre bak, dinle, ne talep eder? Erkekçesine ölümün yüzüne ______, bak, ne ister.\" Boşluğa hangi kelime gelir?",
+     "secenekler": [
+      "bak",
+      "git",
+      "dur",
+      "gül"
+     ],
+     "dogru": 3,
+     "aciklama": "Slayt 29'daki alıntıda \"Erkekçesine ölümün yüzüne gül\" ifadesi geçer. Bu ifade devekuşunun tam tersi bir duruş olarak açıklanır.",
+     "kaynak": "Slayt 29"
+    },
+    {
+     "tur": "genel",
+     "soru": "Sunumdaki alıntıya göre zelzele gibi hadiseler, ehl-i imanın fâni malını neye çevirir?",
+     "secenekler": [
+      "Ceza hükmüne",
+      "Miras hükmüne",
+      "Sadaka hükmüne",
+      "Emanet hükmüne"
+     ],
+     "dogru": 2,
+     "aciklama": "Slayt 33'te bu hadiselerin \"ehl-i imanın fâni malını sadaka hükmüne çevirip ibkà etmek\" olduğu belirtilir. Bu kısım İzmir zelzelesi münasebetiyle yazılmıştır.",
+     "kaynak": "Slayt 33"
+    }
+   ]
+  },
   {
    "id": "setmwmdy7z0",
    "ad": "Birinci Söz",
