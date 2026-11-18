@@ -182,6 +182,23 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
     </form>
   </main>
 
+  <!-- YAYINLA: stüdyodan gelen seti paylaşılan listeye ekle -->
+  <main id="v-yayinla" class="yigin" hidden>
+    <h2>Seti paylaşılan listeye ekle</h2>
+    <section class="kart yigin" style="max-width:680px">
+      <p><b id="yyAd"></b> <span class="not" id="yyBilgi"></span></p>
+      <ol id="yyOnizleme" class="not" style="margin:0;padding-left:20px"></ol>
+      <div id="yyAnahtarKutu" class="yigin">
+        <label class="etiket" for="i-gh-anahtar">GitHub erişim anahtarı</label>
+        <input id="i-gh-anahtar" type="password" autocomplete="off" placeholder="github_pat_…">
+        <p class="not">Anahtar yalnız bu tarayıcıda saklanır; bir kez girmen yeter.</p>
+      </div>
+      <p class="hata" id="yyHata" hidden></p>
+      <p class="not" id="yyNot" aria-live="polite"></p>
+      <div class="sira"><button class="dugme" type="button" id="b-yayinla">Paylaşılan listeye ekle</button><button class="dugme ikincil" type="button" data-geri>Kapat</button></div>
+    </section>
+  </main>
+
   <!-- SUNUM -->
   <main id="v-sunum" class="yigin" hidden>
     <h2>Sunum yap</h2>
@@ -309,7 +326,7 @@ const MAKS = 20;
 const ONEK = 'risale-nur-yarisma-v1-';
 const $ = s => document.querySelector(s);
 const el = (tag, cls, txt) => { const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; };
-const views = ['giris','katil','ayar','inceleme','sunucu','oyuncu','pratik','sunum'];
+const views = ['giris','katil','ayar','inceleme','sunucu','oyuncu','pratik','sunum','yayinla'];
 function goster(v){ views.forEach(x => $('#v-'+x).hidden = x!==v); window.scrollTo(0,0); }
 function karistir(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
 function turAdi(t){ return TUR[t] || (typeof YZTUR!=='undefined' && YZTUR[t]) || ''; }
@@ -826,6 +843,7 @@ function setListeCiz(){
 /* ---- Paylaşılan setler: stüdyonun GitHub'a yazdığı liste (herkes okuyabilir) ---- */
 const PAYLASIM_URL='https://raw.githubusercontent.com/lgzl-oss/rslyrsm/main/sets/liste.json';
 async function paylasilanSetler(){
+  const a=ghAnahtar(); if(a){ try{ return (await ghOku(a)).data.setler; }catch(e){} }
   try{ const r=await fetch(PAYLASIM_URL+'?t='+Date.now(),{cache:'no-store'}); if(!r.ok) return []; const v=await r.json(); return Array.isArray(v&&v.setler)?v.setler:[]; }catch(e){ return []; }
 }
 function setNormalize(s){
@@ -842,7 +860,18 @@ async function paylasilanCiz(kap){
     const k=el('div','kart set'); const b=el('div','bilgi');
     b.append(el('b',null,set.ad), el('span','not',`${set.sorular.length} soru · herkes görebilir`));
     const o=el('button','dugme','Oyna'); o.type='button'; o.onclick=()=>setOyna(set);
-    const d=el('div','sira'); d.append(o); k.append(b,d); kap.append(k);
+    const d=el('div','sira'); d.append(o);
+    if(ghAnahtar()){
+      const x=el('button','dugme ikincil kucuk','Listeden kaldır'); x.type='button';
+      x.onclick=async()=>{
+        if(!x.dataset.onay){ x.dataset.onay='1'; x.textContent='Kaldırmak için tekrar bas'; setTimeout(()=>{ if(x.isConnected){ delete x.dataset.onay; x.textContent='Listeden kaldır'; } },4000); return; }
+        x.disabled=true; x.textContent='Kaldırılıyor…';
+        try{ await ghYaz(ghAnahtar(), 'Set kaldırıldı: '+set.ad, dd=>{ dd.setler=dd.setler.filter(y=>String(y.id)!==set.id); return dd; }); setListeCiz(); }
+        catch(e){ x.disabled=false; x.textContent=e.message||'Kaldırılamadı'; }
+      };
+      d.append(x);
+    }
+    k.append(b,d); kap.append(k);
   });
 }
 $('#i-set-dosya').addEventListener('change', async e => {
@@ -1193,6 +1222,71 @@ function cevapla(k){
   try{ P.conn.send({t:'cevap', qi:P.d.qi, k}); }catch(e){ P.cevap=null; if(P.guncelle) P.guncelle(); }
 }
 function ayril(){ if(P){ clearInterval(P.sayacTik); try{ P.conn && P.conn.close(); }catch(e){} try{ P.peer && P.peer.destroy(); }catch(e){} P=null; } $('#ustDurum').textContent='Canlı yarışma'; goster('giris'); }
+
+/* ---- GitHub'a yazma: yalnız bu sayfa (GitHub Pages) yapar; anahtar bu tarayıcıda durur ---- */
+const GH_API='https://api.github.com/repos/lgzl-oss/rslyrsm/contents/sets/liste.json', GH_DEPO='nur-gh-anahtar';
+function ghAnahtar(){ return depoAl(GH_DEPO)||''; }
+function b64uCoz(t){ t=String(t).replace(/\s/g,'').replace(/-/g,'+').replace(/_/g,'/'); while(t.length%4) t+='='; const b=atob(t), u=new Uint8Array(b.length); for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i); return new TextDecoder().decode(u); }
+function b64Kod(t){ const b=new TextEncoder().encode(t); let s=''; for(let i=0;i<b.length;i+=8192) s+=String.fromCharCode(...b.subarray(i,i+8192)); return btoa(s); }
+function ghHataMetni(k){ return ({401:'Anahtar geçersiz ya da süresi dolmuş.',403:'Anahtarın bu depoya yazma yetkisi yok (Contents: Read and write gerekir).',404:'Depo bulunamadı ya da anahtar bu depoya erişemiyor.',409:'Liste aynı anda değişti; tekrar dene.',422:'Liste güncellenemedi; tekrar dene.'})[k] || ('GitHub yanıtı: '+k); }
+async function ghIstek(anahtar, opts){
+  try{ return await fetch(GH_API,{...opts, cache:'no-store', headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+anahtar,'X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'}}); }
+  catch(e){ throw new Error('GitHub’a ulaşılamadı; internet bağlantını kontrol et.'); }
+}
+async function ghOku(anahtar){
+  const r=await ghIstek(anahtar,{method:'GET'});
+  if(r.status===404) return {sha:null, data:{surum:1, setler:[]}};
+  if(!r.ok) throw new Error(ghHataMetni(r.status));
+  const j=await r.json(); let d; try{ d=JSON.parse(b64uCoz(j.content)); }catch(e){ d={}; }
+  if(!d||typeof d!=='object') d={}; if(!Array.isArray(d.setler)) d.setler=[];
+  return {sha:j.sha, data:d};
+}
+async function ghYaz(anahtar, mesaj, degistir){
+  for(let i=0;i<2;i++){
+    const {sha,data}=await ghOku(anahtar);
+    const yeni=degistir(data); yeni.surum=1; yeni.guncelleme=new Date().toISOString();
+    const r=await ghIstek(anahtar,{method:'PUT', body:JSON.stringify({message:mesaj, content:b64Kod(JSON.stringify(yeni,null,1)), ...(sha?{sha}:{})})});
+    if(r.ok) return;
+    if((r.status===409||r.status===422) && i===0) continue;
+    throw new Error(ghHataMetni(r.status));
+  }
+}
+let gelenSet=null;
+function yayinlaAc(set, hataMetni){
+  gelenSet=set||null;
+  $('#yyAd').textContent=set?set.ad:'Set okunamadı';
+  $('#yyBilgi').textContent=set?` · ${set.sorular.length} soru`:'';
+  $('#yyOnizleme').replaceChildren(...(set?set.sorular.slice(0,3).map(q=>el('li',null,q.soru)):[]));
+  $('#yyAnahtarKutu').hidden=!set || !!ghAnahtar();
+  const h=$('#yyHata'); h.hidden=!hataMetni; h.textContent=hataMetni||'';
+  $('#yyNot').textContent=set?'Kontrol et ve “Paylaşılan listeye ekle”ye bas. Liste herkese açıktır.':'';
+  $('#b-yayinla').disabled=!set;
+  goster('yayinla');
+}
+$('#b-yayinla').addEventListener('click', async ()=>{
+  const btn=$('#b-yayinla'), hata=$('#yyHata'), not=$('#yyNot'); hata.hidden=true;
+  const girilen=$('#i-gh-anahtar').value.trim(); const anahtar=girilen||ghAnahtar();
+  if(!anahtar){ hata.textContent='GitHub erişim anahtarını gir.'; hata.hidden=false; return; }
+  if(!gelenSet) return;
+  btn.disabled=true; not.textContent='Yayınlanıyor…';
+  try{
+    const p={id:gelenSet.id, ad:gelenSet.ad, kaynak:gelenSet.kaynak||'Stüdyo', tarih:gelenSet.tarih||new Date().toISOString(),
+      sorular:gelenSet.sorular.map(q=>({tur:q.tur, soru:q.soru, secenekler:q.secenekler, dogru:q.dogru, aciklama:q.aciklama, kaynak:q.kaynakNot||''}))};
+    await ghYaz(anahtar, 'Set: '+p.ad, d=>{ d.setler=d.setler.filter(x=>String(x.id)!==p.id); d.setler.unshift(p); return d; });
+    if(girilen) depoYaz(GH_DEPO, girilen);
+    $('#i-gh-anahtar').value=''; $('#yyAnahtarKutu').hidden=true;
+    not.textContent=`“${p.ad}” paylaşılan listeye eklendi. Herkes Oyun kur → Kayıtlı setlerim → Paylaşılan setler altında görür (GitHub birkaç dakika gecikebilir).`;
+  }catch(e){ hata.textContent=e.message||'Yayınlanamadı.'; hata.hidden=false; btn.disabled=false; not.textContent=''; }
+});
+/* stüdyodan “Oyuna gönder” bağlantısıyla gelindiyse: seti göster, onay bekle (kendiliğinden yazmaz) */
+function yayinlaHash(){
+  if(!location.hash.startsWith('#yayinla=')) return;
+  const ham=location.hash.slice(9);
+  history.replaceState(null,'',location.pathname+location.search);
+  try{ const v=JSON.parse(b64uCoz(ham)); const st=setNormalize(v.set||v); if(!st.sorular.length) throw new Error(); yayinlaAc(st); }
+  catch(e){ yayinlaAc(null, 'Bağlantıdaki soru seti okunamadı. Stüdyodan “Oyuna gönder” ile tekrar dene.'); }
+}
+yayinlaHash(); window.addEventListener('hashchange', yayinlaHash);
 
 /* bağlantıyla gelindiyse kod hazır */
 const kod = new URLSearchParams(location.search).get('kod');
