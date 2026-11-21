@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Nur Yarışması</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Risale-i Nur Sözler'den 2–20 kişilik canlı bilgi yarışması. Hesap gerekmez; oda koduyla katılın.">
+<meta name="description" content="Risale-i Nur Sözler'den 2–60 kişilik canlı bilgi yarışması. Hesap gerekmez; oda koduyla katılın.">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
 </head>
 <body>
@@ -159,7 +159,7 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
       <span class="etiket">Risale-i Nur · Sözler'den canlı yarışma</span>
       <h1>Aynı anda aynı soru, kim daha hızlı bilecek?</h1>
       <p>Bir kişi oyunu kurar ve dört haneli oda kodunu paylaşır. Herkes kendi telefonundan veya bilgisayarından, nerede olursa olsun kodla katılır. Doğru ve hızlı cevap daha çok puan getirir; her sorudan sonra sıralama görünür.</p>
-      <p class="kaynak">Sorular: Risale-i Nur Sözler'den <span id="soruSayisi"></span> hazır soru, ya da yapay zekânın yazdığın bir konudan veya yüklediğin bir dosyadan ürettiği sorular · 2–20 oyuncu</p>
+      <p class="kaynak">Sorular: Risale-i Nur Sözler'den <span id="soruSayisi"></span> hazır soru, ya da yapay zekânın yazdığın bir konudan veya yüklediğin bir dosyadan ürettiği sorular · 2–60 oyuncu</p>
     </section>
     <section class="secimler" aria-label="Ne yapmak istiyorsunuz">
       <button class="secim" id="b-katil" type="button"><i style="background:var(--firuze)">→</i><div><b>Oyuna katıl</b><span>Oda kodunu ve adını yaz, sunucunun başlatmasını bekle.</span></div></button>
@@ -335,7 +335,7 @@ const BANK = JSON.parse(document.getElementById('bank').textContent);
 const SOZ = {1:'Birinci',2:'İkinci',3:'Üçüncü',4:'Dördüncü',5:'Beşinci',6:'Altıncı',7:'Yedinci',8:'Sekizinci',9:'Dokuzuncu',10:'Onuncu'};
 const TUR = {cumle_tamamlama:'Cümle tamamlama',kelime_tamamlama:'Kelime tamamlama',kelime_anlami:'Kelime anlamı',bakis_acisi:"Üstad'ın bakış açısı",temsil_eslestirme:'Temsil ve hakikat',dogru_yanlis:'Doğru / yanlış',hangi_soz:'Hangi Söz?'};
 const HARF = ['A','B','C','D'];
-const MAKS = 20;
+const MAKS = 60;
 const ONEK = 'risale-nur-yarisma-v1-';
 const $ = s => document.querySelector(s);
 const el = (tag, cls, txt) => { const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; };
