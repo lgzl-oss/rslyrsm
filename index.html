@@ -552,8 +552,13 @@ function sesHazir(){
     return true;
   }catch(e){ return false; }
 }
-document.addEventListener('pointerdown', sesHazir, {capture:true});
-document.addEventListener('keydown', sesHazir, {capture:true});
+function sesKilidiAc(){
+  try{ if(navigator.audioSession && navigator.audioSession.type!=='playback') navigator.audioSession.type='playback'; }catch(e){}
+  if(!sesHazir()) return;
+  try{ if(!SES.acildi){ const b=SES.ctx.createBuffer(1,1,22050), k=SES.ctx.createBufferSource(); k.buffer=b; k.connect(SES.ctx.destination); k.start(0); SES.acildi=true; } }catch(e){}
+  if(S && !$('#v-sunucu').hidden) sunucuMuzik(); else if(P && !$('#v-oyuncu').hidden) oyuncuMuzik();
+}
+['pointerdown','touchend','click','keydown'].forEach(t=>document.addEventListener(t, sesKilidiAc, {capture:true}));
 const D4=293.66, HICAZ=[0,1,4,5,7,8,10,12,13,16,17,19];
 const frek=(d,ok=0)=>D4*Math.pow(2,(HICAZ[((d%12)+12)%12]+12*ok)/12);
 function nota(f,t,sure,{tip='triangle',vol=.18,atk=.004,filtre=0}={}){
@@ -612,7 +617,7 @@ function sesDugmeYaz(){ const b=$('#b-ses'); b.innerHTML=SES_IKON[SES.mod]+`<spa
 $('#b-ses').addEventListener('click', ()=>{
   SES.mod = {muzik:'efekt', efekt:'sessiz', sessiz:'muzik'}[SES.mod]; depoYaz('nur-ses', SES.mod); sesDugmeYaz(); sesHazir();
   if(SES.ana) SES.ana.gain.value = SES.mod==='sessiz' ? 0 : .55;
-  if(S && !$('#v-sunucu').hidden) sunucuMuzik();
+  if(S && !$('#v-sunucu').hidden) sunucuMuzik(); else if(P && !$('#v-oyuncu').hidden) oyuncuMuzik();
 });
 sesDugmeYaz();
 
@@ -1540,11 +1545,13 @@ function mesajAl(conn, d){
 }
 function benimSiram(){ if(!P||!P.d||!P.d.o) return null; const i=P.d.o.findIndex(o=>o.p===P.d.ben); return i<0?null:{i, o:P.d.o[i]}; }
 function ayrilDugmesi(v, yazi='Ayrıl'){ const b=el('button','dugme ikincil',yazi); b.type='button'; b.onclick=ayril; v.append(b); }
+function oyuncuMuzik(){ const d=P&&P.d; muzik(!d||P.koptu||P.dolu ? null : ({lobi:'lobi', soru:'soru', tablo:'lobi'}[d.f] || null)); }
 function oyuncuCiz(){
   const v=$('#v-oyuncu'); v.replaceChildren(); clearInterval(P.sayacTik); P.guncelle=null; P.anim.temizle();
   const d=P.d;
   const key=d ? d.f+':'+d.qi+':'+d.e : 'yok', yeni=key!==P.cizKey; P.cizKey=key; P.imza=d?JSON.stringify({...d,kalan:0}):''; v.classList.toggle('ilk', yeni); v.classList.toggle('durgun', !yeni);
   if(yeni && (!d || d.f!=='son')) konfetiDur();
+  oyuncuMuzik();
   if(P.dolu){ v.append(el('h2',null,'Oda dolu'), el('p','not',`Bu odada en çok ${MAKS} kişi yarışabilir. Sunucudan yeni bir oda açmasını isteyebilirsin.`)); ayrilDugmesi(v,'Ana ekran'); return; }
   if(P.koptu){
     v.append(el('span','etiket',`Oda ${P.pin} · ${P.ad}`), el('h2',null,'Bağlantı koptu'), el('p','not','Puanın sunucuda duruyor. Tekrar bağlanınca kaldığın yerden devam edersin.'));
@@ -1562,7 +1569,7 @@ function oyuncuCiz(){
   if(d.f==='hazir'){
     const m=el('div','hazir-sahne'); m.append(el('span','etiket',`Soru ${d.qi+1} / ${d.top}`), el('h2',null,turAdi(d.tur)||'Hazır ol'));
     const kutu=el('div','sayi-kutu'); m.append(kutu); v.append(m);
-    let son=null; const yaz=()=>{ const k=Math.max(1,Math.ceil((P.hazirBitis-Date.now())/1000)); if(k!==son){ son=k; kutu.innerHTML=`<div class="halka"></div><div class="buyuk-sayi">${k}</div>`; } };
+    let son=null; const yaz=()=>{ const k=Math.max(1,Math.ceil((P.hazirBitis-Date.now())/1000)); if(k!==son){ son=k; kutu.innerHTML=`<div class="halka"></div><div class="buyuk-sayi">${k}</div>`; const b=d.qi+':'+k; if(P.sonBip!==b){ P.sonBip=b; EFEKT.bip(false); } } };
     yaz(); P.sayacTik=setInterval(yaz,100); return;
   }
   const q=d.q;
@@ -1575,6 +1582,7 @@ function oyuncuCiz(){
     v.append(kar, durum);
     const guncel=()=>{
       const kalan=Math.max(0,P.bitis-Date.now()), sny=Math.ceil(kalan/1000); sn.textContent=sny; say.style.setProperty('--p', d.T? kalan/d.T : 0); say.classList.toggle('az', sny<=5);
+      if(sny<=5 && sny>0 && P.cevap===null){ const t=d.qi+':'+sny; if(P.sonTik!==t){ P.sonTik=t; EFEKT.tiktak(); SES.tempo=DESEN.soru.tempo+(6-sny)*5; } }
       const kilit = P.cevap!==null || kalan<=0;
       bs.forEach((b,k)=>{ b.disabled=kilit; b.classList.toggle('soluk', P.cevap!==null && k!==P.cevap); b.classList.toggle('secili', k===P.cevap); });
       durum.textContent = P.cevap!==null ? 'Cevabın gönderildi. Diğerleri bekleniyor.' : (kalan<=0 ? 'Süre doldu.' : '');
@@ -1614,7 +1622,7 @@ function cevapla(k){
   P.cevap=k; if(P.guncelle) P.guncelle();
   try{ P.conn.send({t:'cevap', qi:P.d.qi, k}); }catch(e){ P.cevap=null; if(P.guncelle) P.guncelle(); }
 }
-function ayril(){ konfetiDur(); if(P){ clearInterval(P.sayacTik); P.anim.temizle(); try{ P.conn && P.conn.close(); }catch(e){} try{ P.peer && P.peer.destroy(); }catch(e){} P=null; } $('#ustDurum').textContent='Canlı yarışma'; goster('giris'); }
+function ayril(){ konfetiDur(); muzik(null); if(P){ clearInterval(P.sayacTik); P.anim.temizle(); try{ P.conn && P.conn.close(); }catch(e){} try{ P.peer && P.peer.destroy(); }catch(e){} P=null; } $('#ustDurum').textContent='Canlı yarışma'; goster('giris'); }
 
 /* ---- GitHub'a yazma: yalnız bu sayfa (GitHub Pages) yapar; anahtar bu tarayıcıda durur ---- */
 const GH_API='https://api.github.com/repos/lgzl-oss/rslyrsm/contents/sets/liste.json', GH_DEPO='nur-gh-anahtar';
