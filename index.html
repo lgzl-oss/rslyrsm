@@ -96,11 +96,6 @@ input[type=text],input[type=tel]{width:100%;font:600 1.25rem var(--f-govde);padd
 .satir.ben{outline:2px solid var(--varak)}
 .durum{font-size:clamp(1.6rem,6vw,2.6rem);font-family:var(--f-baslik);font-weight:800}
 .dogru-renk{color:var(--iyi)}.yanlis-renk{color:var(--kotu)}
-.kursu{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:end;text-align:center}
-.basamak{border-radius:12px 12px 0 0;background:var(--gece-3);padding:14px 8px;display:flex;flex-direction:column;gap:4px;justify-content:flex-end}
-.basamak .ad{font-weight:700;overflow-wrap:anywhere}
-.basamak .yer{font-family:var(--f-baslik);font-size:2rem;font-weight:800;color:var(--varak)}
-.b1{min-height:200px;background:color-mix(in srgb,var(--varak) 28%, var(--gece-3))}.b2{min-height:150px}.b3{min-height:115px}
 .serit{height:6px;border-radius:3px;background:var(--gece-3);overflow:hidden}
 .serit > div{height:100%;background:var(--varak);transition:width .3s}
 @media (max-width:720px){
@@ -142,15 +137,121 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
 .sayac-kh{align-self:flex-end;font-size:.8rem;color:var(--soluk);font-variant-numeric:tabular-nums;margin-top:-6px}
 .sayac-kh.asim{color:var(--kotu);font-weight:700}
 .inc input.asim,.inc textarea.asim{border-color:var(--kotu)}
+
+/* ---------- Canlı yarışma: hareket ve ses ---------- */
+#girih{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.sahne{position:relative;z-index:1}
+.ses-dugme{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;font-size:.85rem}
+.ses-dugme svg{width:18px;height:18px}
+.pin-kutu.parilti{background:linear-gradient(100deg,var(--varak) 0%,#fff3c4 45%,var(--varak) 60%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:parilti 3.2s linear infinite}
+@keyframes parilti{to{background-position:-250% 0}}
+.oyuncu.yeni{animation:zipla .55s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes zipla{0%{transform:translateY(-36px) scale(.4);opacity:0}100%{transform:none;opacity:1}}
+.karo .harf svg{width:22px;height:22px;fill:#fff}
+.karo{position:relative;overflow:hidden;transition:transform .45s cubic-bezier(.2,1.3,.4,1),opacity .4s,filter .4s,box-shadow .4s}
+.karo .say{transition:opacity .4s}
+.gizli-say .karo .say{opacity:0}
+.karo.dogru{transform:scale(1.03);box-shadow:0 0 0 4px var(--kagit),0 0 40px rgba(255,236,170,.5);z-index:1}
+.karo.soluk{transform:scale(.97)}
+.ilk .soru-metin{animation:serit .6s cubic-bezier(.2,1,.3,1) both}
+.ilk .karolar .karo{animation:yuksel .55s cubic-bezier(.2,1.3,.4,1) both}
+.ilk .karolar .karo:nth-child(2){animation-delay:.1s}.ilk .karolar .karo:nth-child(3){animation-delay:.2s}.ilk .karolar .karo:nth-child(4){animation-delay:.3s}
+@keyframes serit{from{transform:translateX(-50px);opacity:0}to{transform:none;opacity:1}}
+@keyframes yuksel{from{transform:translateY(36px) scale(.92);opacity:0}to{transform:none;opacity:1}}
+.sayac.az{background:conic-gradient(var(--mercan) calc(var(--p,1)*360deg), var(--gece-3) 0);animation:nabiz .5s ease-in-out infinite alternate}
+@keyframes nabiz{to{transform:scale(1.09)}}
+.dalga{position:absolute;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:rgba(255,255,255,.65);pointer-events:none;animation:dalga .6s ease-out forwards}
+@keyframes dalga{to{transform:scale(14);opacity:0}}
+.hazir-sahne{display:grid;justify-items:center;text-align:center;gap:10px;padding-block:24px}
+.ilk .hazir-sahne > *:not(.sayi-kutu){animation:serit .6s cubic-bezier(.2,1,.3,1) both}
+.sayi-kutu{position:relative;display:grid;place-items:center;min-height:220px;width:100%}
+.buyuk-sayi{font:800 clamp(6rem,24vw,11rem)/1 var(--f-baslik);color:var(--varak);animation:pat .9s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pat{0%{transform:scale(2.3);opacity:0}35%{opacity:1}100%{transform:scale(1);opacity:1}}
+.halka{position:absolute;width:230px;height:230px;border-radius:50%;border:3px solid var(--varak);animation:halka 1s ease-out both;pointer-events:none}
+@keyframes halka{from{transform:scale(.3);opacity:.9}to{transform:scale(1.6);opacity:0}}
+.tik-ciz path{stroke:#fff;stroke-width:4;fill:none;stroke-dasharray:40;stroke-dashoffset:40;animation:ciz .5s .15s ease-out forwards}
+@keyframes ciz{to{stroke-dashoffset:0}}
+.karo .harf .tik-ciz{width:24px;height:24px}
+.tablo-anim{position:relative;width:100%;max-width:760px;margin-inline:auto}
+.tablo-anim .satir{position:absolute;left:0;right:0;height:52px;padding-block:0;transition:top .9s cubic-bezier(.3,1.2,.4,1),background .4s,opacity .5s}
+.tablo-anim .satir .no{color:var(--varak)}
+.satir.cikti{background:color-mix(in srgb,var(--iyi) 22%,var(--gece-2))}
+.sonuc-kart{border-radius:16px;padding:22px 18px;text-align:center;display:grid;gap:4px;justify-items:center}
+.ilk .sonuc-kart{animation:pat-k .6s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes pat-k{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.sonuc-kart.iyi{background:var(--iyi);color:#062b17}
+.sonuc-kart.kotu{background:var(--kotu);color:#2b0806}
+.sonuc-kart.bos{background:var(--gece-3);color:var(--kagit)}
+.sonuc-kart b{font:800 clamp(1.8rem,7vw,2.6rem)/1.1 var(--f-baslik)}
+.sonuc-kart .puan-uc{font:800 1.7rem var(--f-govde);font-variant-numeric:tabular-nums}
+.ilk .sonuc-kart .puan-uc{animation:yukari 1.2s ease-out both}
+@keyframes yukari{from{transform:translateY(18px);opacity:0}35%{opacity:1}to{transform:none;opacity:1}}
+/* Kürsü */
+.kursu-sahne{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:420px;padding-top:70px;overflow:hidden;border-radius:16px}
+.karanlik{position:absolute;inset:0;background:radial-gradient(60% 70% at 50% 85%,transparent 0,rgba(5,9,20,.85) 70%);opacity:0;transition:opacity 1s;pointer-events:none;z-index:2}
+.kursu-sahne.dim .karanlik{opacity:1}
+.isik{position:absolute;top:0;width:240px;height:130%;left:calc(50% - 120px);background:linear-gradient(rgba(255,236,170,0),rgba(255,236,170,.16) 40%,rgba(255,236,170,0));clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);transform-origin:50% 0;opacity:0;transition:opacity .6s;pointer-events:none;z-index:3}
+.kursu-sahne.tarama .isik{opacity:1;animation:tara 1.1s ease-in-out infinite alternate}
+@keyframes tara{from{transform:rotate(-22deg)}to{transform:rotate(22deg)}}
+.kursu-sahne.final .isik{opacity:1;animation:none;transform:none}
+.kursu{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:12px}
+.basamak{position:relative;width:min(190px,30%);display:flex;flex-direction:column;align-items:center}
+.madalya{position:relative;width:86px;height:86px;border-radius:50%;display:grid;place-items:center;font:800 2.3rem var(--f-baslik);color:#1a1406;margin-bottom:10px}
+.basamak.acik .madalya{animation:dus .9s cubic-bezier(.3,1.5,.5,1) .5s both}
+@keyframes dus{from{opacity:0;transform:translateY(-160px) scale(.6)}to{opacity:1;transform:none}}
+.basamak:not(.acik) .madalya,.basamak:not(.acik) .kim{visibility:hidden}
+.basamak.bos .madalya,.basamak.bos .kim{visibility:hidden}
+.b1 .madalya{width:110px;height:110px;font-size:3rem;background:radial-gradient(circle at 35% 30%,#fff3c4,var(--varak) 55%,var(--varak-koyu));box-shadow:0 0 0 4px rgba(255,236,170,.35),0 0 60px rgba(255,220,130,.6)}
+.b2 .madalya{background:radial-gradient(circle at 35% 30%,#fff,#cfd6e6 55%,#8792ad);box-shadow:0 0 0 4px rgba(220,228,245,.25)}
+.b3 .madalya{background:radial-gradient(circle at 35% 30%,#ffd9b8,#d99a6a 55%,#8f5a35);box-shadow:0 0 0 4px rgba(217,154,106,.25)}
+.isinlar{position:absolute;left:50%;top:55px;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;opacity:0;
+  background:repeating-conic-gradient(rgba(255,226,150,.2) 0 7deg,transparent 7deg 22.5deg);-webkit-mask:radial-gradient(circle,#000 18%,transparent 68%);mask:radial-gradient(circle,#000 18%,transparent 68%);transition:opacity 1s}
+.b1.parla .isinlar{opacity:1;animation:don 14s linear infinite}
+.tac{position:absolute;top:-50px;left:50%;width:60px;height:60px;margin-left:-30px}
+.b1.parla .tac{animation:tac 1s cubic-bezier(.3,1.5,.5,1) .3s both}
+.basamak:not(.parla) .tac{visibility:hidden}
+@keyframes tac{from{opacity:0;transform:translateY(-80px) rotate(-90deg)}to{opacity:1;transform:none}}
+.kim{font:700 1.15rem var(--f-govde);text-align:center;margin-bottom:10px;min-height:2.9em;overflow-wrap:anywhere}
+.kim .hrf{display:inline-block}
+.basamak.acik .kim .hrf{animation:hrf .45s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes hrf{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.kim small{display:block;font:600 .95rem var(--f-govde);color:var(--soluk);font-variant-numeric:tabular-nums}
+.b1 .kim{font-size:1.45rem;color:var(--varak)}
+.basamak.ben .kim{text-decoration:underline 2px var(--varak);text-underline-offset:5px}
+.kolon{width:100%;border-radius:12px 12px 0 0;display:grid;place-items:start center;padding-top:12px;font:800 2.2rem var(--f-baslik);color:#1a1406;transform:scaleY(0);transform-origin:bottom;transition:transform .8s cubic-bezier(.2,1.2,.3,1)}
+.basamak.acik .kolon,.basamak.bos .kolon{transform:scaleY(1)}
+.basamak.bos .kolon{opacity:.35}
+.b1 .kolon{height:175px;background:linear-gradient(var(--varak),var(--varak-koyu))}
+.b2 .kolon{height:125px;background:linear-gradient(#cfd6e6,#97a2bd)}
+.b3 .kolon{height:90px;background:linear-gradient(#d99a6a,#a0663e)}
+.sonra-gel{transition:opacity .8s}
+.sonra-gel.gizli{opacity:0}
+/* yeniden çizimde giriş hareketleri tekrar oynamasın */
+.durgun .madalya,.durgun .kim .hrf,.durgun .tac,.durgun .oyuncu,.durgun .sonuc-kart,.durgun .puan-uc{animation:none!important}
+.durgun .kolon{transition:none}
+.durgun .tik-ciz path{animation:none;stroke-dashoffset:0}
+#konfeti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+@media (max-width:720px){
+  .madalya{width:60px;height:60px;font-size:1.6rem} .b1 .madalya{width:76px;height:76px;font-size:2rem}
+  .kim{font-size:.95rem} .b1 .kim{font-size:1.1rem}
+  .b1 .kolon{height:150px} .b2 .kolon{height:110px} .b3 .kolon{height:80px}
+  .isinlar{width:360px;height:360px;margin:-180px 0 0 -180px;top:38px} .tac{width:44px;height:44px;margin-left:-22px;top:-40px}
+  .kursu-sahne{min-height:360px}
+}
+@media (prefers-reduced-motion:reduce){
+  .sonra-gel.gizli{opacity:1}
+}
 </style>
 
+<canvas id="girih" aria-hidden="true"></canvas>
+<canvas id="konfeti" aria-hidden="true"></canvas>
 <div class="sahne">
   <header class="ust">
     <div class="marka" aria-label="Nur Yarışması">
       <svg viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="6" width="20" height="20" transform="rotate(45 16 16)"/><rect x="7" y="7" width="18" height="18"/><circle cx="16" cy="16" r="3.2" fill="currentColor"/></g></svg>
       Nur Yarışması
     </div>
-    <div class="sira"><span class="etiket" id="ustDurum">Canlı yarışma</span></div>
+    <div class="sira"><span class="etiket" id="ustDurum">Canlı yarışma</span><button class="dugme ikincil ses-dugme" id="b-ses" type="button"></button></div>
   </header>
 
   <!-- GİRİŞ -->
@@ -438,6 +539,159 @@ function hataMetni(e){
 
 /* ---------------- PRATİK ---------------- */
 $('#b-pratik').addEventListener('click', () => pratikBasla());
+
+/* ---------------- SES: tarayıcıda üretilen özgün ezgiler (Hicaz, ud ve darbuka) ---------------- */
+const SES = { ctx:null, ana:null, mod: depoAl('nur-ses') || 'muzik', dongu:null, calan:null, zaman:0, adim:0, tik:null, tempo:100 };
+if(!['muzik','efekt','sessiz'].includes(SES.mod)) SES.mod='muzik';
+function sesHazir(){
+  try{
+    if(!SES.ctx){ const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return false;
+      SES.ctx=new AC(); SES.ana=SES.ctx.createGain(); SES.ana.gain.value=SES.mod==='sessiz'?0:.55;
+      const k=SES.ctx.createDynamicsCompressor(); SES.ana.connect(k); k.connect(SES.ctx.destination); }
+    if(SES.ctx.state==='suspended') SES.ctx.resume();
+    return true;
+  }catch(e){ return false; }
+}
+document.addEventListener('pointerdown', sesHazir, {capture:true});
+document.addEventListener('keydown', sesHazir, {capture:true});
+const D4=293.66, HICAZ=[0,1,4,5,7,8,10,12,13,16,17,19];
+const frek=(d,ok=0)=>D4*Math.pow(2,(HICAZ[((d%12)+12)%12]+12*ok)/12);
+function nota(f,t,sure,{tip='triangle',vol=.18,atk=.004,filtre=0}={}){
+  if(!SES.ctx||SES.mod==='sessiz') return;
+  const o=SES.ctx.createOscillator(), g=SES.ctx.createGain(); o.type=tip; o.frequency.setValueAtTime(f,t);
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+atk); g.gain.exponentialRampToValueAtTime(.0001,t+sure);
+  let son=g; if(filtre){ const bq=SES.ctx.createBiquadFilter(); bq.type='lowpass'; bq.frequency.value=filtre; g.connect(bq); son=bq; }
+  o.connect(g); son.connect(SES.ana); o.start(t); o.stop(t+sure+.05);
+}
+function ud(f,t,sure=.5,vol=.16){ nota(f,t,sure,{tip:'triangle',vol,filtre:2600}); nota(f*2,t,sure*.5,{tip:'sawtooth',vol:vol*.12,filtre:1800}); }
+let gurultu=null;
+function gurultuTampon(){ if(gurultu) return gurultu; const n=SES.ctx.sampleRate*.5; gurultu=SES.ctx.createBuffer(1,n,SES.ctx.sampleRate); const d=gurultu.getChannelData(0); for(let i=0;i<n;i++) d[i]=Math.random()*2-1; return gurultu; }
+function darbuka(t,tur,vol=.5){
+  if(!SES.ctx||SES.mod==='sessiz') return;
+  if(tur==='dum'){ const o=SES.ctx.createOscillator(), g=SES.ctx.createGain(); o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(55,t+.22); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.001,t+.3); o.connect(g); g.connect(SES.ana); o.start(t); o.stop(t+.32); }
+  else { const s=SES.ctx.createBufferSource(), bq=SES.ctx.createBiquadFilter(), g=SES.ctx.createGain(); s.buffer=gurultuTampon(); bq.type='highpass'; bq.frequency.value=tur==='tek'?2400:5000; g.gain.setValueAtTime(vol*(tur==='tek'?.55:.25),t); g.gain.exponentialRampToValueAtTime(.001,t+(tur==='tek'?.09:.04)); s.connect(bq); bq.connect(g); g.connect(SES.ana); s.start(t); s.stop(t+.12); }
+}
+const DESEN = {
+  lobi:{ tempo:104, ritim:'d..t..t.d.t.t...', ezgi:[[0,0],[2,4],[3,6],[4,8],[3,10],[2,12],[1,14],[0,16],[4,18],[5,20],[4,22],[3,24],[2,26],[3,28],[1,30]], bas:[[0,0],[0,8],[4,16],[0,24]], uzunluk:32 },
+  soru:{ tempo:100, ritim:'d..kt..kd.k.t..k', ezgi:[[0,0],[1,2],[0,4],[1,6],[2,8],[1,10],[0,12],[-1,14]], bas:[[0,0],[0,4],[1,8],[0,12]], uzunluk:16 },
+};
+function muzik(ad){
+  if(SES.calan===ad) return; SES.calan=ad;
+  clearInterval(SES.tik); SES.tik=null; SES.dongu=null;
+  if(!ad || !SES.ctx) { if(ad && !SES.ctx) SES.calan=null; return; }
+  const d=DESEN[ad]; SES.dongu=d; SES.tempo=d.tempo; SES.adim=0; SES.zaman=SES.ctx.currentTime+.08;
+  SES.tik=setInterval(()=>{
+    if(!SES.dongu || SES.mod!=='muzik' || SES.ctx.state!=='running'){ SES.zaman=SES.ctx.currentTime+.08; return; }
+    while(SES.zaman < SES.ctx.currentTime+.18){
+      const a=SES.adim%SES.dongu.uzunluk, r=SES.dongu.ritim[a%16], t=SES.zaman;
+      if(r==='d') darbuka(t,'dum',.55); else if(r==='t') darbuka(t,'tek',.5); else if(r==='k') darbuka(t,'k',.4);
+      SES.dongu.ezgi.forEach(([der,ad])=>{ if(ad===a) ud(frek(der+7),t,.42,.13); });
+      SES.dongu.bas.forEach(([der,ad])=>{ if(ad===a) nota(frek(der,-1),t,.5,{tip:'sine',vol:.2}); });
+      SES.zaman += 60/SES.tempo/4; SES.adim++;
+    }
+  },40);
+}
+const EFEKT = {
+  katil(i){ if(!SES.ctx) return; nota(frek(i%7+7), SES.ctx.currentTime, .18, {tip:'sine',vol:.14}); },
+  bip(son){ if(!SES.ctx) return; nota(son?880:587, SES.ctx.currentTime, son?.5:.22, {tip:'sine',vol:.22}); },
+  tiktak(){ if(!SES.ctx) return; darbuka(SES.ctx.currentTime,'k',.9); },
+  dogru(){ if(!SES.ctx) return; const t=SES.ctx.currentTime; [0,4,7,12].forEach((s,i)=>ud(D4*Math.pow(2,s/12)*2, t+i*.09, .7, .18)); nota(D4*4, t+.36, 1.2, {tip:'sine',vol:.1}); },
+  yanlis(){ if(!SES.ctx) return; const t=SES.ctx.currentTime; nota(frek(1,-1)*2, t, .35, {tip:'triangle',vol:.16}); nota(frek(0,-1)*2, t+.18, .6, {tip:'triangle',vol:.16}); },
+  savrul(){ if(!SES.ctx||SES.mod==='sessiz') return; const t=SES.ctx.currentTime, s=SES.ctx.createBufferSource(), bq=SES.ctx.createBiquadFilter(), g=SES.ctx.createGain(); s.buffer=gurultuTampon(); bq.type='bandpass'; bq.Q.value=2; bq.frequency.setValueAtTime(400,t); bq.frequency.exponentialRampToValueAtTime(5000,t+.4); g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(.35,t+.15); g.gain.exponentialRampToValueAtTime(.001,t+.45); s.connect(bq); bq.connect(g); g.connect(SES.ana); s.start(t); s.stop(t+.5); },
+  tremolo(sure){ if(!SES.ctx) return; const t=SES.ctx.currentTime; for(let i=0;i<sure*14;i++) darbuka(t+i/14, i%2?'k':'tek', .15+.5*i/(sure*14)); },
+  basamak(k){ if(!SES.ctx) return; const t=SES.ctx.currentTime; darbuka(t,'dum',.8); [0,4,7].forEach((s,i)=>ud(D4*Math.pow(2,(s+k*2)/12)*2, t+.5+i*.08, .6, .16)); },
+  zafer(){ if(!SES.ctx) return; const t=SES.ctx.currentTime, rast=[0,2,4,5,7,9,11,12]; [0,2,4,7].forEach((d,i)=>ud(261.63*Math.pow(2,rast[d]/12)*2, t+i*.14, .5, .2)); [0,4,7,12].forEach(s=>nota(261.63*Math.pow(2,s/12), t+.6, 1.8, {tip:'triangle',vol:.1})); darbuka(t+.6,'dum',.7); }
+};
+const SES_YAZI = {muzik:'Müzik', efekt:'Yalnız efekt', sessiz:'Sessiz'};
+const SES_IKON = {
+  muzik:'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>',
+  efekt:'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>',
+  sessiz:'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>'
+};
+function sesDugmeYaz(){ const b=$('#b-ses'); b.innerHTML=SES_IKON[SES.mod]+`<span>${SES_YAZI[SES.mod]}</span>`; b.setAttribute('aria-label',`Ses: ${SES_YAZI[SES.mod]}. Değiştirmek için bas.`); }
+$('#b-ses').addEventListener('click', ()=>{
+  SES.mod = {muzik:'efekt', efekt:'sessiz', sessiz:'muzik'}[SES.mod]; depoYaz('nur-ses', SES.mod); sesDugmeYaz(); sesHazir();
+  if(SES.ana) SES.ana.gain.value = SES.mod==='sessiz' ? 0 : .55;
+  if(S && !$('#v-sunucu').hidden) sunucuMuzik();
+});
+sesDugmeYaz();
+
+/* ---------------- Karo şekilleri: renk körü için şekil de ayırt eder ---------------- */
+const SEKIL = [
+  '<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22"/><rect x="9" y="9" width="22" height="22" transform="rotate(45 20 20)"/></svg>',
+  '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4C26 13 32 19 32 26a12 12 0 0 1-24 0c0-7 6-13 12-22z"/></svg>',
+  '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 36 20 20 37 4 20z"/></svg>',
+  '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 34 12v16L20 36 6 28V12z"/></svg>'
+];
+const TIK = '<svg class="tik-ciz" viewBox="0 0 30 30" aria-hidden="true"><path d="M5 16l6 6L25 8"/></svg>';
+function harfEl(k, dogru){ const h=el('span','harf'); h.innerHTML = dogru ? TIK : SEKIL[k]; h.setAttribute('aria-label', dogru ? 'Doğru cevap' : HARF[k]+' şıkkı'); h.setAttribute('role','img'); return h; }
+function dalga(b, ev){ const r=b.getBoundingClientRect(), d=el('span','dalga'); d.style.left=((ev&&ev.clientX?ev.clientX:r.left+r.width/2)-r.left)+'px'; d.style.top=((ev&&ev.clientY?ev.clientY:r.top+r.height/2)-r.top)+'px'; b.append(d); setTimeout(()=>d.remove(),700); }
+const azHareket = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function sayiSay(e, a, b, ms){ if(azHareket || a===b){ e.textContent=b.toLocaleString('tr-TR'); return; } const t0=performance.now(); const f=t=>{ const k=Math.min(1,(t-t0)/ms); e.textContent=Math.round(a+(b-a)*(1-Math.pow(1-k,3))).toLocaleString('tr-TR'); if(k<1 && e.isConnected) requestAnimationFrame(f); }; requestAnimationFrame(f); }
+function zamanlayici(){ const l=[]; const f=(ms,fn)=>{ l.push(setTimeout(fn, azHareket?Math.min(ms,200):ms)); }; f.temizle=()=>{ l.forEach(clearTimeout); l.length=0; }; return f; }
+
+/* ---------------- Arka plan: ağır dönen girih ---------------- */
+const gc=$('#girih'), gx=gc.getContext('2d'); let girihBoy='';
+function girihCiz(t){
+  const dpr=Math.min(2,devicePixelRatio||1), w=innerWidth*dpr, h=innerHeight*dpr, boy=w+'x'+h;
+  if(boy!==girihBoy){ gc.width=w; gc.height=h; girihBoy=boy; }
+  const s=140*dpr; gx.clearRect(0,0,w,h); gx.strokeStyle='rgba(217,180,90,.06)'; gx.lineWidth=1.2*dpr;
+  const kay=(t/1000)*6*dpr;
+  for(let y=-s;y<h+s;y+=s) for(let x=-s;x<w+s;x+=s){ const cx=x+(kay%s), cy=y+s/2, r=s*.36;
+    for(let k=0;k<2;k++){ gx.beginPath(); for(let i=0;i<=4;i++){ const a=i*Math.PI/2+k*Math.PI/4+t/40000; gx.lineTo(cx+Math.cos(a)*r, cy+Math.sin(a)*r); } gx.stroke(); } }
+}
+girihCiz(0);
+addEventListener('resize', ()=>girihCiz(performance.now()));
+if(!azHareket) setInterval(()=>{ if(!$('#v-sunucu').hidden && !document.hidden) girihCiz(performance.now()); }, 66);
+
+/* ---------------- Konfeti: sekiz köşeli yıldız, çini renkleri ---------------- */
+const kc=$('#konfeti'), kx=kc.getContext('2d'); let parca=[], konfetiRaf=0;
+function konfeti(yan){
+  if(azHareket) return;
+  const dpr=Math.min(2,devicePixelRatio||1); kc.width=innerWidth*dpr; kc.height=innerHeight*dpr;
+  const renk=['#d0533f','#3b63c9','#d39a1e','#1f9e9a','#d9b45a','#eef0f7'];
+  const yeni=Array.from({length:yan?120:170},(_,i)=>({ x: yan ? (i%2?kc.width*.02:kc.width*.98) : kc.width*(.3+Math.random()*.4), y: yan?kc.height*.9:kc.height*.6,
+    vx:(yan?(i%2?1:-1)*(6+Math.random()*10):(Math.random()-.5)*18)*dpr, vy:-(9+Math.random()*15)*dpr, a:Math.random()*6, va:(Math.random()-.5)*.3, s:(4+Math.random()*6)*dpr, c:renk[i%renk.length], yildiz:i%3===0 }));
+  parca=parca.concat(yeni); cancelAnimationFrame(konfetiRaf);
+  const kare=()=>{ kx.clearRect(0,0,kc.width,kc.height);
+    parca=parca.filter(p=>p.y<kc.height+30);
+    parca.forEach(p=>{ p.vy+=.32*dpr; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.a+=p.va; kx.save(); kx.translate(p.x,p.y); kx.rotate(p.a); kx.fillStyle=p.c;
+      if(p.yildiz){ kx.fillRect(-p.s/2,-p.s/2,p.s,p.s); kx.rotate(Math.PI/4); kx.fillRect(-p.s/2,-p.s/2,p.s,p.s); } else kx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); kx.restore(); });
+    if(parca.length) konfetiRaf=requestAnimationFrame(kare); };
+  konfetiRaf=requestAnimationFrame(kare);
+}
+function konfetiDur(){ cancelAnimationFrame(konfetiRaf); parca=[]; kx.clearRect(0,0,kc.width,kc.height); }
+
+/* ---------------- Kürsü: ilk üç, sırayla ---------------- */
+const TAC='<svg class="tac" viewBox="0 0 64 64" aria-hidden="true"><g fill="#ffe7a3" stroke="#a8873a" stroke-width="2"><rect x="16" y="16" width="32" height="32" rx="2"/><rect x="16" y="16" width="32" height="32" rx="2" transform="rotate(45 32 32)"/></g><circle cx="32" cy="32" r="8" fill="#a8873a"/></svg>';
+function kursuAnim(sr, {yeni, sonra, baslik, ben, sesli}){
+  const sahne=el('div','kursu-sahne'); sahne.append(el('div','karanlik'), el('div','isik'));
+  const k=el('div','kursu'); sahne.append(k);
+  const bas={};
+  [[1,'b2',2],[0,'b1',1],[2,'b3',3]].forEach(([i,c,n])=>{
+    const o=sr[i], b=el('div','basamak '+c); bas[n]=b;
+    if(!o){ b.classList.add('bos'); b.append(el('div','madalya'), el('div','kim'), el('div','kolon',String(n))); k.append(b); return; }
+    const ad=o.ad||o.n, puan=o.puan??o.s;
+    if(ben && (o.k||o.p)===ben) b.classList.add('ben');
+    if(n===1) b.append(el('div','isinlar'));
+    const m=el('div','madalya'); m.innerHTML=(n===1?TAC:''); m.append(document.createTextNode([...ad][0].toLocaleUpperCase('tr')));
+    const kim=el('div','kim'); [...ad].forEach((h,j)=>{ const x=el('span','hrf',h===' '?' ':h); x.style.animationDelay=(.9+j*.06)+'s'; kim.append(x); });
+    const pu=el('small',null, yeni?'0 puan':puan.toLocaleString('tr-TR')+' puan'); kim.append(pu); b._puan=[pu,puan];
+    b.append(m, kim, el('div','kolon',String(n))); k.append(b);
+  });
+  const yaz=t=>{ if(baslik) baslik.textContent=t; };
+  const ac=n=>{ const b=bas[n]; if(!b || b.classList.contains('bos')) return false; b.classList.add('acik');
+    if(b._puan){ const [e,p]=b._puan; sonra(1100,()=>{ const t0=performance.now(); const f=t=>{ const q=Math.min(1,(t-t0)/1300); e.textContent=Math.round(p*(1-Math.pow(1-q,3))).toLocaleString('tr-TR')+' puan'; if(q<1&&e.isConnected) requestAnimationFrame(f); }; requestAnimationFrame(f); }); } return true; };
+  if(!yeni){ [1,2,3].forEach(n=>{ if(bas[n] && !bas[n].classList.contains('bos')) bas[n].classList.add('acik'); }); if(bas[1]) bas[1].classList.add('parla'); sahne.classList.add('final'); yaz('Tebrikler!'); return sahne; }
+  yaz('Kazananlar…'); sahne.classList.add('tarama'); if(sesli) EFEKT.tremolo(1.6);
+  sonra(1600,()=>{ sahne.classList.remove('tarama'); if(ac(3)){ yaz('Üçüncü'); if(sesli) EFEKT.basamak(0); } });
+  sonra(4000,()=>{ if(ac(2)){ yaz('İkinci'); if(sesli) EFEKT.basamak(1); } });
+  sonra(6400,()=>{ sahne.classList.add('dim','tarama'); yaz('Ve birinci…'); if(sesli) EFEKT.tremolo(2.6); });
+  sonra(9100,()=>{ sahne.classList.remove('dim','tarama'); sahne.classList.add('final'); ac(1); if(bas[1]) bas[1].classList.add('parla'); yaz('Tebrikler!'); if(sesli===true || (sesli==='ben' && ben && sr.slice(0,3).some(o=>(o.k||o.p)===ben))) EFEKT.zafer(); konfeti(); });
+  sonra(11200,()=>konfeti(true));
+  return sahne;
+}
+
 function pratikBasla(){
   const sorular = karistir(BANK).slice(0,10);
   let i=0, puan=0, dogruSay=0;
@@ -454,7 +708,7 @@ function pratikBasla(){
     const say=el('div','sayac'); const sn=el('span',null,'20'); say.append(sn); ust.append(say);
     v.append(ust, el('p','soru-metin',q.soru));
     const kar=el('div','karolar'); let bitti=false;
-    const butonlar = q.secenekler.map((s,k)=>{ const b=el('button','karo k'+k); b.type='button'; b.append(el('span','harf',HARF[k]), el('span',null,s)); b.onclick=()=>sec(k); kar.append(b); return b; });
+    const butonlar = q.secenekler.map((s,k)=>{ const b=el('button','karo k'+k); b.type='button'; b.append(harfEl(k), el('span',null,s)); b.onclick=ev=>{ dalga(b,ev); sec(k); }; kar.append(b); return b; });
     v.append(kar);
     const alt=el('div','yigin'); v.append(alt);
     const tik=setInterval(()=>{ const kalan=Math.max(0,T-(performance.now()-bas)); sn.textContent=Math.ceil(kalan/1000); say.style.setProperty('--p',kalan/T); if(kalan<=0) sec(-1); },200);
@@ -462,7 +716,8 @@ function pratikBasla(){
       if(bitti) return; bitti=true; clearInterval(tik);
       const t=performance.now()-bas, ok=k===q.dogru;
       const p = ok ? Math.round(1000*(1-Math.min(t,T)/T/2)) : 0; puan+=p; if(ok) dogruSay++;
-      butonlar.forEach((b,j)=>{ b.disabled=true; if(j!==q.dogru) b.classList.add('soluk'); if(j===k) b.classList.add('secili'); });
+      butonlar.forEach((b,j)=>{ b.disabled=true; if(j!==q.dogru) b.classList.add('soluk'); else { b.classList.add('dogru'); b.querySelector('.harf').replaceWith(harfEl(j,true)); } if(j===k) b.classList.add('secili'); });
+      if(ok) EFEKT.dogru(); else EFEKT.yanlis();
       alt.append(el('p','durum '+(ok?'dogru-renk':'yanlis-renk'), ok?`Doğru · +${p}`:(k<0?'Süre doldu':'Yanlış')), el('p','ozel-not',q.aciklama), el('p','kaynak',kaynakYaz(q)));
       const b=el('button','dugme',i+1<sorular.length?'Sonraki soru':'Sonucu gör'); b.type='button'; b.onclick=()=>{i++;ciz();}; alt.append(b); b.focus();
     }
@@ -987,7 +1242,7 @@ async function odaAc(){
   if(!peer){ h.textContent=hataMetni(sonHata); h.hidden=false; return; }
   S = { peer, pin, sorular:oyunSorulari(), T:ayar.sure*1000, faz:'lobi', qi:-1, qBas:0,
         oyuncular:new Map(), // cid -> {k, ad, puan, seri, son, conn}
-        cevaplar:new Map(), epoch:Date.now(), sayac:0 };
+        cevaplar:new Map(), epoch:Date.now(), sayac:0, gorulen:new Set(), cizKey:null, anim:zamanlayici(), tabloOnce:{sira:[],puan:{}} };
   peer.on('connection', conn => baglantiAl(conn));
   peer.on('disconnected', () => { if(S && S.peer===peer && !peer.destroyed) setTimeout(()=>{ try{ peer.reconnect(); }catch(e){} }, 1500); });
   peer.on('error', e => { if(e.type==='peer-unavailable') return; console.warn('peer', e.type); });
@@ -1035,6 +1290,7 @@ function siralama(){ return [...S.oyuncular.entries()].map(([cid,o])=>({cid,...o
 function durumPaketi(){
   const q = S.qi>=0 ? S.sorular[S.qi] : null;
   const pk = { t:'durum', e:S.epoch, f:S.faz, pin:S.pin, top:S.sorular.length, qi:S.qi, T:S.T };
+  if(q && S.faz==='hazir'){ pk.tur=q.tur; pk.kalan=Math.max(0,S.hazirBitis-Date.now()); }
   if(q && (S.faz==='soru'||S.faz==='cevap'||S.faz==='tablo')){
     pk.q = { s:q.soru, o:q.secenekler, tur:q.tur, ky:kaynakYaz(q) };
     if(S.faz==='soru') pk.kalan = Math.max(0, S.T-(Date.now()-S.qBas));
@@ -1055,25 +1311,36 @@ function yayinla(){
   }
 }
 function otoIptal(){ if(!S) return; clearTimeout(S.otoGecis); S.otoGecis=null; S.otoBitis=0; }
+const HAZIR_MS = 3000, TABLO_ARALIK = 5, CEVAP_OTO = 4500, TABLO_OTO = 9000;
 function soruBaslat(){
   otoIptal();
   S.qi++; S.cevaplar=new Map();
   for(const o of S.oyuncular.values()) o.son=null;
   if(S.qi>=S.sorular.length){ S.faz='son'; sunucuCiz(); yayinla(); return; }
-  S.faz='soru'; S.qBas=Date.now(); sunucuCiz(); yayinla();
+  S.faz='hazir'; S.hazirBitis=Date.now()+HAZIR_MS; sunucuCiz(); yayinla();
+  clearTimeout(S.zaman); S.zaman=setTimeout(soruAc, HAZIR_MS);
+}
+function soruAc(){
+  if(!S || S.faz!=='hazir') return;
+  S.faz='soru'; S.qBas=Date.now(); EFEKT.bip(true); sunucuCiz(); yayinla();
   clearTimeout(S.zaman); S.zaman=setTimeout(()=>{ if(S&&S.faz==='soru') ac('sure'); }, S.T+300);
+}
+function tabloZamani(){ return (S.qi+1)%TABLO_ARALIK===0 && S.qi+1<S.sorular.length; }
+function tabloAc(oto){
+  otoIptal(); S.faz='tablo';
+  if(oto){ S.otoBitis=Date.now()+TABLO_OTO; S.otoGecis=setTimeout(()=>{ if(S&&S.faz==='tablo') soruBaslat(); }, TABLO_OTO); }
+  sunucuCiz(); yayinla();
 }
 function ac(oto){
   if(!S || S.faz!=='soru') return; clearTimeout(S.zaman);
   const q=S.sorular[S.qi];
-  S.oncekiSira = siralama().map(o=>o.k);
   for(const [cid,o] of S.oyuncular){
     const c=S.cevaplar.get(cid);
-    if(c && c.k===q.dogru){ o.seri++; const p=Math.round(1000*(1-c.t/S.T/2)) + Math.min(o.seri-1,5)*50; o.puan+=p; o.son={ok:1,p}; }
+    if(c && c.k===q.dogru){ o.seri++; const p=Math.round(1000*(1-c.t/S.T/2)) + Math.min(o.seri-1,5)*50; o.puan+=p; o.son={ok:1,p,s:o.seri}; }
     else { o.seri=0; o.son={ok:0,p:0,bos:c?0:1}; }
   }
   S.faz='cevap';
-  if(oto==='herkes'||oto==='sure'){ S.otoNeden=oto; S.otoBitis=Date.now()+2700; S.otoGecis=setTimeout(()=>{ if(S&&S.faz==='cevap') soruBaslat(); }, 2700); }
+  if(oto==='herkes'||oto==='sure'){ S.otoNeden=oto; S.otoBitis=Date.now()+CEVAP_OTO; S.otoGecis=setTimeout(()=>{ if(S&&S.faz==='cevap'){ if(tabloZamani()) tabloAc(true); else soruBaslat(); } }, CEVAP_OTO); }
   sunucuCiz(); yayinla();
 }
 function katilmaLinki(){ const u=new URL(location.href); u.search=''; u.hash=''; u.searchParams.set('kod',S.pin); return u.toString(); }
@@ -1088,14 +1355,18 @@ function qrCiz(kap, metin){
     kap.append(c);
   }catch(e){}
 }
+function sunucuMuzik(){ muzik({lobi:'lobi', soru:'soru', tablo:'lobi'}[S.faz] || null); }
 function sunucuCiz(){
-  const v=$('#v-sunucu'); v.replaceChildren(); clearInterval(S.sayacTik); S.guncel=null;
-  const top=S.sorular.length;
+  const v=$('#v-sunucu'); v.replaceChildren(); clearInterval(S.sayacTik); S.guncel=null; S.anim.temizle();
+  const key=S.faz+':'+S.qi+':'+S.epoch, yeni=key!==S.cizKey; S.cizKey=key; v.classList.toggle('ilk', yeni); v.classList.toggle('durgun', !yeni);
+  if(yeni && S.faz!=='son') konfetiDur();
+  sunucuMuzik();
+  const top=S.sorular.length, sonra=S.anim;
   $('#ustDurum').textContent = `Oda ${S.pin}`;
   if(S.faz==='lobi'){
     const ust=el('div','izgara-2');
     const sol=el('div','kart yigin');
-    sol.append(el('span','etiket','Oda kodu'), el('div','pin-kutu',S.pin));
+    sol.append(el('span','etiket','Oda kodu'), el('div','pin-kutu parilti',S.pin));
     const link=katilmaLinki();
     const lk=el('div','sira'); const lt=el('code','baglanti',link); const kb=el('button','dugme ikincil','Bağlantıyı kopyala'); kb.type='button';
     kb.onclick=()=>{ navigator.clipboard.writeText(link).then(()=>{kb.textContent='Kopyalandı';},()=>{ const r=document.createRange(); r.selectNodeContents(lt); const s=getSelection(); s.removeAllRanges(); s.addRange(r); }); };
@@ -1104,57 +1375,107 @@ function sunucuCiz(){
     const sag=el('div','kart yigin');
     const n=S.oyuncular.size;
     sag.append(el('span','etiket',`Katılanlar · ${n} / ${MAKS}`));
-    const ol=el('div','oyuncular'); for(const o of S.oyuncular.values()) ol.append(el('span','oyuncu',o.ad));
+    const ol=el('div','oyuncular'); let i=0;
+    for(const o of S.oyuncular.values()){ const yeniO=!S.gorulen.has(o.k); ol.append(el('span','oyuncu'+(yeniO?' yeni':''),o.ad)); if(yeniO){ S.gorulen.add(o.k); EFEKT.katil(i); } i++; }
     if(!n) ol.append(el('p','not','Henüz kimse katılmadı.'));
     sag.append(ol);
     ust.append(sol,sag); v.append(ust);
-    v.append(el('p','not',`${top} soru · soru başına ${S.T/1000} saniye · doğru ve hızlı cevap en çok 1000 puan, art arda doğrulara seri bonusu.`));
+    v.append(el('p','not',`${top} soru · soru başına ${S.T/1000} saniye · doğru ve hızlı cevap en çok 1000 puan, art arda doğrulara seri bonusu · sıralama her ${TABLO_ARALIK} soruda bir.`));
+    if(!SES.ctx || SES.mod!=='muzik') v.append(el('p','not', SES.mod==='muzik' ? 'Müzik için sayfada herhangi bir yere bir kez dokun.' : `Ses: ${SES_YAZI[SES.mod]}. Üstteki düğmeden değiştirebilirsin.`));
     const s=el('div','sira'); const b=el('button','dugme','Yarışmayı başlat'); b.type='button'; b.disabled=n<1; b.onclick=soruBaslat;
     const k=el('button','dugme ikincil','Odayı kapat'); k.type='button'; k.onclick=kapat;
     s.append(b,k); v.append(s);
     return;
   }
   const q=S.sorular[S.qi];
+  if(S.faz==='hazir'){
+    const m=el('div','hazir-sahne');
+    m.append(el('span','etiket',`Soru ${S.qi+1} / ${top}`), el('h2',null,turAdi(q.tur)||'Hazır ol'));
+    const kutu=el('div','sayi-kutu'); m.append(kutu); v.append(m);
+    let son=null;
+    const yaz=()=>{ const k=Math.max(1,Math.ceil((S.hazirBitis-Date.now())/1000)); if(k===son) return; son=k;
+      kutu.innerHTML=`<div class="halka"></div><div class="buyuk-sayi">${k}</div>`;
+      const ses=S.qi+':'+k; if(S.sonBip!==ses){ S.sonBip=ses; EFEKT.bip(false); } };
+    yaz(); S.sayacTik=setInterval(yaz,100);
+    return;
+  }
   if(S.faz==='soru'){
     const ust=el('div','soru-ust'); ust.append(el('span','etiket',`Soru ${S.qi+1} / ${top} · ${turAdi(q.tur)}`));
     const say=el('div','sayac'); const sn=el('span'); say.append(sn); ust.append(say);
     v.append(ust, el('p','soru-metin',q.soru));
-    const kar=el('div','karolar'); q.secenekler.forEach((s,k)=>{ const b=el('div','karo k'+k); b.append(el('span','harf',HARF[k]), el('span',null,s)); kar.append(b); }); v.append(kar);
+    const kar=el('div','karolar'); q.secenekler.forEach((s,k)=>{ const b=el('div','karo k'+k); b.append(harfEl(k), el('span',null,s)); kar.append(b); }); v.append(kar);
     const alt=el('div','sira'); const cv=el('span','etiket'); alt.append(cv);
     const b=el('button','dugme ikincil','Süreyi bitir'); b.type='button'; b.onclick=()=>ac(); alt.append(b); v.append(alt);
-    const guncel=()=>{ const kalan=Math.max(0,S.T-(Date.now()-S.qBas)); sn.textContent=Math.ceil(kalan/1000); say.style.setProperty('--p',kalan/S.T); cv.textContent=`${S.cevaplar.size} / ${aktifSayisi()} oyuncu cevapladı`; };
+    const guncel=()=>{ const kalan=Math.max(0,S.T-(Date.now()-S.qBas)), sny=Math.ceil(kalan/1000); sn.textContent=sny; say.style.setProperty('--p',kalan/S.T);
+      say.classList.toggle('az', sny<=5);
+      if(sny<=5 && sny>0){ const t=S.qi+':'+sny; if(S.sonTik!==t){ S.sonTik=t; EFEKT.tiktak(); SES.tempo=DESEN.soru.tempo+(6-sny)*5; } }
+      cv.textContent=`${S.cevaplar.size} / ${aktifSayisi()} oyuncu cevapladı`; };
     S.guncel=guncel; guncel(); S.sayacTik=setInterval(guncel,200);
     return;
   }
   if(S.faz==='cevap'){
     const say=[0,0,0,0]; for(const c of S.cevaplar.values()) say[c.k]++;
     v.append(el('span','etiket',`Soru ${S.qi+1} / ${top} · cevap`), el('p','soru-metin',q.soru));
-    const kar=el('div','karolar'); q.secenekler.forEach((s,k)=>{ const b=el('div','karo k'+k+(k===q.dogru?'':' soluk')); b.append(el('span','harf',k===q.dogru?'✓':HARF[k]), el('span',null,s), el('span','say',String(say[k]))); kar.append(b); }); v.append(kar);
+    const kar=el('div','karolar');
+    const karolar=q.secenekler.map((s,k)=>{ const b=el('div','karo k'+k); b.append(harfEl(k), el('span',null,s), el('span','say',String(say[k]))); kar.append(b); return b; });
+    const acKaro=()=>{ kar.classList.remove('gizli-say'); karolar.forEach((b,k)=>{ if(k===q.dogru){ b.classList.add('dogru'); b.querySelector('.harf').replaceWith(harfEl(k,true)); } else b.classList.add('soluk'); }); };
+    v.append(kar);
+    if(yeni){ kar.classList.add('gizli-say'); EFEKT.savrul(); sonra(450,()=>{ acKaro(); EFEKT.dogru(); }); } else acKaro();
     v.append(el('p','ozel-not',q.aciklama), el('p','kaynak',kaynakYaz(q)));
-    const s=el('div','sira'); const b=el('button','dugme','Sıralamayı göster'); b.type='button'; b.onclick=()=>{ otoIptal(); S.faz='tablo'; sunucuCiz(); yayinla(); }; s.append(b);
-    if(S.otoBitis){ const o=el('span','etiket'); const yaz=()=>{ const k=Math.max(0,Math.ceil((S.otoBitis-Date.now())/1000)); const neden = S.otoNeden==='sure' ? 'Süre doldu' : 'Herkes cevapladı'; o.textContent = S.qi+1<top ? `${neden} · sonraki soru ${k} sn içinde` : `${neden} · sonuçlar ${k} sn içinde`; }; yaz(); S.sayacTik=setInterval(yaz,250); s.append(o); }
-    v.append(s); b.focus();
+    const tz=tabloZamani(), sonSoru=S.qi+1>=top;
+    const s=el('div','sira');
+    const b=el('button','dugme', tz?'Sıralamayı göster':(sonSoru?'Sonucu göster':'Sonraki soru')); b.type='button';
+    b.onclick=()=>{ otoIptal(); if(tz) tabloAc(false); else soruBaslat(); }; s.append(b);
+    if(!tz && !sonSoru){ const b2=el('button','dugme ikincil','Sıralama'); b2.type='button'; b2.onclick=()=>tabloAc(false); s.append(b2); }
+    if(S.otoBitis){ const o=el('span','etiket'); const yaz=()=>{ const k=Math.max(0,Math.ceil((S.otoBitis-Date.now())/1000)); const neden = S.otoNeden==='sure' ? 'Süre doldu' : 'Herkes cevapladı'; o.textContent = tz ? `${neden} · sıralama ${k} sn içinde` : (!sonSoru ? `${neden} · sonraki soru ${k} sn içinde` : `${neden} · sonuçlar ${k} sn içinde`); }; yaz(); S.sayacTik=setInterval(yaz,250); s.append(o); }
+    v.append(s); b.focus({preventScroll:true});
     return;
   }
   if(S.faz==='tablo'){
+    const sr=siralama();
     v.append(el('span','etiket',`Soru ${S.qi+1} / ${top} sonrası`), el('h2',null,'Sıralama'));
-    v.append(tabloCiz(siralama(), null, S.oncekiSira));
-    const s=el('div','sira'); const b=el('button','dugme',S.qi+1<top?'Sonraki soru':'Sonucu göster'); b.type='button'; b.onclick=soruBaslat; s.append(b); v.append(s); b.focus();
+    v.append(tabloAnim(sr, S.tabloOnce, yeni, sonra, 5));
+    if(sr.length>5) v.append(el('p','not',`ve ${sr.length-5} oyuncu daha · herkes kendi sırasını telefonunda görüyor`));
+    if(yeni) S.tabloOnce={ sira:sr.map(o=>o.k), puan:Object.fromEntries(sr.map(o=>[o.k,o.puan])) };
+    const s=el('div','sira'); const b=el('button','dugme',S.qi+1<top?'Sonraki soru':'Sonucu göster'); b.type='button'; b.onclick=soruBaslat; s.append(b);
+    if(S.otoBitis){ const o=el('span','etiket'); const yaz=()=>{ o.textContent=`sonraki soru ${Math.max(0,Math.ceil((S.otoBitis-Date.now())/1000))} sn içinde`; }; yaz(); S.sayacTik=setInterval(yaz,250); s.append(o); }
+    v.append(s); b.focus({preventScroll:true});
     return;
   }
   if(S.faz==='son'){
     const sr=siralama();
-    v.append(el('span','etiket','Yarışma bitti'), el('h2',null,'Kürsü'), kursuCiz(sr));
-    if(sr.length>3) v.append(tabloCiz(sr.slice(3), null, null, 3));
+    const bas=el('h2',null,'Kürsü');
+    v.append(el('span','etiket',`${top} soru tamamlandı`), bas, kursuAnim(sr, {yeni, sonra, baslik:bas, sesli:true}));
+    const alt=el('div','yigin sonra-gel'+(yeni?' gizli':''));
+    if(sr.length>3) alt.append(tabloCiz(sr.slice(3), null, null, 3));
     const s=el('div','sira');
     const b=el('button','dugme','Aynı oyuncularla yeni tur'); b.type='button';
-    b.onclick=()=>{ S.sorular=oyunSorulari(); S.qi=-1; S.epoch=Date.now(); for(const [cid,o] of [...S.oyuncular]){ if(!bagliMi(o)) S.oyuncular.delete(cid); else {o.puan=0;o.seri=0;o.son=null;} } S.faz='lobi'; sunucuCiz(); yayinla(); };
-    const k=el('button','dugme ikincil','Odayı kapat'); k.type='button'; k.onclick=kapat; s.append(b,k); v.append(s);
+    b.onclick=()=>{ konfetiDur(); S.sorular=oyunSorulari(); S.qi=-1; S.epoch=Date.now(); S.tabloOnce={sira:[],puan:{}}; for(const [cid,o] of [...S.oyuncular]){ if(!bagliMi(o)) S.oyuncular.delete(cid); else {o.puan=0;o.seri=0;o.son=null;} } S.faz='lobi'; sunucuCiz(); yayinla(); };
+    const k=el('button','dugme ikincil','Odayı kapat'); k.type='button'; k.onclick=kapat; s.append(b,k); alt.append(s); v.append(alt);
+    if(yeni) sonra(11000,()=>alt.classList.remove('gizli'));
   }
+}
+function tabloAnim(liste, once, yeni, sonra, n){
+  const ust=liste.slice(0,n), H=60, kap=el('div','tablo-anim'); kap.style.height=(ust.length*H)+'px';
+  ust.forEach((o,i)=>{
+    const key=o.k||o.p, eski=once.sira.indexOf(key), puanSon=o.puan??o.s;
+    const r=el('div','satir'), no=el('span','no'), art=el('span','art'), pu=el('span','puan');
+    r.append(no, el('span','ad',o.ad||o.n), art, pu); kap.append(r);
+    const yerles=()=>{ r.style.top=(i*H)+'px'; r.style.opacity=1; no.textContent=i+1; if(eski>i){ art.textContent='▲ '+(eski-i); r.classList.add('cikti'); } };
+    if(!yeni){ yerles(); pu.textContent=puanSon.toLocaleString('tr-TR'); return; }
+    const basY = eski>=0 && eski<n ? eski : n;
+    r.style.top=(basY*H)+'px'; if(basY>=n) r.style.opacity=0;
+    no.textContent = eski>=0 ? eski+1 : '·';
+    const p0=once.puan[key]||0; pu.textContent=p0.toLocaleString('tr-TR');
+    sonra(1000 + (eski<0 ? i*120 : 0), ()=>{ yerles(); sayiSay(pu, p0, puanSon, 1200); });
+  });
+  if(yeni && ust.length) sonra(1000, ()=>EFEKT.savrul());
+  if(!ust.length) kap.append(el('p','not','Henüz puan yok.'));
+  return kap;
 }
 function kapat(){
   if(!S) return;
-  clearInterval(S.yayinTik); clearInterval(S.sayacTik); clearTimeout(S.zaman); otoIptal();
+  clearInterval(S.yayinTik); clearInterval(S.sayacTik); clearTimeout(S.zaman); otoIptal(); S.anim.temizle(); muzik(null); konfetiDur();
   for(const o of S.oyuncular.values()) if(bagliMi(o)){ try{ o.conn.send({t:'durum', e:S.epoch, f:'kapali', pin:S.pin}); }catch(e){} }
   const p=S.peer; setTimeout(()=>{ try{ p.destroy(); }catch(e){} }, 800);
   try{ S.kilit && S.kilit.release(); }catch(e){}
@@ -1174,12 +1495,6 @@ function tabloCiz(liste, ben, onceki, bas=0){
   if(!liste.length) t.append(el('p','not','Henüz puan yok.'));
   return t;
 }
-function kursuCiz(sr){
-  const k=el('div','kursu');
-  [[1,'b2'],[0,'b1'],[2,'b3']].forEach(([i,c])=>{ const o=sr[i]; const b=el('div','basamak '+c); if(o){ b.append(el('span','yer',String(i+1)), el('span','ad',o.ad||o.n), el('span','puan',String(o.puan??o.s)+' puan')); } k.append(b); });
-  return k;
-}
-
 /* ---------------- OYUNCU ---------------- */
 function katilAc(pin){ const ad=depoAl('nur-ad'); if(ad) $('#i-ad').value=ad; if(pin) $('#i-pin').value=pin; goster('katil'); (pin?$('#i-ad'):$('#i-pin')).focus(); }
 $('#b-katil').addEventListener('click', () => { if(peerVar) katilAc(''); });
@@ -1198,7 +1513,7 @@ $('#f-katil').addEventListener('submit', async (ev) => {
 });
 async function baglan(pin, ad){
   const peer = P && P.peer && !P.peer.destroyed && P.peer.open ? P.peer : await peerAc(null);
-  if(!P) P={pin, ad, d:null, cevap:null, qi:-1, bitis:0, epoch:null, koptu:false};
+  if(!P) P={pin, ad, d:null, cevap:null, qi:-1, bitis:0, epoch:null, koptu:false, anim:zamanlayici(), cizKey:null};
   P.peer=peer; P.pin=pin; P.ad=ad; P.koptu=false;
   await new Promise((res,rej)=>{
     const conn=peer.connect(ONEK+pin, {reliable:true});
@@ -1216,6 +1531,7 @@ function mesajAl(conn, d){
   if(d.t==='dolu'){ P.dolu=true; oyuncuCiz(); return; }
   if(d.t!=='durum') return;
   const yeniSoru = d.qi!==P.qi || d.e!==P.epoch;
+  if(d.f==='hazir' && (yeniSoru || !P.d || P.d.f!=='hazir')) P.hazirBitis=Date.now()+(d.kalan||0);
   if(d.f==='soru' && (yeniSoru || !P.d || P.d.f!=='soru')){ P.cevap = (d.cevabim ?? null); P.bitis=Date.now()+(d.kalan||0); }
   else if(d.f==='soru' && typeof d.kalan==='number'){ const yb=Date.now()+d.kalan; if(Math.abs(yb-P.bitis)>1500) P.bitis=yb; if(d.cevabim!=null) P.cevap=d.cevabim; }
   const fazDegisti = !P.d || P.d.f!==d.f || yeniSoru || P.koptu;
@@ -1225,8 +1541,10 @@ function mesajAl(conn, d){
 function benimSiram(){ if(!P||!P.d||!P.d.o) return null; const i=P.d.o.findIndex(o=>o.p===P.d.ben); return i<0?null:{i, o:P.d.o[i]}; }
 function ayrilDugmesi(v, yazi='Ayrıl'){ const b=el('button','dugme ikincil',yazi); b.type='button'; b.onclick=ayril; v.append(b); }
 function oyuncuCiz(){
-  const v=$('#v-oyuncu'); v.replaceChildren(); clearInterval(P.sayacTik); P.guncelle=null;
+  const v=$('#v-oyuncu'); v.replaceChildren(); clearInterval(P.sayacTik); P.guncelle=null; P.anim.temizle();
   const d=P.d;
+  const key=d ? d.f+':'+d.qi+':'+d.e : 'yok', yeni=key!==P.cizKey; P.cizKey=key; P.imza=d?JSON.stringify({...d,kalan:0}):''; v.classList.toggle('ilk', yeni); v.classList.toggle('durgun', !yeni);
+  if(yeni && (!d || d.f!=='son')) konfetiDur();
   if(P.dolu){ v.append(el('h2',null,'Oda dolu'), el('p','not',`Bu odada en çok ${MAKS} kişi yarışabilir. Sunucudan yeni bir oda açmasını isteyebilirsin.`)); ayrilDugmesi(v,'Ana ekran'); return; }
   if(P.koptu){
     v.append(el('span','etiket',`Oda ${P.pin} · ${P.ad}`), el('h2',null,'Bağlantı koptu'), el('p','not','Puanın sunucuda duruyor. Tekrar bağlanınca kaldığın yerden devam edersin.'));
@@ -1241,16 +1559,22 @@ function oyuncuCiz(){
     const ol=el('div','oyuncular'); (d.o||[]).forEach(o=>ol.append(el('span','oyuncu',o.n))); v.append(el('span','etiket',`Katılanlar · ${(d.o||[]).length}`), ol);
     ayrilDugmesi(v); return;
   }
+  if(d.f==='hazir'){
+    const m=el('div','hazir-sahne'); m.append(el('span','etiket',`Soru ${d.qi+1} / ${d.top}`), el('h2',null,turAdi(d.tur)||'Hazır ol'));
+    const kutu=el('div','sayi-kutu'); m.append(kutu); v.append(m);
+    let son=null; const yaz=()=>{ const k=Math.max(1,Math.ceil((P.hazirBitis-Date.now())/1000)); if(k!==son){ son=k; kutu.innerHTML=`<div class="halka"></div><div class="buyuk-sayi">${k}</div>`; } };
+    yaz(); P.sayacTik=setInterval(yaz,100); return;
+  }
   const q=d.q;
   if(d.f==='soru'){
     const ust=el('div','soru-ust'); ust.append(el('span','etiket',`Soru ${d.qi+1} / ${d.top} · ${turAdi(q.tur)}`));
     const say=el('div','sayac'); const sn=el('span'); say.append(sn); ust.append(say);
     v.append(ust, el('p','soru-metin',q.s));
     const kar=el('div','karolar'); const durum=el('p','not');
-    const bs=q.o.map((s,k)=>{ const b=el('button','karo k'+k); b.type='button'; b.append(el('span','harf',HARF[k]), el('span',null,s)); b.onclick=()=>cevapla(k); kar.append(b); return b; });
+    const bs=q.o.map((s,k)=>{ const b=el('button','karo k'+k); b.type='button'; b.append(harfEl(k), el('span',null,s)); b.onclick=ev=>{ if(b.disabled) return; dalga(b,ev); cevapla(k); }; kar.append(b); return b; });
     v.append(kar, durum);
     const guncel=()=>{
-      const kalan=Math.max(0,P.bitis-Date.now()); sn.textContent=Math.ceil(kalan/1000); say.style.setProperty('--p', d.T? kalan/d.T : 0);
+      const kalan=Math.max(0,P.bitis-Date.now()), sny=Math.ceil(kalan/1000); sn.textContent=sny; say.style.setProperty('--p', d.T? kalan/d.T : 0); say.classList.toggle('az', sny<=5);
       const kilit = P.cevap!==null || kalan<=0;
       bs.forEach((b,k)=>{ b.disabled=kilit; b.classList.toggle('soluk', P.cevap!==null && k!==P.cevap); b.classList.toggle('secili', k===P.cevap); });
       durum.textContent = P.cevap!==null ? 'Cevabın gönderildi. Diğerleri bekleniyor.' : (kalan<=0 ? 'Süre doldu.' : '');
@@ -1261,27 +1585,36 @@ function oyuncuCiz(){
   if(d.f==='cevap'||d.f==='tablo'){
     const bs=benimSiram(); const son=bs&&bs.o.l; const ok=son&&son.ok;
     v.append(el('span','etiket',`Soru ${d.qi+1} / ${d.top}`));
-    v.append(el('p','durum '+(ok?'dogru-renk':'yanlis-renk'), ok?`Doğru · +${son.p}`:(son&&son.bos?'Cevap vermedin':'Yanlış')));
-    if(bs) v.append(el('p','not',`${bs.i+1}. sıradasın · ${bs.o.s} puan`));
-    const kar=el('div','karolar'); q.o.forEach((s,k)=>{ const b=el('div','karo k'+k+(k===d.d?'':' soluk')+(k===P.cevap?' secili':'')); b.append(el('span','harf',k===d.d?'✓':HARF[k]), el('span',null,s), el('span','say',String((d.say||[])[k]||0))); kar.append(b); }); v.append(kar);
+    if(d.f==='cevap'){
+      const kart=el('div','sonuc-kart '+(ok?'iyi':(son&&son.bos?'bos':'kotu')));
+      kart.append(el('b',null, ok?'Doğru!':(son&&son.bos?'Cevap vermedin':'Yanlış')));
+      if(ok){ kart.append(el('span','puan-uc',`+${son.p}`)); if(son.s>=2) kart.append(el('span',null,`Seri ×${son.s}`)); }
+      v.append(kart);
+      if(yeni){ if(ok) EFEKT.dogru(); else if(son && !son.bos) EFEKT.yanlis(); }
+    }
+    if(bs) v.append(el('p','not',`${bs.i+1}. sıradasın · ${bs.o.s.toLocaleString('tr-TR')} puan`));
+    const kar=el('div','karolar'); q.o.forEach((s,k)=>{ const b=el('div','karo k'+k+(k===d.d?' dogru':' soluk')+(k===P.cevap?' secili':'')); b.append(harfEl(k,k===d.d), el('span',null,s), el('span','say',String((d.say||[])[k]||0))); kar.append(b); });
+    if(d.f==='tablo') v.append(el('h2',null,'Sıralama'), tabloCiz(d.o, d.ben));
+    v.append(kar);
     if(d.a) v.append(el('p','ozel-not',d.a));
     if(q.ky) v.append(el('p','kaynak',q.ky));
-    if(d.f==='tablo') v.append(el('h2',null,'Sıralama'), tabloCiz(d.o, d.ben));
     return;
   }
   if(d.f==='son'){
     const bs=benimSiram();
-    v.append(el('span','etiket','Yarışma bitti'), el('h2',null, bs?`${bs.i+1}. oldun · ${bs.o.s} puan`:'Sonuçlar'), kursuCiz(d.o), tabloCiz(d.o, d.ben));
-    ayrilDugmesi(v);
+    const bas=el('span','etiket');
+    v.append(el('span','etiket','Yarışma bitti'), el('h2',null, bs?`${bs.i+1}. oldun · ${bs.o.s.toLocaleString('tr-TR')} puan`:'Sonuçlar'), bas, kursuAnim(d.o, {yeni, sonra:P.anim, baslik:bas, ben:d.ben, sesli:'ben'}));
+    const alt=el('div','yigin sonra-gel'+(yeni?' gizli':'')); alt.append(tabloCiz(d.o, d.ben)); ayrilDugmesi(alt); v.append(alt);
+    if(yeni) P.anim(11000,()=>alt.classList.remove('gizli'));
   }
 }
-function oyuncuGuncelle(){ if(P.d.f==='soru' && P.guncelle) P.guncelle(); else oyuncuCiz(); }
+function oyuncuGuncelle(){ if(P.d.f==='soru' && P.guncelle) P.guncelle(); else if(JSON.stringify({...P.d,kalan:0})!==P.imza) oyuncuCiz(); }
 function cevapla(k){
   if(!P||!P.d||P.d.f!=='soru'||P.cevap!==null||Date.now()>P.bitis||!P.conn||!P.conn.open) return;
   P.cevap=k; if(P.guncelle) P.guncelle();
   try{ P.conn.send({t:'cevap', qi:P.d.qi, k}); }catch(e){ P.cevap=null; if(P.guncelle) P.guncelle(); }
 }
-function ayril(){ if(P){ clearInterval(P.sayacTik); try{ P.conn && P.conn.close(); }catch(e){} try{ P.peer && P.peer.destroy(); }catch(e){} P=null; } $('#ustDurum').textContent='Canlı yarışma'; goster('giris'); }
+function ayril(){ konfetiDur(); if(P){ clearInterval(P.sayacTik); P.anim.temizle(); try{ P.conn && P.conn.close(); }catch(e){} try{ P.peer && P.peer.destroy(); }catch(e){} P=null; } $('#ustDurum').textContent='Canlı yarışma'; goster('giris'); }
 
 /* ---- GitHub'a yazma: yalnız bu sayfa (GitHub Pages) yapar; anahtar bu tarayıcıda durur ---- */
 const GH_API='https://api.github.com/repos/lgzl-oss/rslyrsm/contents/sets/liste.json', GH_DEPO='nur-gh-anahtar';
