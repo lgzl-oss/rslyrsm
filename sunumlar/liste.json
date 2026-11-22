@@ -1,7 +1,15 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-18T21:02:11.746321+00:00",
+ "guncelleme": "2026-11-22T13:25:44.725741+00:00",
  "sunumlar": [
+  {
+   "id": "hayatin-aynasi",
+   "ad": "Hayatın Aynası",
+   "yer": "Sözler, On Birinci Söz",
+   "dosya": "hayatin-aynasi.html",
+   "slayt": 29,
+   "tarih": "2026-11-22T13:25:44.725741+00:00"
+  },
   {
    "id": "birinci-soz",
    "ad": "Birinci Söz",
