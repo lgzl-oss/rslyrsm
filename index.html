@@ -133,6 +133,7 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
 .set{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .set .bilgi{min-width:0;display:flex;flex-direction:column;gap:2px}
 .set .bilgi b{font-family:var(--f-baslik);font-size:1.15rem;overflow-wrap:anywhere}
+.sunum-yer{color:var(--varak);font-size:.92rem;font-weight:500;overflow-wrap:anywhere}
 .inc.yeni{border-color:var(--varak)}
 .sayac-kh{align-self:flex-end;font-size:.8rem;color:var(--soluk);font-variant-numeric:tabular-nums;margin-top:-6px}
 .sayac-kh.asim{color:var(--kotu);font-weight:700}
@@ -463,9 +464,22 @@ function sunumAc(src){
 function sunumCoz(metin){
   const i = metin.indexOf('window.KURSU_DECK=');
   if (i < 0) throw new Error('Bu dosya bir sunum değil. Stüdyodan “Sunum dosyası (HTML)” olarak indirdiğin .html dosyasını seç.');
-  let ad = 'Sunum', slayt = 0;
-  try { const j = metin.indexOf('<' + '/script>', i); const d = JSON.parse(metin.slice(i + 18, j).trim().replace(/;$/, '')); ad = String(d.title || ad); slayt = (d.slides || []).length; } catch (e) {}
-  return { ad, slayt };
+  let ad = 'Sunum', slayt = 0, yer = '';
+  try { const j = metin.indexOf('<' + '/script>', i); const d = JSON.parse(metin.slice(i + 18, j).trim().replace(/;$/, '')); ad = String(d.title || ad); slayt = (d.slides || []).length; yer = risaleYeri(d); } catch (e) {}
+  return { ad, slayt, yer };
+}
+/* Sunumun Risale'de hangi yeri işlediği: Risale alıntılarının kaynağından (en sık geçen ya da ortak baş kısmı) */
+const RISALE_ESER = /Söz|Mektub|Lem['’]?a|Lemalar|Şua|Mesnev[iî]|Risale|As[aâ]-?y[ıi]|İşârât|İşarat|Sikke|Tarihçe|L[aâ]hika|Muhakemat|Hutbe|Kızıl|Mektûbât|Mektubat/i;
+function risaleYeri(d){
+  const refs = (d.slides || []).map(s => { const b = s.brief || {}, c = s.content || {}; return (b.sourceType === 'risale' || s.template === 'alinti') ? String(b.ref || c.kaynak || '').trim() : ''; })
+    .filter(r => r && RISALE_ESER.test(r) && !/Sûresi|Suresi|Buhârî|Buhari|Müslim|Tirmiz/i.test(r));
+  if (!refs.length) return '';
+  const say = {}; refs.forEach(r => say[r] = (say[r] || 0) + 1);
+  const [ilk, n] = Object.entries(say).sort((a, b) => b[1] - a[1])[0];
+  if (n >= Math.max(2, refs.length / 2)) return ilk;
+  const par = refs.map(r => r.split(/,\s*/)), ort = [];
+  for (let k = 0; k < Math.min(...par.map(p => p.length)); k++) { if (par.every(p => p[k] === par[0][k])) ort.push(par[0][k]); else break; }
+  return ort.length ? ort.join(', ') : ilk;
 }
 async function sunumListeCiz(){
   const kap = $('#sunumListe'); kap.replaceChildren(el('p','not','Yükleniyor…'));
@@ -475,7 +489,7 @@ async function sunumListeCiz(){
   if (!liste.length) { kap.append(el('p','not','Henüz paylaşılan sunum yok.')); return; }
   liste.forEach(x => {
     const k = el('div','kart set'); const b = el('div','bilgi');
-    b.append(el('b', null, x.ad), el('span','not', `${x.slayt ? x.slayt + ' slayt · ' : ''}herkes görebilir`));
+    b.append(el('b', null, x.ad)); if (x.yer) b.append(el('span','sunum-yer', x.yer)); b.append(el('span','not', `${x.slayt ? x.slayt + ' slayt · ' : ''}herkes görebilir`));
     const d = el('div','sira');
     const o = el('button','dugme','Sun'); o.type = 'button'; o.onclick = () => sunumAc('sunumlar/' + encodeURIComponent(x.dosya));
     d.append(o);
@@ -1676,7 +1690,7 @@ async function sunumYayinla(anahtar, sunum){
   const blob=await ghApi(anahtar,'/git/blobs',{method:'POST', body:JSON.stringify({content:b64Kod(sunum.metin), encoding:'base64'})});
   const id=slugYap(sunum.ad)+'-'+Date.now().toString(36), dosya=id+'.html';
   const eski=man.sunumlar.filter(x=>x.ad===sunum.ad);
-  man.sunumlar=man.sunumlar.filter(x=>x.ad!==sunum.ad); man.sunumlar.unshift({id, ad:sunum.ad, dosya, slayt:sunum.slayt||0, tarih:new Date().toISOString()});
+  man.sunumlar=man.sunumlar.filter(x=>x.ad!==sunum.ad); man.sunumlar.unshift({id, ad:sunum.ad, yer:sunum.yer||'', dosya, slayt:sunum.slayt||0, tarih:new Date().toISOString()});
   man.surum=1; man.guncelleme=new Date().toISOString();
   await ghCommit(anahtar,'Sunum: '+sunum.ad,[
     {path:'sunumlar/'+dosya, mode:'100644', type:'blob', sha:blob.sha},
