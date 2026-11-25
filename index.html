@@ -742,6 +742,13 @@ function lugatCiz(){
   cipKur($('#c-lugat-seviye'), [['kolay','Kolay'],['orta','Orta'],['zor','Zor'],['karisik','Karışık']], 'radio', d=>d===LUGAT.seviye, d=>{ LUGAT.seviye=d; ayarDurum(); });
   ayarDurum();
 }
+function lugatIncele(){
+  const e=lugatEser(), b=lugatBolum(); if(!b) return;
+  yzBaglam={kaynak:null};
+  taslak=lugatSorulari().map(q=>({tur:'lugat', soru:q.soru, secenekler:q.secenekler, dogru:q.dogru, aciklama:q.aciklama, kaynakNot:q.seviye}));
+  const sev=({kolay:'Kolay',orta:'Orta',zor:'Zor',karisik:'Karışık'})[LUGAT.seviye];
+  incelemeBasla(`${e.ad} · ${b.ad} · Lügat`, {id:null}, `Lügat: ${b.ad} (${sev})`);
+}
 function lugatSorulari(){
   const e=lugatEser(), b=lugatBolum(); if(!b) return [];
   const K=b.kelimeler, sev={kolay:0,orta:1,zor:2}[LUGAT.seviye];
@@ -751,7 +758,7 @@ function lugatSorulari(){
   const ilkKelime = a => a.toLocaleLowerCase('tr').split(/[\s,]+/)[0];
   return karistir(secilen).map(x=>{
     const ayni=K.filter(y=>y!==x && y.s===x.s), diger=K.filter(y=>y!==x && y.s!==x.s);
-    const yanlis=[];
+    const yanlis=karistir(x.y||[]).slice(0,3);
     for(const y of [...karistir(ayni), ...karistir(diger)]){
       if(yanlis.length===3) break;
       if(y.a===x.a || ilkKelime(y.a)===ilkKelime(x.a) || yanlis.some(z=>z===y.a || ilkKelime(z)===ilkKelime(y.a))) continue;
@@ -760,7 +767,7 @@ function lugatSorulari(){
     const sec=karistir([x.a, ...yanlis]);
     return { tur:'lugat', soru:`“${x.k}” ne demektir?`, secenekler:sec, dogru:sec.indexOf(x.a),
       aciklama: x.b ? `${x.k}: ${x.a}. Metinde: “${x.b}”` : `${x.k}: ${x.a}.`,
-      kaynakMetni:`${e.ad} · ${b.ad} · Lügat (${['kolay','orta','zor'][x.s]})` };
+      seviye:['kolay','orta','zor'][x.s] };
   });
 }
 function pratikBasla(){
@@ -820,7 +827,7 @@ function ayarDurum(){
   if(ayar.kaynak==='kayitli') return;
   if(ayar.kaynak==='lugat'){
     const b2=lugatBolum();
-    b.textContent='Odayı aç'; b.disabled=!b2;
+    b.textContent='Soruları göster'; b.disabled=!b2;
     $('#lugatNot').textContent = !LUGAT.veri ? (LUGAT.hata||'Lügat yükleniyor…') : (b2 ? `${LUGAT.eser} · ${b2.ad} · ${({kolay:'Kolay',orta:'Orta',zor:'Zor',karisik:'Karışık'})[LUGAT.seviye]} · 20 soru` : 'Bir bölüm seç.');
     return;
   }
@@ -1052,7 +1059,7 @@ function incelemeCiz(){
   const l=$('#incListe'); l.replaceChildren();
   taslak.forEach((q,i)=>{
     const k=el('div','kart inc'+(q.uretiliyor?' uretiliyor':'')+(q.yeni?' yeni':''));
-    const ust=el('div','inc-ust'); ust.append(el('span','etiket',`Soru ${i+1} · ${YZTUR[q.tur]}${q.kaynakNot?' · '+q.kaynakNot:''}`));
+    const ust=el('div','inc-ust'); ust.append(el('span','etiket',`Soru ${i+1} · ${YZTUR[q.tur]||turAdi(q.tur)}${q.kaynakNot?' · '+q.kaynakNot:''}`));
     const btn=el('div','sira');
     const yb=el('button','dugme ikincil kucuk','Yeniden üret'); yb.type='button'; yb.onclick=()=>tekYenile(i); yb.hidden=!yzBaglam.kaynak;
     const sb=el('button','dugme ikincil kucuk','Sil'); sb.type='button'; sb.onclick=()=>{ taslak.splice(i,1); incelemeCiz(); };
@@ -1297,7 +1304,7 @@ $('#b-onayla').addEventListener('click', () => {
 });
 
 /* ---------------- ODA ---------------- */
-function oyunSorulari(){ return ayar.kaynak==='banka' ? karistir(havuz()).slice(0,ayar.adet) : ayar.kaynak==='lugat' ? lugatSorulari() : karistir(onayli||[]); }
+function oyunSorulari(){ return ayar.kaynak==='banka' ? karistir(havuz()).slice(0,ayar.adet) : karistir(onayli||[]); }
 function peerAc(id){
   return new Promise((res,rej)=>{
     const p = id ? new PeerK(id, PEER_AYAR) : new PeerK(PEER_AYAR);
@@ -1307,9 +1314,9 @@ function peerAc(id){
   });
 }
 let S=null;
-$('#b-oda-ac').addEventListener('click', () => { if(ayar.kaynak==='banka' || ayar.kaynak==='lugat') odaAc(); else uretVeGoster(); });
+$('#b-oda-ac').addEventListener('click', () => { if(ayar.kaynak==='banka') odaAc(); else if(ayar.kaynak==='lugat') lugatIncele(); else uretVeGoster(); });
 async function odaAc(){
-  const ayarda = ayar.kaynak==='banka' || ayar.kaynak==='lugat';
+  const ayarda = ayar.kaynak==='banka';
   const h = ayarda ? $('#ayarHata') : $('#incHata');
   const b = ayarda ? $('#b-oda-ac') : $('#b-onayla');
   const eski=b.textContent; h.hidden=true; b.disabled=true; b.textContent='Oda açılıyor…';
