@@ -110,7 +110,7 @@ input[type=password]{font:600 1rem ui-monospace,Menlo,Consolas,monospace;padding
 input[type=file]{color:var(--soluk);font:inherit}
 input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-radius:10px;border:1px solid var(--cizgi);background:var(--gece-3);color:var(--kagit);padding:10px 14px;margin-right:12px;cursor:pointer}
 .kart a{color:var(--varak)}
-.sekmeler{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sekmeler{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .sekmeler button{display:flex;flex-direction:column;gap:2px;text-align:left;padding:14px 16px;border-radius:12px;border:1px solid var(--cizgi);background:var(--gece-2);color:var(--kagit);cursor:pointer;font:inherit}
 .sekmeler button b{font-family:var(--f-baslik);font-size:1.12rem}
 .sekmeler button span{color:var(--soluk);font-size:.85rem}
@@ -129,7 +129,7 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
 .yapiskan{position:sticky;bottom:0;padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent, var(--gece) 30%)}
 .donen{display:inline-block;width:16px;height:16px;border:2px solid var(--soluk);border-top-color:var(--varak);border-radius:50%;animation:don 0.8s linear infinite;vertical-align:-3px;margin-right:8px}
 @keyframes don{to{transform:rotate(360deg)}}
-@media (max-width:860px){.sekmeler{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:860px){.sekmeler{grid-template-columns:repeat(2,minmax(0,1fr))}.sekmeler [data-kaynak=lugat]{grid-column:1/-1}}
 .set{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .set .bilgi{min-width:0;display:flex;flex-direction:column;gap:2px}
 .set .bilgi b{font-family:var(--f-baslik);font-size:1.15rem;overflow-wrap:anywhere}
@@ -338,6 +338,7 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
       <button type="button" role="tab" id="t-konu" aria-selected="false" data-kaynak="konu"><b>Konu yaz</b><span>Yapay zekâ konudan üretir</span></button>
       <button type="button" role="tab" id="t-dosya" aria-selected="false" data-kaynak="dosya"><b>Dosya yükle</b><span>Yapay zekâ dosyadan üretir</span></button>
       <button type="button" role="tab" id="t-kayitli" aria-selected="false" data-kaynak="kayitli"><b>Kayıtlı setlerim</b><span id="kayitliSayi">Daha önce kaydettiklerin</span></button>
+      <button type="button" role="tab" id="t-lugat" aria-selected="false" data-kaynak="lugat"><b>Lügat yarışması</b><span>Beş Risale · Gençlik Rehberi</span></button>
     </div>
 
     <section id="k-banka" class="yigin">
@@ -346,6 +347,14 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
         <div class="kart yigin"><span class="etiket">Soru türleri</span><div class="cipler" id="c-tur"></div></div>
       </div>
       <p class="not" id="havuzNot"></p>
+    </section>
+
+    <section id="k-lugat" class="yigin" hidden>
+      <div class="kart yigin"><span class="etiket">Eser</span><div class="cipler" id="c-lugat-eser"></div></div>
+      <div class="kart yigin"><span class="etiket">Bölüm</span><div class="cipler" id="c-lugat-bolum"></div></div>
+      <div class="kart yigin"><span class="etiket">Seviye</span><div class="cipler" id="c-lugat-seviye"></div>
+        <p class="not">Her bölümde 60 kelime var: 20 kolay, 20 orta, 20 zor. Karışık, üç seviyeden rastgele 20 kelime seçer.</p></div>
+      <p class="not" id="lugatNot">Lügat yükleniyor…</p>
     </section>
 
     <section id="k-kayitli" class="yigin" hidden>
@@ -444,7 +453,7 @@ const el = (tag, cls, txt) => { const e=document.createElement(tag); if(cls) e.c
 const views = ['giris','katil','ayar','inceleme','sunucu','oyuncu','pratik','sunum','yayinla'];
 function goster(v){ views.forEach(x => $('#v-'+x).hidden = x!==v); window.scrollTo(0,0); }
 function karistir(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
-function turAdi(t){ return TUR[t] || (typeof YZTUR!=='undefined' && YZTUR[t]) || ''; }
+function turAdi(t){ return t==='lugat' ? 'Lügat' : TUR[t] || (typeof YZTUR!=='undefined' && YZTUR[t]) || ''; }
 function kaynakYaz(q){ return q.soz ? `${SOZ[q.soz]} Söz · ${q.eser}, s. ${q.sayfa} · ${turAdi(q.tur)}` : (q.kaynakMetni || 'Yapay zekâ ile üretildi'); }
 function rastgele(n){ const a=new Uint8Array(n); crypto.getRandomValues(a); return [...a].map(x=>(x%36).toString(36)).join(''); }
 function depoAl(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
@@ -711,6 +720,49 @@ function kursuAnim(sr, {yeni, sonra, baslik, ben, sesli}){
   return sahne;
 }
 
+
+/* ---------------- LÜGAT YARIŞMASI ---------------- */
+const LUGAT = { veri:null, hata:null, eser:null, bolum:null, seviye:'karisik', yukleniyor:null };
+function lugatYukle(){
+  if(LUGAT.veri || LUGAT.yukleniyor) return LUGAT.yukleniyor;
+  LUGAT.yukleniyor = fetch('lugat/lugat.json?v=1').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(v=>{ LUGAT.veri=v; const e=v.eserler[0]; LUGAT.eser=LUGAT.eser||e.ad; })
+    .catch(()=>{ LUGAT.hata='Lügat dosyası yüklenemedi. Sayfayı yenileyip tekrar dene.'; })
+    .finally(()=>{ LUGAT.yukleniyor=null; if(ayar.kaynak==='lugat') lugatCiz(); });
+  return LUGAT.yukleniyor;
+}
+function lugatEser(){ return LUGAT.veri && LUGAT.veri.eserler.find(e=>e.ad===LUGAT.eser); }
+function lugatBolum(){ const e=lugatEser(); return e && e.bolumler.find(b=>b.id===LUGAT.bolum); }
+function lugatCiz(){
+  if(!LUGAT.veri){ lugatYukle(); ayarDurum(); return; }
+  const e=lugatEser();
+  if(!e.bolumler.some(b=>b.id===LUGAT.bolum)) LUGAT.bolum=e.bolumler[0].id;
+  cipKur($('#c-lugat-eser'), LUGAT.veri.eserler.map(x=>[x.ad,x.ad]), 'radio', d=>d===LUGAT.eser, d=>{ LUGAT.eser=d; LUGAT.bolum=null; lugatCiz(); });
+  cipKur($('#c-lugat-bolum'), e.bolumler.map((b,i)=>[b.id, `${i+1}. ${b.ad}`]), 'radio', d=>d===LUGAT.bolum, d=>{ LUGAT.bolum=d; ayarDurum(); });
+  cipKur($('#c-lugat-seviye'), [['kolay','Kolay'],['orta','Orta'],['zor','Zor'],['karisik','Karışık']], 'radio', d=>d===LUGAT.seviye, d=>{ LUGAT.seviye=d; ayarDurum(); });
+  ayarDurum();
+}
+function lugatSorulari(){
+  const e=lugatEser(), b=lugatBolum(); if(!b) return [];
+  const K=b.kelimeler, sev={kolay:0,orta:1,zor:2}[LUGAT.seviye];
+  let secilen;
+  if(sev===undefined){ secilen=[...karistir(K.filter(x=>x.s===0)).slice(0,7), ...karistir(K.filter(x=>x.s===1)).slice(0,7), ...karistir(K.filter(x=>x.s===2)).slice(0,6)]; }
+  else secilen=karistir(K.filter(x=>x.s===sev)).slice(0,20);
+  const ilkKelime = a => a.toLocaleLowerCase('tr').split(/[\s,]+/)[0];
+  return karistir(secilen).map(x=>{
+    const ayni=K.filter(y=>y!==x && y.s===x.s), diger=K.filter(y=>y!==x && y.s!==x.s);
+    const yanlis=[];
+    for(const y of [...karistir(ayni), ...karistir(diger)]){
+      if(yanlis.length===3) break;
+      if(y.a===x.a || ilkKelime(y.a)===ilkKelime(x.a) || yanlis.some(z=>z===y.a || ilkKelime(z)===ilkKelime(y.a))) continue;
+      yanlis.push(y.a);
+    }
+    const sec=karistir([x.a, ...yanlis]);
+    return { tur:'lugat', soru:`“${x.k}” ne demektir?`, secenekler:sec, dogru:sec.indexOf(x.a),
+      aciklama: x.b ? `${x.k}: ${x.a}. Metinde: “${x.b}”` : `${x.k}: ${x.a}.`,
+      kaynakMetni:`${e.ad} · ${b.ad} · Lügat (${['kolay','orta','zor'][x.s]})` };
+  });
+}
 function pratikBasla(){
   const sorular = karistir(BANK).slice(0,10);
   let i=0, puan=0, dogruSay=0;
@@ -764,8 +816,14 @@ function havuz(){ return BANK.filter(q => ayar.soz.has(q.soz) && ayar.tur.has(q.
 function ayarDurum(){
   const b=$('#b-oda-ac');
   b.hidden = ayar.kaynak==='kayitli';
-  $('#kart-adet').hidden = ayar.kaynak==='kayitli';
+  $('#kart-adet').hidden = ayar.kaynak==='kayitli' || ayar.kaynak==='lugat';
   if(ayar.kaynak==='kayitli') return;
+  if(ayar.kaynak==='lugat'){
+    const b2=lugatBolum();
+    b.textContent='Odayı aç'; b.disabled=!b2;
+    $('#lugatNot').textContent = !LUGAT.veri ? (LUGAT.hata||'Lügat yükleniyor…') : (b2 ? `${LUGAT.eser} · ${b2.ad} · ${({kolay:'Kolay',orta:'Orta',zor:'Zor',karisik:'Karışık'})[LUGAT.seviye]} · 20 soru` : 'Bir bölüm seç.');
+    return;
+  }
   if(ayar.kaynak==='banka'){
     const n=havuz().length;
     $('#havuzNot').textContent = `Seçimine uyan ${n} soru var; oyunda ${Math.min(n,ayar.adet)} tanesi rastgele sorulacak.`;
@@ -782,7 +840,9 @@ function sekmeSec(k){
   $('#k-banka').hidden = k!=='banka';
   $('#k-yz').hidden = k!=='konu' && k!=='dosya';
   $('#k-kayitli').hidden = k!=='kayitli';
+  $('#k-lugat').hidden = k!=='lugat';
   if(k==='kayitli') setListeCiz();
+  if(k==='lugat') lugatCiz();
   $('#k-konu').hidden = k!=='konu';
   $('#k-dosya').hidden = k!=='dosya';
   $('#ayarHata').hidden=true;
@@ -1237,7 +1297,7 @@ $('#b-onayla').addEventListener('click', () => {
 });
 
 /* ---------------- ODA ---------------- */
-function oyunSorulari(){ return ayar.kaynak==='banka' ? karistir(havuz()).slice(0,ayar.adet) : karistir(onayli||[]); }
+function oyunSorulari(){ return ayar.kaynak==='banka' ? karistir(havuz()).slice(0,ayar.adet) : ayar.kaynak==='lugat' ? lugatSorulari() : karistir(onayli||[]); }
 function peerAc(id){
   return new Promise((res,rej)=>{
     const p = id ? new PeerK(id, PEER_AYAR) : new PeerK(PEER_AYAR);
@@ -1247,10 +1307,11 @@ function peerAc(id){
   });
 }
 let S=null;
-$('#b-oda-ac').addEventListener('click', () => { if(ayar.kaynak==='banka') odaAc(); else uretVeGoster(); });
+$('#b-oda-ac').addEventListener('click', () => { if(ayar.kaynak==='banka' || ayar.kaynak==='lugat') odaAc(); else uretVeGoster(); });
 async function odaAc(){
-  const h = ayar.kaynak==='banka' ? $('#ayarHata') : $('#incHata');
-  const b = ayar.kaynak==='banka' ? $('#b-oda-ac') : $('#b-onayla');
+  const ayarda = ayar.kaynak==='banka' || ayar.kaynak==='lugat';
+  const h = ayarda ? $('#ayarHata') : $('#incHata');
+  const b = ayarda ? $('#b-oda-ac') : $('#b-onayla');
   const eski=b.textContent; h.hidden=true; b.disabled=true; b.textContent='Oda açılıyor…';
   let peer=null, pin=null, sonHata=null;
   for(let d=0; d<6 && !peer; d++){
