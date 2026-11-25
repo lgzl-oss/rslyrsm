@@ -1,7 +1,236 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-18T20:57:46.519Z",
+ "guncelleme": "2026-11-25T21:30:51.661704+00:00",
  "setler": [
+  {
+   "id": "set-avrupa-ve-din",
+   "ad": "Avrupa Dinden Neden Uzaklaştı?",
+   "kaynak": "Sunum",
+   "tarih": "2026-11-25T21:30:51.661704+00:00",
+   "sorular": [
+    {
+     "tur": "genel",
+     "soru": "Teslis'in ilk resmî formülünün belirlendiği İznik Konsili hangi yılda toplandı?",
+     "secenekler": [
+      "325",
+      "381",
+      "1054",
+      "1517"
+     ],
+     "dogru": 0,
+     "aciklama": "Roma İmparatoru Konstantin'in topladığı İznik Konsili'nde Hazreti İsa'nın Baba ile aynı özden olduğu kabul edildi.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "genel",
+     "soru": "Kutsal Ruh'u da ekleyerek Teslis'e bugünkü şeklini veren konsil hangisidir?",
+     "secenekler": [
+      "İznik Konsili (325)",
+      "İstanbul Konsili (381)",
+      "Efes Konsili (431)",
+      "Trento Konsili (1545)"
+     ],
+     "dogru": 1,
+     "aciklama": "381'deki İstanbul Konsili Kutsal Ruh'u ekledi ve Teslis bugünkü şeklini aldı.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "genel",
+     "soru": "Roma ve İstanbul kiliselerinin birbirini aforoz ederek Katolik ve Ortodoks olarak ayrıldığı yıl hangisidir?",
+     "secenekler": [
+      "1054",
+      "1553",
+      "1453",
+      "1517"
+     ],
+     "dogru": 0,
+     "aciklama": "1054'te Roma ile İstanbul birbirini aforoz etti.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "genel",
+     "soru": "Luther \"Sadece Kitap\" dediği hâlde hangi inanca dokunmadı?",
+     "secenekler": [
+      "Peygamberlik",
+      "Kutsal Kitap'ın otoritesi",
+      "Teslis",
+      "Ahiret"
+     ],
+     "dogru": 2,
+     "aciklama": "Luther hükmün yalnız Kitab-ı Mukaddes'ten alınması gerektiğini söyledi; fakat Teslis'e dokunmadı.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "genel",
+     "soru": "Kitab-ı Mukaddes'te Teslis'i bulamadığını yazdığı için 1553'te Cenevre'de yakılan kimdir?",
+     "secenekler": [
+      "Luther",
+      "Galileo",
+      "Servetus",
+      "Calvin"
+     ],
+     "dogru": 2,
+     "aciklama": "Servetus Protestan Cenevre'de, Calvin'in şehrinde yakılarak öldürüldü.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Andolsun, 'Allah, ______' diyenler inkâr etmiştir. Hâlbuki bir tek İlah'tan başka hiçbir ilah yoktur.\" (Mâide, 73)",
+     "secenekler": [
+      "bağışlayandır",
+      "göklerin ve yerin Rabbidir",
+      "her şeye kadirdir",
+      "üçün üçüncüsüdür"
+     ],
+     "dogru": 3,
+     "aciklama": "Mâide Sûresi'nin 73. âyeti Teslis inancına açıkça cevap verir.",
+     "kaynak": "Slayt 5"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Nasraniyet birkaç defa yırtıldı, ______ geldi. Protestanlık da yırtıldı, tevhide yaklaştı.\"",
+     "secenekler": [
+      "ortodoksluğa",
+      "protestanlığa",
+      "katolikliğe",
+      "felsefeye"
+     ],
+     "dogru": 1,
+     "aciklama": "Mektubat, Hakikat Çekirdekleri, 21. madde.",
+     "kaynak": "Slayt 7"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "Hakikat Çekirdekleri'nde Hristiyanlık için geçen \"intıfa\" kelimesi ne demektir?",
+     "secenekler": [
+      "Saflaşmak",
+      "Birleşmek",
+      "Yayılmak",
+      "Sönmek"
+     ],
+     "dogru": 3,
+     "aciklama": "İntıfa sönmek; ıstıfa ise süzülüp saflaşmak demektir.",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Istıfa\" kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Sönüp gitmek",
+      "Parçalanmak",
+      "Teslim olmak",
+      "Süzülüp saflaşmak"
+     ],
+     "dogru": 3,
+     "aciklama": "Istıfa saf hâle gelmektir; Mustafa ismi de aynı köktendir.",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "genel",
+     "soru": "Güneş merkezli sistemi kuran Kopernik'in kilisedeki görevi neydi?",
+     "secenekler": [
+      "Rahibe okulunda öğretmen",
+      "Kanonik",
+      "Kardinal",
+      "Papa"
+     ],
+     "dogru": 1,
+     "aciklama": "Kopernik Warmia piskoposluğunda katedralin idari heyetinde görevli bir kanonikti.",
+     "kaynak": "Slayt 9"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Kutsal Ruh'un maksadı bize göğe nasıl gidileceğini öğretmektir, göğün nasıl gittiğini değil.\" sözü aslen kime aittir?",
+     "secenekler": [
+      "Kardinal Baronio",
+      "Kepler",
+      "Galileo",
+      "Newton"
+     ],
+     "dogru": 0,
+     "aciklama": "Galileo bu sözü 1615'te Grandüşes Christina'ya yazdığı mektupta Kardinal Baronio'dan aktarır.",
+     "kaynak": "Slayt 10"
+    },
+    {
+     "tur": "genel",
+     "soru": "Newton'un yıllarca inceleyip gizlice reddettiği, ama hayattayken açıklamadığı inanç hangisidir?",
+     "secenekler": [
+      "Peygamberlik",
+      "Teslis",
+      "Ahiret",
+      "Allah'ın varlığı"
+     ],
+     "dogru": 1,
+     "aciklama": "Newton Teslis'in sonradan eklendiği kanaatine vardı; bu yazılarını yayımlamadı.",
+     "kaynak": "Slayt 12"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "Risale-i Nur'daki \"mana-yı harfî\" ile bakmak ne demektir?",
+     "secenekler": [
+      "Yalnız Kur'an'ın harflerine bakmak",
+      "Varlıklara Allah hesabına, O'nu gösteren işaretler olarak bakmak",
+      "Varlıklara kendi hesabına bakmak",
+      "Kâinatı harf harf ezberlemek"
+     ],
+     "dogru": 1,
+     "aciklama": "Sözler, On İkinci Söz: mana-yı harfî Allah hesabına, mana-yı ismî mevcudat hesabına bakmaktır.",
+     "kaynak": "Slayt 13"
+    },
+    {
+     "tur": "genel",
+     "soru": "Allah'ın kâinatı bir saat gibi kurup bıraktığını, artık karışmadığını savunan görüşün adı nedir?",
+     "secenekler": [
+      "Teslis",
+      "Tevhid",
+      "Panteizm",
+      "Deizm"
+     ],
+     "dogru": 3,
+     "aciklama": "Deistler 'Allah saati kurdu ve bıraktı' diyerek vahyi ve ibadeti gereksiz saydı; Newton bu fikre karşıydı.",
+     "kaynak": "Slayt 15"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Tahrif sebebiyle şimdiki Hristiyanlık esbab ve vesaiti ______ bilir, mana-yı ismî nazarıyla bakar.\"",
+     "secenekler": [
+      "âciz",
+      "müessir",
+      "fâni",
+      "muhtaç"
+     ],
+     "dogru": 1,
+     "aciklama": "Hutbe-i Şamiye: İslâmiyet vasıtaya mana-yı harfî ile bakar; tahrif edilmiş Hristiyanlık sebepleri tesir sahibi bilir.",
+     "kaynak": "Slayt 16"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Avrupa ikidir\" bahsi Risale-i Nur'un hangi yerinde geçer?",
+     "secenekler": [
+      "Şualar, Yedinci Şua",
+      "Lem'alar, On Yedinci Lem'a",
+      "Sözler, Birinci Söz",
+      "Mektubat, Birinci Mektup"
+     ],
+     "dogru": 1,
+     "aciklama": "Lem'alar, On Yedinci Lem'a, Beşinci Nota.",
+     "kaynak": "Slayt 18"
+    },
+    {
+     "tur": "genel",
+     "soru": "Teslis'i bırakıp tevhide yaklaştığı hâlde korunmuş vahiy ve düzenli ibadetten yoksun kaldığı için zamanla çözülen hareket hangisidir?",
+     "secenekler": [
+      "Ortodokslar",
+      "Kalvinistler",
+      "Unitaryenler",
+      "Cizvitler"
+     ],
+     "dogru": 2,
+     "aciklama": "Teslis'i bırakmak tek başına yetmedi; vahiy ve ibadet gerekiyordu.",
+     "kaynak": "Slayt 19"
+    }
+   ]
+  },
   {
    "id": "setmwmlr44v",
    "ad": "Kışın Ardındaki Diriliş",
