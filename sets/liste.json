@@ -1,7 +1,439 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-25T21:30:51.661704+00:00",
+ "guncelleme": "2026-11-25T21:32:49.810930+00:00",
  "setler": [
+  {
+   "id": "set-hayatin-aynasi",
+   "ad": "Hayatın Aynası",
+   "kaynak": "Sunum",
+   "tarih": "2026-11-25T21:32:49.810930+00:00",
+   "sorular": [
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Hayatın dokuzuncu gayesi: \"Acz ve zaafın, fakr ve ihtiyacın ölçüsüyle ______ ve gınâ-yı Rabbâniyenin derecât-ı tecelliyâtını anlamaktır.\"",
+     "secenekler": [
+      "adalet-i İlâhiye",
+      "hikmet-i İlâhiye",
+      "kudret-i İlâhiye",
+      "rahmet-i İlâhiye"
+     ],
+     "dogru": 2,
+     "aciklama": "Sözler, On Birinci Söz.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "genel",
+     "soru": "On Birinci Söz'deki temsilde açlığın dereceleri neyi anlattırır?",
+     "secenekler": [
+      "Mevsimlerin değişmesini",
+      "Sofranın büyüklüğünü",
+      "Yemeğin fiyatını",
+      "Taamın lezzet ve derecelerini"
+     ],
+     "dogru": 3,
+     "aciklama": "Onun gibi insan da sonsuz aczi ve fakrıyla sonsuz kudret ve gınânın derecelerini anlar.",
+     "kaynak": "Slayt 5"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Ey insanlar! Siz Allah'a muhtaçsınız. Allah ise her bakımdan sınırsız zengindir.\" âyeti hangi sûrededir?",
+     "secenekler": [
+      "Kehf Sûresi, 109",
+      "Tîn Sûresi, 4",
+      "Fâtır Sûresi, 15",
+      "Şems Sûresi, 9"
+     ],
+     "dogru": 2,
+     "aciklama": "Acz ve fakr insanı Kadîr ve Ganî'ye bağlar.",
+     "kaynak": "Slayt 6"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "Hayatın mahiyeti anlatılırken geçen \"fihrist\" ne demektir?",
+     "secenekler": [
+      "İçindekiler sayfası",
+      "Harita",
+      "Ayna",
+      "Hazine"
+     ],
+     "dogru": 0,
+     "aciklama": "Hayat, esmanın kâinata yaydığı harikaların içindekiler sayfasıdır.",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Fezleke\" kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Hesabın toplamı, kitabın hülâsası",
+      "Kitabın yazarı",
+      "Kitabın kapağı",
+      "Kitabın ilk sayfası"
+     ],
+     "dogru": 0,
+     "aciklama": "Hayat, şu kitâb-ı ekberin bir fezlekesidir.",
+     "kaynak": "Slayt 10"
+    },
+    {
+     "tur": "genel",
+     "soru": "Risale-i Nur'da insana \"âlem-i sağîr\" denir. Kâinata ne denir?",
+     "secenekler": [
+      "Âlem-i kebîr",
+      "Âlem-i ervah",
+      "Âlem-i berzah",
+      "Âlem-i misal"
+     ],
+     "dogru": 0,
+     "aciklama": "Küçük âlem, büyük âlemin nüshasıdır.",
+     "kaynak": "Slayt 10"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Hem kudretin gizli definelerini açacak bir ______ külçesi.\"",
+     "secenekler": [
+      "nur",
+      "anahtar",
+      "altın",
+      "kalem"
+     ],
+     "dogru": 1,
+     "aciklama": "Hayatın mahiyeti anlatılırken geçer.",
+     "kaynak": "Slayt 11"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Biz, insanı en güzel biçimde yarattık.\" âyeti hangi sûrededir?",
+     "secenekler": [
+      "Şems Sûresi",
+      "Fâtır Sûresi",
+      "Kehf Sûresi",
+      "Tîn Sûresi"
+     ],
+     "dogru": 3,
+     "aciklama": "Tîn Sûresi, 4. âyet: ahsen-i takvîm.",
+     "kaynak": "Slayt 12"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Hayatın bir kelime-i mektûbedir. Kalem-i ______ yazılmış hikmetnümâ bir sözdür.\"",
+     "secenekler": [
+      "rahmetle",
+      "ilimle",
+      "kaderle",
+      "kudretle"
+     ],
+     "dogru": 3,
+     "aciklama": "Hayatın sureti ve vazifesi böyle tarif edilir.",
+     "kaynak": "Slayt 13"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Hayatının sırr-ı hakîkati şudur ki: Tecellî-i ehadiyete ve cilve-i samediyete ______.\"",
+     "secenekler": [
+      "aynalıktır",
+      "şükürdür",
+      "yolculuktur",
+      "kulluktur"
+     ],
+     "dogru": 0,
+     "aciklama": "Sözler, On Birinci Söz.",
+     "kaynak": "Slayt 15"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Nokta-i mihrâkiye\" ne demektir?",
+     "secenekler": [
+      "Dayanak noktası",
+      "Başlangıç noktası",
+      "Bakış açısı",
+      "Işınların toplandığı odak noktası"
+     ],
+     "dogru": 3,
+     "aciklama": "Hayat, bütün âleme tecelli eden esmanın odak noktası hükmündedir.",
+     "kaynak": "Slayt 16"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "Hayatın kemali: \"Hayatının aynasında temessül eden ______ envârını hissedip sevmektir.\"",
+     "secenekler": [
+      "Şems-i Ezelî'nin",
+      "Nur-u Muhammedî'nin",
+      "Kamer-i Münir'in",
+      "Necm-i Sâkıb'ın"
+     ],
+     "dogru": 0,
+     "aciklama": "Sözler, On Birinci Söz.",
+     "kaynak": "Slayt 18"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Kalbinin göz bebeğinde aks-i ______ yerleştirmektir.\"",
+     "secenekler": [
+      "sesini",
+      "sırrını",
+      "nûrunu",
+      "ismini"
+     ],
+     "dogru": 2,
+     "aciklama": "Aks: yansıma. Kalbin bakışının merkezine o nuru koymak.",
+     "kaynak": "Slayt 19"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Üç haslet kimde bulunursa imanın tadını bulur\" hadisinde sayılan hasletlerden biri hangisidir?",
+     "secenekler": [
+      "Herkese sevilmek",
+      "Uzun yaşamak",
+      "Sevdiğini yalnız Allah için sevmek",
+      "Çok mal kazanmak"
+     ],
+     "dogru": 2,
+     "aciklama": "Buhârî ve Müslim'in rivayetidir.",
+     "kaynak": "Slayt 20"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Göklere ve yere sığmam; fakat mü'minin kalbine sığarım\" manasındaki hadis-i kudsînin Farsça beyti hangisidir?",
+     "secenekler": [
+      "Her ki ber hod, ber Hudâ",
+      "Men ne-güncem der semâvât u zemîn",
+      "Bişnev ez ney çün hikâyet mîkuned",
+      "Ey dil, be-gûy"
+     ],
+     "dogru": 1,
+     "aciklama": "Beyit: Men ne-güncem der semâvât u zemîn, ez aceb güncem bi-kalb-i mü'minîn.",
+     "kaynak": "Slayt 21"
+    },
+    {
+     "tur": "genel",
+     "soru": "On Birinci Söz, hayatı zayi etmemek için hangi sûredeki kasem ve cevâb-ı kasemi düşünmeyi tavsiye eder?",
+     "secenekler": [
+      "Asr Sûresi",
+      "Fâtır Sûresi",
+      "Tîn Sûresi",
+      "Şems Sûresi"
+     ],
+     "dogru": 3,
+     "aciklama": "Nefsini arındıran kurtuluşa ermiştir; onu kötülüklere gömen ziyan etmiştir (Şems, 9-10).",
+     "kaynak": "Slayt 25-27"
+    }
+   ]
+  },
+  {
+   "id": "set-ey-mutesekki",
+   "ad": "Ey Müteşekkî! Sen Nesin?",
+   "kaynak": "Sunum",
+   "tarih": "2026-11-25T21:32:49.810930+00:00",
+   "sorular": [
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Hiçbir insanın Cenab-ı Hakk'a karşı ______ yoktur. Şekva ve şikâyete de haddi yoktur.\"",
+     "secenekler": [
+      "hakk-ı itirazı",
+      "ihtiyacı",
+      "sevgisi",
+      "borcu"
+     ],
+     "dogru": 0,
+     "aciklama": "Mesnevî-i Nuriye'deki bahis bu hükümle başlar.",
+     "kaynak": "Slayt 2"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"İ'lem eyyühe'l-aziz!\" hitabının anlamı nedir?",
+     "secenekler": [
+      "Allah'ı tanı ey insan!",
+      "Bil ey aziz kardeşim!",
+      "Ey şikâyet eden!",
+      "Ey nefsim, dinle!"
+     ],
+     "dogru": 1,
+     "aciklama": "Mesnevî-i Nuriye'de pek çok bahis bu hitapla açılır.",
+     "kaynak": "Slayt 2"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Bir ferdi razı etmek için bin ______ feda edilemez.\"",
+     "secenekler": [
+      "nimet",
+      "hikmet",
+      "insan",
+      "dua"
+     ],
+     "dogru": 1,
+     "aciklama": "Şikâyet edenin hevesine aykırı olanı gerektiren, nizam-ı âlemde binlerce hikmet vardır.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Hilâf-ı heves\" ne demektir?",
+     "secenekler": [
+      "Hevesin sebebi",
+      "Hevesin sonu",
+      "Hevesine aykırı",
+      "Hevesine uygun"
+     ],
+     "dogru": 2,
+     "aciklama": "Şikâyet edenin hevesine aykırı olan şey.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"İrza etmek\" ne demektir?",
+     "secenekler": [
+      "Razı etmek, memnun etmek",
+      "Kızdırmak",
+      "İzah etmek",
+      "Reddetmek"
+     ],
+     "dogru": 0,
+     "aciklama": "O ferdi irza etmekte bin hikmeti gazablandırmak vardır.",
+     "kaynak": "Slayt 4"
+    },
+    {
+     "tur": "genel",
+     "soru": "Kehf Sûresi'ndeki kıssada Hızır'ın deldiği gemi neden sahiplerine kaldı?",
+     "secenekler": [
+      "Gemi zaten eskiydi",
+      "Sahipleri gemiyi satmak istiyordu",
+      "Fırtına yaklaşıyordu",
+      "Arkadan gelen kral sağlam gemilere el koyuyordu"
+     ],
+     "dogru": 3,
+     "aciklama": "Görünüşte zarar olan şey, arkasındaki hikmetle korunma oldu (Kehf, 18/71-79).",
+     "kaynak": "Slayt 6"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Eğer hak onların ______ uysaydı, gökler ve yer fesada giderdi.\" (Mü'minûn, 71)",
+     "secenekler": [
+      "bilgilerine",
+      "heveslerine",
+      "sözlerine",
+      "dualarına"
+     ],
+     "dogru": 1,
+     "aciklama": "Risale açıklar: Her ferdin keyfine göre hareket edilirse dünyanın nizamı fesada gider.",
+     "kaynak": "Slayt 7"
+    },
+    {
+     "tur": "genel",
+     "soru": "Şûrâ Sûresi 27. âyete göre Allah rızkı kullarına bol bol verseydi ne olurdu?",
+     "secenekler": [
+      "Yeryüzünde azarlardı",
+      "Herkes şükrederdi",
+      "Kimse çalışmazdı",
+      "Fakirlik biterdi"
+     ],
+     "dogru": 0,
+     "aciklama": "\"Fakat O, dilediği ölçüde indirir.\"",
+     "kaynak": "Slayt 8"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Müteşekki\" kelimesinin anlamı nedir?",
+     "secenekler": [
+      "Şüphe eden",
+      "Şükreden",
+      "Şikâyet eden",
+      "Tefekkür eden"
+     ],
+     "dogru": 2,
+     "aciklama": "\"Ey müteşekki! Sen nesin? Neye binaen itiraz ediyorsun?\"",
+     "kaynak": "Slayt 9"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Cüz'î hevesini külliyat-ı kâinata ______ mi yapıyorsun?\"",
+     "secenekler": [
+      "hâkim",
+      "mühendis",
+      "sultan",
+      "kâtip"
+     ],
+     "dogru": 1,
+     "aciklama": "Küçük bir arzu, kâinatın düzenini kuracak mühendis olamaz.",
+     "kaynak": "Slayt 9"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Taaffün etmek\" ne demektir?",
+     "secenekler": [
+      "Tatlanmak",
+      "Tefekkür etmek",
+      "Bozulmak, kokuşmak",
+      "Affetmek"
+     ],
+     "dogru": 2,
+     "aciklama": "\"Taaffün etmiş olan zevkini nimetlerin derecelerine mikyas ve mizan mı yapıyorsun?\"",
+     "kaynak": "Slayt 11"
+    },
+    {
+     "tur": "cumle_tamamlama",
+     "soru": "\"Sen ne biliyorsun ki nimet zannettiğin ______ değildir?\"",
+     "secenekler": [
+      "hikmet",
+      "rahmet",
+      "emanet",
+      "nıkmet"
+     ],
+     "dogru": 3,
+     "aciklama": "Nıkmet: ceza, azap. Bakara 216: Olur ki sevdiğiniz şey sizin için şerdir.",
+     "kaynak": "Slayt 11"
+    },
+    {
+     "tur": "genel",
+     "soru": "\"Olur ki bir şeyden hoşlanmazsınız, hâlbuki o sizin için hayırlıdır.\" âyeti hangi sûrededir?",
+     "secenekler": [
+      "Şûrâ Sûresi, 27",
+      "Enbiyâ Sûresi, 23",
+      "Bakara Sûresi, 216",
+      "Mü'minûn Sûresi, 71"
+     ],
+     "dogru": 2,
+     "aciklama": "Âyet şöyle biter: Allah bilir, siz bilmezsiniz.",
+     "kaynak": "Slayt 12"
+    },
+    {
+     "tur": "kelime_anlami",
+     "soru": "\"Sinek kanadına muvazi olmayan hevesin\" ifadesindeki \"muvazi olmayan\" ne demektir?",
+     "secenekler": [
+      "Ondan büyük olan",
+      "Denk gelmeyen, o kadar bile ağırlığı olmayan",
+      "Paralel giden",
+      "Uçabilen"
+     ],
+     "dogru": 1,
+     "aciklama": "Hevesin teskin edilsin diye felek çarkları durdurulsun mu?",
+     "kaynak": "Slayt 13"
+    },
+    {
+     "tur": "genel",
+     "soru": "Lem'alar'daki \"Şekvâ bir haktan gelir.\" sözünün dersi nedir?",
+     "secenekler": [
+      "Hak arayan şikâyet etmelidir",
+      "Hakkımız zayi olmadığı için borcumuz şükürdür",
+      "Şikâyet etmek bir haktır",
+      "Her şikâyet haklıdır"
+     ],
+     "dogru": 1,
+     "aciklama": "Elimizden alınan bir hakkımız yok; üstümüzde ödenmemiş çok şükür var.",
+     "kaynak": "Slayt 14"
+    },
+    {
+     "tur": "genel",
+     "soru": "Hazreti Yâkub ve Hazreti Eyyûb'ün yolu hangisidir?",
+     "secenekler": [
+      "Derdini Allah'tan şikâyet etmek",
+      "Hiç dert etmemek",
+      "Derdini Allah'a şikâyet etmek",
+      "Derdini insanlara anlatmak"
+     ],
+     "dogru": 2,
+     "aciklama": "\"Ben derdimi ve hüznümü yalnız Allah'a arz ederim.\" (Yûsuf, 12/86)",
+     "kaynak": "Slayt 14"
+    }
+   ]
+  },
   {
    "id": "set-avrupa-ve-din",
    "ad": "Avrupa Dinden Neden Uzaklaştı?",
