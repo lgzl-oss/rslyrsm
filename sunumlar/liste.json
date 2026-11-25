@@ -1,7 +1,15 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-22T13:25:44.725741+00:00",
+ "guncelleme": "2026-11-25T21:28:29.346263+00:00",
  "sunumlar": [
+  {
+   "id": "avrupa-ve-din",
+   "ad": "Avrupa Dinden Neden Uzaklaştı?",
+   "yer": "Mektubat, Lem'alar, Sözler, Hutbe-i Şamiye",
+   "dosya": "avrupa-ve-din.html",
+   "slayt": 20,
+   "tarih": "2026-11-25T21:28:29.346263+00:00"
+  },
   {
    "id": "hayatin-aynasi",
    "ad": "Hayatın Aynası",
