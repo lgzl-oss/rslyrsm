@@ -725,7 +725,7 @@ function kursuAnim(sr, {yeni, sonra, baslik, ben, sesli}){
 const LUGAT = { veri:null, hata:null, eser:null, bolum:null, seviye:'karisik', yukleniyor:null };
 function lugatYukle(){
   if(LUGAT.veri || LUGAT.yukleniyor) return LUGAT.yukleniyor;
-  LUGAT.yukleniyor = fetch('lugat/lugat.json?v=1').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })
+  LUGAT.yukleniyor = fetch('lugat/lugat.json',{cache:'no-cache'}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })
     .then(v=>{ LUGAT.veri=v; const e=v.eserler[0]; LUGAT.eser=LUGAT.eser||e.ad; })
     .catch(()=>{ LUGAT.hata='Lügat dosyası yüklenemedi. Sayfayı yenileyip tekrar dene.'; })
     .finally(()=>{ LUGAT.yukleniyor=null; if(ayar.kaynak==='lugat') lugatCiz(); });
