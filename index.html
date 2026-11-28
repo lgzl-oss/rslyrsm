@@ -355,7 +355,7 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
       <div class="kart yigin"><span class="etiket">Eser</span><div class="cipler" id="c-lugat-eser"></div></div>
       <div class="kart yigin"><span class="etiket">Bölüm</span><div class="cipler" id="c-lugat-bolum"></div></div>
       <div class="kart yigin"><span class="etiket">Seviye</span><div class="cipler" id="c-lugat-seviye"></div>
-        <p class="not">Her bölümde 60 kelime var: 20 kolay, 20 orta, 20 zor. Karışık, üç seviyeden rastgele 20 kelime seçer.</p></div>
+        <p class="not">Her bölümde 60 kelime var: 20 kolay, 20 orta, 20 zor. Karışık, üç seviyeden rastgele kelime seçer.</p></div>
       <div class="kart yigin"><span class="etiket">Soru türü</span><div class="cipler" id="c-lugat-tur"></div>
         <p class="not">Osmanlıca sorularda kelimeler Hüsrev hattıyla yazılır. Yazılışlar senin verdiğin Osmanlıca metinlerden alındı; metinde bulunamayan kelimeler bu türlere girmez.</p></div>
       <p class="not" id="lugatNot">Lügat yükleniyor…</p>
@@ -400,7 +400,7 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
     </section>
 
     <div class="izgara-2">
-      <div class="kart yigin" id="kart-adet"><span class="etiket">Soru sayısı</span><div class="cipler" id="c-adet"></div></div>
+      <div class="kart yigin" id="kart-adet"><span class="etiket">Soru sayısı</span><div class="cipler" id="c-adet"></div><p class="not" id="adetNot" hidden></p></div>
       <div class="kart yigin"><span class="etiket">Soru başına süre</span><div class="cipler" id="c-sure"></div></div>
     </div>
     <div class="sira"><button class="dugme" id="b-oda-ac" type="button">Odayı aç</button><button class="dugme ikincil" type="button" data-geri>Vazgeç</button></div>
@@ -773,15 +773,18 @@ function osmVaryant(o){
   const iy=h.findIndex((c,i)=>i>0&&i<h.length-1&&'اوی'.includes(c)); if(iy>0){ const v=h.slice(); v.splice(iy,1); out.add(v.join('')); }
   out.delete(o); return [...out].filter(v=>OSM_NORM(v)!==OSM_NORM(o));
 }
+// Karışıkta kolay/orta/zor payı (20 → 7/7/6)
+function lugatPay(N){ const a=Math.round(N*.35), b=Math.round(N*.35); return [a,b,N-a-b]; }
 function lugatOsmSorulari(){
   const e=lugatEser(), b=lugatBolum(); if(!b) return [];
   const K=b.kelimeler.filter(x=>x.o), sev={kolay:0,orta:1,zor:2}[LUGAT.seviye];
   const havuz=e.bolumler.flatMap(y=>y.kelimeler.filter(x=>x.o));
   let secilen;
-  if(sev===undefined){ secilen=[...karistir(K.filter(x=>x.s===0)).slice(0,7), ...karistir(K.filter(x=>x.s===1)).slice(0,7), ...karistir(K.filter(x=>x.s===2)).slice(0,6)];
-    if(secilen.length<20) secilen.push(...karistir(K.filter(x=>!secilen.includes(x))).slice(0,20-secilen.length)); }
-  else { secilen=karistir(K.filter(x=>x.s===sev)).slice(0,20);
-    if(secilen.length<20) secilen.push(...karistir(K.filter(x=>x.s!==sev && Math.abs(x.s-sev)===1)).slice(0,20-secilen.length)); }
+  const N=ayar.lugatAdet, [n0,n1,n2]=lugatPay(N);
+  if(sev===undefined){ secilen=[...karistir(K.filter(x=>x.s===0)).slice(0,n0), ...karistir(K.filter(x=>x.s===1)).slice(0,n1), ...karistir(K.filter(x=>x.s===2)).slice(0,n2)];
+    if(secilen.length<N) secilen.push(...karistir(K.filter(x=>!secilen.includes(x))).slice(0,N-secilen.length)); }
+  else { secilen=karistir(K.filter(x=>x.s===sev)).slice(0,N);
+    if(secilen.length<N) secilen.push(...karistir(K.filter(x=>x.s!==sev && Math.abs(x.s-sev)===1)).slice(0,N-secilen.length)); }
   const sevAd=['kolay','orta','zor'];
   return karistir(secilen).map((x,qi)=>{
     const yon = LUGAT.tur==='osm-karisik' ? (qi%2 ? 'lat-osm' : 'osm-lat') : LUGAT.tur;
@@ -809,8 +812,9 @@ function lugatSorulari(){
   const e=lugatEser(), b=lugatBolum(); if(!b) return [];
   const K=b.kelimeler, sev={kolay:0,orta:1,zor:2}[LUGAT.seviye];
   let secilen;
-  if(sev===undefined){ secilen=[...karistir(K.filter(x=>x.s===0)).slice(0,7), ...karistir(K.filter(x=>x.s===1)).slice(0,7), ...karistir(K.filter(x=>x.s===2)).slice(0,6)]; }
-  else secilen=karistir(K.filter(x=>x.s===sev)).slice(0,20);
+  const [n0,n1,n2]=lugatPay(ayar.lugatAdet);
+  if(sev===undefined){ secilen=[...karistir(K.filter(x=>x.s===0)).slice(0,n0), ...karistir(K.filter(x=>x.s===1)).slice(0,n1), ...karistir(K.filter(x=>x.s===2)).slice(0,n2)]; }
+  else secilen=karistir(K.filter(x=>x.s===sev)).slice(0,ayar.lugatAdet);
   const ilkKelime = a => a.toLocaleLowerCase('tr').split(/[\s,]+/)[0];
   return karistir(secilen).map(x=>{
     const ayni=K.filter(y=>y!==x && y.s===x.s), diger=K.filter(y=>y!==x && y.s!==x.s);
@@ -863,7 +867,7 @@ function pratikBasla(){
 const YZTUR = {genel:'Bilgi sorusu', cumle_tamamlama:'Cümle tamamlama', kelime_anlami:'Kavram / kelime anlamı', dogru_yanlis:'Doğru / yanlış'};
 const ZORLUK = {kolay:'Kolay', orta:'Orta', zor:'Zor'};
 const ayar = { kaynak:'banka', soz:new Set(Object.keys(SOZ).map(Number)), tur:new Set(Object.keys(TUR)),
-  yztur:new Set(['genel','cumle_tamamlama','dogru_yanlis']), zorluk:'orta', kahoot:depoAl('nur-kahoot')==='1', adet:15, sure:20, saglayici:depoAl('nur-saglayici')||'gemini' };
+  yztur:new Set(['genel','cumle_tamamlama','dogru_yanlis']), zorluk:'orta', kahoot:depoAl('nur-kahoot')==='1', adet:15, setAdet:0, lugatAdet:20, sure:20, saglayici:depoAl('nur-saglayici')||'gemini' };
 const SAGLAYICI = {gemini:'Gemini (ücretsiz)', claude:'Claude'};
 const ANAHTAR_DEPO = {gemini:'nur-api-gemini', claude:'nur-api'};
 let onayli=null; // incelemeden geçmiş yapay zekâ soruları
@@ -875,16 +879,23 @@ function cipKur(kap, liste, tip, secili, onDegis){
     inp.addEventListener('change',()=>onDegis(deger, inp.checked)); l.append(inp, document.createTextNode(yazi)); kap.append(l);
   });
 }
+// Soru sayısı: kayıtlı setlerde "Tümü" ya da seçilen kadar rastgele soru; lügatte 5–20
+function adetCiz(){
+  const k=ayar.kaynak, alan = k==='kayitli' ? 'setAdet' : k==='lugat' ? 'lugatAdet' : 'adet';
+  const sec = k==='kayitli' ? [[0,'Tümü'],[5,'5'],[10,'10'],[15,'15'],[20,'20'],[30,'30']] : k==='lugat' ? [[5,'5'],[10,'10'],[15,'15'],[20,'20']] : [[5,'5'],[10,'10'],[15,'15'],[20,'20'],[30,'30']];
+  cipKur($('#c-adet'), sec, 'radio', d=>d===ayar[alan], d=>{ ayar[alan]=d; ayarDurum(); });
+  const not=$('#adetNot'); if(not){ not.hidden = k!=='kayitli'; not.textContent = ayar.setAdet ? `Setten rastgele ${ayar.setAdet} soru sorulur (set daha kısaysa hepsi).` : 'Setteki bütün sorular sorulur.'; }
+}
 function havuz(){ return BANK.filter(q => ayar.soz.has(q.soz) && ayar.tur.has(q.tur)); }
 function ayarDurum(){
   const b=$('#b-oda-ac');
   b.hidden = ayar.kaynak==='kayitli';
-  $('#kart-adet').hidden = ayar.kaynak==='kayitli' || ayar.kaynak==='lugat';
+  adetCiz();
   if(ayar.kaynak==='kayitli') return;
   if(ayar.kaynak==='lugat'){
     const b2=lugatBolum();
     b.textContent='Soruları göster'; b.disabled=!b2;
-    $('#lugatNot').textContent = !LUGAT.veri ? (LUGAT.hata||'Lügat yükleniyor…') : (b2 ? `${LUGAT.eser} · ${b2.ad} · ${({kolay:'Kolay',orta:'Orta',zor:'Zor',karisik:'Karışık'})[LUGAT.seviye]} · ${LTUR[LUGAT.tur]} · 20 soru` + (LUGAT.tur!=='anlam' ? ` (Osmanlıcası bulunan ${b2.kelimeler.filter(x=>x.o).length} kelimeden)` : '') : 'Bir bölüm seç.');
+    $('#lugatNot').textContent = !LUGAT.veri ? (LUGAT.hata||'Lügat yükleniyor…') : (b2 ? `${LUGAT.eser} · ${b2.ad} · ${({kolay:'Kolay',orta:'Orta',zor:'Zor',karisik:'Karışık'})[LUGAT.seviye]} · ${LTUR[LUGAT.tur]} · ${ayar.lugatAdet} soru` + (LUGAT.tur!=='anlam' ? ` (Osmanlıcası bulunan ${b2.kelimeler.filter(x=>x.o).length} kelimeden)` : '') : 'Bir bölüm seç.');
     return;
   }
   if(ayar.kaynak==='banka'){
@@ -918,7 +929,7 @@ function ayarCiz(){
   cipKur($('#c-yztur'), Object.entries(YZTUR), 'checkbox', d=>ayar.yztur.has(d), (d,c)=>{ c?ayar.yztur.add(d):ayar.yztur.delete(d); ayarDurum(); });
   cipKur($('#c-zorluk'), Object.entries(ZORLUK), 'radio', d=>d===ayar.zorluk, d=>{ ayar.zorluk=d; });
   const kc=$('#i-kahoot'); kc.checked=ayar.kahoot; kc.onchange=()=>{ ayar.kahoot=kc.checked; depoYaz('nur-kahoot', kc.checked?'1':'0'); };
-  cipKur($('#c-adet'), [[5,'5'],[10,'10'],[15,'15'],[20,'20'],[30,'30']], 'radio', d=>d===ayar.adet, d=>{ ayar.adet=d; ayarDurum(); });
+  adetCiz();
   cipKur($('#c-sure'), [[15,'15 sn'],[20,'20 sn'],[30,'30 sn']], 'radio', d=>d===ayar.sure, d=>{ ayar.sure=d; });
   cipKur($('#c-saglayici'), Object.entries(SAGLAYICI), 'radio', d=>d===ayar.saglayici, d=>{ ayar.saglayici=d; depoYaz('nur-saglayici',d); saglayiciGoster(true); });
   saglayiciGoster(!$('#i-anahtar').value);
@@ -1143,7 +1154,8 @@ function gecerli(q){ return q.soru.trim() && q.secenekler.every(s=>s.trim()) && 
 function incDurum(){
   const bozuk=taslak.filter(q=>!gecerli(q)).length;
   const b=$('#b-onayla'); b.disabled = !taslak.length || bozuk>0 || taslak.some(q=>q.uretiliyor);
-  b.textContent = taslak.length ? `${taslak.length} soruyla odayı aç` : 'Bu sorularla odayı aç';
+  const nOyun = ayar.kaynak==='kayitli' && ayar.setAdet ? Math.min(ayar.setAdet, taslak.length) : taslak.length;
+  b.textContent = taslak.length ? `${nOyun} soruyla odayı aç` : 'Bu sorularla odayı aç';
   const h=$('#incHata'); h.hidden = !bozuk; h.textContent = bozuk ? `${bozuk} soruda boş ya da birbirinin aynısı şık var.` : '';
   const kh=$('#incKahoot'); const uzun = ayar.kahoot ? taslak.filter(q=>!kahootUygun(q)).length : 0;
   kh.hidden=!uzun; kh.textContent = uzun ? `${uzun} soru Kahoot sınırını aşıyor (soru ${KAHOOT_SORU}, şık ${KAHOOT_SIK} karakter). Oyunda sorun olmaz; Kahoot'a aktarmadan önce kısalt.` : '';
@@ -1360,7 +1372,7 @@ $('#b-onayla').addEventListener('click', () => {
 });
 
 /* ---------------- ODA ---------------- */
-function oyunSorulari(){ return ayar.kaynak==='banka' ? karistir(havuz()).slice(0,ayar.adet) : karistir(onayli||[]); }
+function oyunSorulari(){ if(ayar.kaynak==='banka') return karistir(havuz()).slice(0,ayar.adet); const q=karistir(onayli||[]); return ayar.kaynak==='kayitli' && ayar.setAdet ? q.slice(0,ayar.setAdet) : q; }
 function peerAc(id){
   return new Promise((res,rej)=>{
     const p = id ? new PeerK(id, PEER_AYAR) : new PeerK(PEER_AYAR);
@@ -1454,7 +1466,7 @@ function yayinla(){
   }
 }
 function otoIptal(){ if(!S) return; clearTimeout(S.otoGecis); S.otoGecis=null; S.otoBitis=0; }
-const HAZIR_MS = 3000, TABLO_ARALIK = 5, CEVAP_OTO = 4500, TABLO_OTO = 9000;
+const HAZIR_MS = 3000, TABLO_ARALIK = 5, CEVAP_OTO = 15000, TABLO_OTO = 9000;
 function soruBaslat(){
   otoIptal();
   S.qi++; S.cevaplar=new Map();
