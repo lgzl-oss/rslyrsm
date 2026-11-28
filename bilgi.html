@@ -80,7 +80,12 @@ input[type=text],input[inputmode]{width:100%;padding:13px 16px;border-radius:12p
 .serit .ic{clip-path:polygon(0 50%,25px 0,calc(100% - 25px) 0,100% 50%,calc(100% - 25px) 100%,25px 100%);background:linear-gradient(180deg,var(--ic1) 0%,var(--ic2) 38%,var(--ic2) 62%,var(--ic1) 100%);padding:14px 42px;min-height:58px;display:flex;align-items:center;gap:10px}
 .soru-serit .ic{min-height:110px;justify-content:center;text-align:center;font:500 clamp(18px,2.6vw,26px)/1.35 var(--f-govde);padding:20px 48px}
 .secenekler{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}
-@media (max-width:620px){.secenekler{grid-template-columns:1fr;gap:10px}.serit .ic{padding:12px 34px;min-height:52px}.soru-serit .ic{min-height:90px;padding:16px 34px}}
+@media (max-width:620px){.secenekler{grid-template-columns:1fr 1fr;gap:10px 12px}.serit .ic{padding:10px 18px;min-height:56px}.soru-serit .ic{min-height:90px;padding:16px 30px}
+  .secenek{font-size:14px;line-height:1.25}.secenek .ic{gap:5px}.secenek .harf{min-width:0}
+  .secenek .dis{clip-path:polygon(0 50%,14px 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,14px 100%)}
+  .secenek .ic{clip-path:polygon(0 50%,13px 0,calc(100% - 13px) 0,100% 50%,calc(100% - 13px) 100%,13px 100%)}
+  .serit::before{left:-10px;right:-10px}
+  .isik-alani{min-height:96px}.isik-alani .yuzuk{width:84px}}
 .secenek{appearance:none;border:0;background:none;padding:0;color:var(--yazi);font:500 clamp(16px,2vw,19px) var(--f-govde);text-align:left;cursor:pointer;width:100%}
 .secenek .harf{color:#ffa31a;font-weight:600;min-width:20px}
 .secenek:disabled{cursor:default}
