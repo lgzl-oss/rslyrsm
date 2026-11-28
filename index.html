@@ -26,6 +26,7 @@
 /* Osmanlıca harfler Hüsrev hattıyla (e-Kalem); yalnız Arap harfli yazılarda devreye girer */
 @font-face{font-family:"NurOsm";src:url("lugat/husrev.woff") format("woff");font-display:block;unicode-range:U+0600-06FF,U+200C-200D;size-adjust:150%}
 *,*::before,*::after{box-sizing:border-box}
+.ileri-ipucu{flex-basis:100%;margin:0}
 html,body{height:100%}
 body{background:var(--gece);color:var(--kagit);font-family:var(--f-govde);font-size:16px;line-height:1.5;
   background-image:radial-gradient(1200px 600px at 80% -10%, var(--gece-3) 0%, transparent 60%),radial-gradient(900px 500px at -10% 110%, var(--gece-2) 0%, transparent 60%)}
@@ -1467,8 +1468,22 @@ function yayinla(){
 }
 function otoIptal(){ if(!S) return; clearTimeout(S.otoGecis); S.otoGecis=null; S.otoBitis=0; }
 const HAZIR_MS = 3000, TABLO_ARALIK = 5, CEVAP_OTO = 15000, TABLO_OTO = 9000;
+// Cevap ve sıralama ekranında sunucu ekrana dokunarak ya da tuşla hemen geçebilir (15 sn beklemeden)
+function ileriBagla(v,b){
+  S.ileri=()=>{ if(b.isConnected && !b.disabled) b.click(); };
+}
+document.addEventListener('click',ev=>{
+  if(!S||!S.ileri||!['cevap','tablo'].includes(S.faz)||$('#v-sunucu').hidden) return;
+  if(ev.target.closest('button,a,input,textarea,select,label,header,.sira,[role=dialog]')) return;
+  S.ileri();
+});
+document.addEventListener('keydown',ev=>{
+  if(typeof S==='undefined'||!S||!S.ileri||!['cevap','tablo'].includes(S.faz)) return;
+  if(ev.target.closest&&ev.target.closest('input,textarea,select')) return;
+  if(['ArrowRight','PageDown','n','N'].includes(ev.key)){ ev.preventDefault(); S.ileri(); }
+});
 function soruBaslat(){
-  otoIptal();
+  otoIptal(); if(S) S.ileri=null;
   S.qi++; S.cevaplar=new Map();
   for(const o of S.oyuncular.values()) o.son=null;
   if(S.qi>=S.sorular.length){ S.faz='son'; sunucuCiz(); yayinla(); return; }
@@ -1583,7 +1598,8 @@ function sunucuCiz(){
     b.onclick=()=>{ otoIptal(); if(tz) tabloAc(false); else soruBaslat(); }; s.append(b);
     if(!tz && !sonSoru){ const b2=el('button','dugme ikincil','Sıralama'); b2.type='button'; b2.onclick=()=>tabloAc(false); s.append(b2); }
     if(S.otoBitis){ const o=el('span','etiket'); const yaz=()=>{ const k=Math.max(0,Math.ceil((S.otoBitis-Date.now())/1000)); const neden = S.otoNeden==='sure' ? 'Süre doldu' : 'Herkes cevapladı'; o.textContent = tz ? `${neden} · sıralama ${k} sn içinde` : (!sonSoru ? `${neden} · sonraki soru ${k} sn içinde` : `${neden} · sonuçlar ${k} sn içinde`); }; yaz(); S.sayacTik=setInterval(yaz,250); s.append(o); }
-    v.append(s); b.focus({preventScroll:true});
+    s.append(el('span','not ileri-ipucu','Ekrana dokunarak ya da → tuşuyla da geçebilirsin'));
+    v.append(s); b.focus({preventScroll:true}); ileriBagla(v,b);
     return;
   }
   if(S.faz==='tablo'){
@@ -1594,7 +1610,7 @@ function sunucuCiz(){
     if(yeni) S.tabloOnce={ sira:sr.map(o=>o.k), puan:Object.fromEntries(sr.map(o=>[o.k,o.puan])) };
     const s=el('div','sira'); const b=el('button','dugme',S.qi+1<top?'Sonraki soru':'Sonucu göster'); b.type='button'; b.onclick=soruBaslat; s.append(b);
     if(S.otoBitis){ const o=el('span','etiket'); const yaz=()=>{ o.textContent=`sonraki soru ${Math.max(0,Math.ceil((S.otoBitis-Date.now())/1000))} sn içinde`; }; yaz(); S.sayacTik=setInterval(yaz,250); s.append(o); }
-    v.append(s); b.focus({preventScroll:true});
+    v.append(s); b.focus({preventScroll:true}); ileriBagla(v,b);
     return;
   }
   if(S.faz==='son'){
