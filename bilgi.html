@@ -147,7 +147,7 @@ canvas#konfeti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none
       </svg>
     </div>
     <h1 class="baslik-buyuk">Bilgi Yarışması</h1>
-    <p class="alt">15 soru, iki baraj, üç joker. Zirvede 1 milyon puan.</p>
+    <p class="alt">15 soru, iki baraj, üç joker. Zirvede 1 milyon ilim puanı.</p>
     <div class="modlar">
       <button class="mod" type="button" data-mod="salon"><b>Salon</b><span>Büyük ekranda bir yarışmacı basamakları çıkar; seyirci jokerinde salondakiler telefondan oy verir.</span></button>
       <button class="mod" type="button" data-mod="herkes"><b>Herkes telefonundan</b><span>Odaya katılan herkes aynı soruları cevaplar. Yanlış yapan elenir, en yükseğe çıkan kazanır.</span></button>
@@ -427,7 +427,7 @@ function oyunCiz(){
   [['yy','Yarı yarıya'],['seyirci','Seyirciye sor'],['danis', G.mod==='salon'?'Salondan birine danış':'Danışmana sor']].forEach(([k,ad])=>{
     const b=el('button','joker'+(G.joker[k]?'':' kullanildi')); b.type='button'; b.innerHTML=IKON[k]; b.title=ad; b.setAttribute('aria-label',ad);
     b.disabled = !G.joker[k] || G.faz!=='soru' || G.secim!=null; b.onclick=()=>jokerKullan(k); jk.append(b); });
-  const cip=el('button','adim-cip',`Soru ${G.i+1} / ${G.sorular.length} · ${puanYaz(M.puan[G.i])} puan`); cip.type='button';
+  const cip=el('button','adim-cip',`Soru ${G.i+1} / ${G.sorular.length} · ${puanYaz(M.puan[G.i])} ilim puanı`); cip.type='button';
   ust.append(jk, cip);
   const isik=el('div','isik-alani'); isik.append(yuzukSvg());
   if(G.ad){ const a=el('div','etiket',G.ad); a.style.cssText='position:absolute;left:14px;top:12px'; isik.append(a); }
@@ -451,13 +451,13 @@ function oyunCiz(){
     k.append(e,h); sahne.append(k);
   }
   if(G.faz==='soru' && G.secim==null && G.i>0){
-    const s=el('div','sira'); const c=el('button','dugme ikincil kucuk',`Çekil (${puanYaz(M.puan[G.gecilen])} puanla)`); c.type='button';
+    const s=el('div','sira'); const c=el('button','dugme ikincil kucuk',`Çekil (${puanYaz(M.puan[G.gecilen])} ilim puanıyla)`); c.type='button';
     c.onclick=()=>{ if(c.dataset.onay){ bitir('cekildi'); } else { c.dataset.onay='1'; c.textContent='Emin misin? Çekilmek için tekrar dokun'; } };
     s.append(c); sahne.append(s);
   }
   if(G.faz==='acik'){
     const dogru = G.secim===q.dogru;
-    const bilgi=el('div','bilgi'); bilgi.append(el('div','et', dogru ? (M.baraj.includes(G.i)?`Doğru! Baraj geçildi: ${puanYaz(M.puan[G.i])} puan garanti`:`Doğru! ${puanYaz(M.puan[G.i])} puan`) : `Yanlış. Doğru cevap ${HARF[q.dogru]}: ${q.secenekler[q.dogru]}`));
+    const bilgi=el('div','bilgi'); bilgi.append(el('div','et', dogru ? (M.baraj.includes(G.i)?`Doğru! Baraj geçildi: ${puanYaz(M.puan[G.i])} ilim puanı garanti`:`Doğru! ${puanYaz(M.puan[G.i])} ilim puanı`) : `Yanlış. Doğru cevap ${HARF[q.dogru]}: ${q.secenekler[q.dogru]}`));
     if(q.aciklama) bilgi.append(el('div',null,q.aciklama)); if(q.kaynak) bilgi.append(el('div','not',q.kaynak));
     sahne.append(bilgi);
     const s=el('div','sira'); const b=el('button','dugme', dogru ? (G.i+1<G.sorular.length?'Sonraki soru':'Zirve!') : 'Sonucu gör'); b.type='button';
@@ -499,7 +499,7 @@ function bitir(neden){
   const v=$('#v-oyun'); v.replaceChildren(); const k=el('div','sonuc yigin');
   k.append(el('div','etiket', neden==='zirve'?'Zirveye ulaştın':neden==='cekildi'?'Yarışmadan çekildin':'Yarışma bitti'));
   if(G.ad) k.append(el('h2',null,G.ad));
-  k.append(el('div','tutar', puanYaz(p)+' puan'));
+  k.append(el('div','tutar', puanYaz(p)+' ilim puanı'));
   k.append(el('p','not', neden==='yanlis' ? (p>0?'Baraj puanını kazandın.':'Bir sonraki sefere ilk barajı geçmeye çalış.') : `${G.gecilen+1} soru doğru cevaplandı.`));
   const s=el('div','sira'); s.style.justifyContent='center';
   const b=el('button','dugme','Yeniden oyna'); b.type='button'; b.onclick=()=>{ const m=G.mod; G=null; if(m==='salon'){ AYAR.mod='salon'; } goster('kaynak'); kaynakCiz(); if(S) odaKapat(); };
@@ -617,19 +617,19 @@ function herkesCiz(){
   const v=$('#v-oyun'); v.replaceChildren(); if(!S) return;
   if(S.faz==='son'){
     const sr=herkesSiralama(); const k=el('div','sonuc yigin'); k.append(el('div','etiket','Yarışma bitti'));
-    if(sr[0]) k.append(el('h2',null,`${sr[0].ad} kazandı`), el('div','tutar',puanYaz(sr[0].o.kazanc||sr[0].puan)+' puan'));
-    const ul=el('ol','siralama'); sr.forEach((x,i)=>{ const li=el('li'); li.append(el('span',null,`${i+1}. ${x.ad}`), el('span',null,`${x.gecilen+1} soru · ${puanYaz(x.o.kazanc||0)} puan`)); ul.append(li); }); k.append(ul);
+    if(sr[0]) k.append(el('h2',null,`${sr[0].ad} kazandı`), el('div','tutar',puanYaz(sr[0].o.kazanc||sr[0].puan)+' ilim puanı'));
+    const ul=el('ol','siralama'); sr.forEach((x,i)=>{ const li=el('li'); li.append(el('span',null,`${i+1}. ${x.ad}`), el('span',null,`${x.gecilen+1} soru · ${puanYaz(x.o.kazanc||0)} ilim puanı`)); ul.append(li); }); k.append(ul);
     const s=el('div','sira'); s.style.justifyContent='center'; const b=el('button','dugme','Yeni yarışma'); b.type='button'; b.onclick=()=>{ odaKapat(); goster('kaynak'); kaynakCiz(); }; const a=el('a','dugme ikincil','Ana sayfa'); a.href='./'; s.append(b,a); k.append(s); v.append(k); return;
   }
   const kap=el('div','oyun'), sahne=el('div','sahne');
   const oy=oyundakiler(), top=[...S.oyuncular.values()].filter(o=>o.durum!=='izliyor').length;
   const ust=el('div','ustbar'); ust.append(el('div','etiket',`Oyunda ${oy.length} / ${top} · Oda ${S.pin}`));
-  const cip=el('button','adim-cip', S.i>=0?`Soru ${S.i+1} / ${S.sorular.length} · ${puanYaz(S.M.puan[S.i])} puan`:'Hazırlanıyor'); cip.type='button'; ust.append(cip);
+  const cip=el('button','adim-cip', S.i>=0?`Soru ${S.i+1} / ${S.sorular.length} · ${puanYaz(S.M.puan[S.i])} ilim puanı`:'Hazırlanıyor'); cip.type='button'; ust.append(cip);
   sahne.append(ust);
   const isik=el('div','isik-alani'); isik.append(yuzukSvg());
   if(S.faz==='soru'){ const s=sayacEl(); sayacGuncelle(s,S.T-(Date.now()-S.qBas),S.T); isik.append(s); }
   sahne.append(isik);
-  if(S.i<0 || S.faz==='hazir'){ sahne.append(seritEl(S.i<0?'Yarışma başlıyor…':`${S.i+1}. soru geliyor · ${puanYaz(S.M.puan[S.i])} puan`,'soru-serit')); }
+  if(S.i<0 || S.faz==='hazir'){ sahne.append(seritEl(S.i<0?'Yarışma başlıyor…':`${S.i+1}. soru geliyor · ${puanYaz(S.M.puan[S.i])} ilim puanı`,'soru-serit')); }
   else {
     const q=S.sorular[S.i]; sahne.append(seritEl(q.soru,'soru-serit'));
     const sec=el('div','secenekler'); const say=[0,0,0,0]; oy.concat(S.faz==='acik'?[...S.oyuncular.values()].filter(o=>S.elenen.includes(o.ad)):[]).forEach(o=>{ if(o.cevap) say[o.cevap.k]++; });
@@ -677,8 +677,8 @@ function oyuncuCiz(){
   if(!d){ v.append(el('h2',null,'Bağlanıldı'), el('p','not','Sunucunun başlatmasını bekle.')); return; }
   if(d.mod==='salon'){
     if(d.f==='lobi'){ v.append(el('h2',null,'Seyircisin'), el('p','not','Yarışma başlayınca soruyu burada da göreceksin. Seyirci jokeri kullanılırsa oyunu buradan vereceksin.')); return; }
-    if(d.f==='son'){ v.append(el('h2',null,'Yarışma bitti'), el('div','tutar',puanYaz(d.sonuc.p)+' puan'), el('p','not', (d.sonuc.ad||'Yarışmacı')+' bu puanla yarışmayı tamamladı.')); return; }
-    v.append(el('div','adim-cip',`Soru ${d.i+1} · ${puanYaz(d.M.puan[d.i])} puan`), seritEl(d.q.s,'soru-serit'));
+    if(d.f==='son'){ v.append(el('h2',null,'Yarışma bitti'), el('div','tutar',puanYaz(d.sonuc.p)+' ilim puanı'), el('p','not', (d.sonuc.ad||'Yarışmacı')+' bu puanla yarışmayı tamamladı.')); return; }
+    v.append(el('div','adim-cip',`Soru ${d.i+1} · ${puanYaz(d.M.puan[d.i])} ilim puanı`), seritEl(d.q.s,'soru-serit'));
     const sec=el('div','secenekler');
     d.q.o.forEach((m,k)=>{ const b=secenekEl(k,m); const gizli=(d.gizli||[]).includes(k); if(gizli) b.classList.add('gizli');
       if(d.f==='oy'){ b.disabled = gizli || d.oyum!=null; if(d.oyum===k) b.classList.add('secili'); b.onclick=()=>{ gonder({t:'oy', i:d.i, k}); P.d.oyum=k; oyuncuCiz(); }; }
@@ -691,9 +691,9 @@ function oyuncuCiz(){
   // herkes
   const ben=d.ben||{};
   if(d.f==='lobi'||d.i<0){ v.append(el('h2',null,'Katıldın'), el('p','not','Yarışma başlayınca sorular burada çıkacak. Yanlış cevap verirsen elenirsin; baraj puanın seninle kalır.')); return; }
-  if(d.f==='son'){ v.append(el('h2',null,'Yarışma bitti')); const ul=el('ol','siralama'); (d.sira||[]).forEach((x,i)=>{ const li=el('li',x.ben?'ben':null); li.append(el('span',null,`${i+1}. ${x.ad}`), el('span',null,`${puanYaz(x.p)} puan`)); ul.append(li); }); v.append(ul); return; }
-  v.append(el('div','adim-cip',`Soru ${d.i+1} / ${d.top} · ${puanYaz(d.M.puan[d.i])} puan`));
-  if(ben.durum==='elendi' && d.f!=='acik'){ v.append(el('div','bilgi',`Elendin. Kazancın: ${puanYaz(ben.kazanc||0)} puan. Yarışmayı izlemeye devam edebilirsin.`)); }
+  if(d.f==='son'){ v.append(el('h2',null,'Yarışma bitti')); const ul=el('ol','siralama'); (d.sira||[]).forEach((x,i)=>{ const li=el('li',x.ben?'ben':null); li.append(el('span',null,`${i+1}. ${x.ad}`), el('span',null,`${puanYaz(x.p)} ilim puanı`)); ul.append(li); }); v.append(ul); return; }
+  v.append(el('div','adim-cip',`Soru ${d.i+1} / ${d.top} · ${puanYaz(d.M.puan[d.i])} ilim puanı`));
+  if(ben.durum==='elendi' && d.f!=='acik'){ v.append(el('div','bilgi',`Elendin. Kazancın: ${puanYaz(ben.kazanc||0)} ilim puanı. Yarışmayı izlemeye devam edebilirsin.`)); }
   if(ben.durum==='izliyor'){ v.append(el('p','not','Yarışma başladıktan sonra katıldın; izleyicisin.')); }
   if(d.f==='hazir'){ v.append(seritEl(`${d.i+1}. soru geliyor…`,'soru-serit')); return; }
   v.append(seritEl(d.q.s,'soru-serit'));
@@ -713,7 +713,7 @@ function oyuncuCiz(){
     if(ben.yy){ const j=el('button','joker'); j.type='button'; j.innerHTML=IKON.yy; j.title='Yarı yarıya'; j.onclick=()=>{ gonder({t:'yy', i:d.i}); MZ.joker(); }; s.append(j); }
     s.append(el('span','not',`${Math.ceil((d.kalan||0)/1000)} sn`)); v.append(s);
   } else if(d.f==='soru' && ben.cevap!=null) v.append(el('p','bilgi','Cevabın kilitlendi. Herkesin cevabı bekleniyor.'));
-  if(d.f==='acik' && ben.durum!=='izliyor'){ const ok = ben.cevap===d.d && ben.durum==='oyunda'; v.append(el('div','bilgi', ok ? `Doğru! ${puanYaz(d.M.puan[d.i])} puan` : (ben.gecilen<d.i && ben.durum==='elendi' && ben.gecilen<d.i-1 ? 'Daha önce elenmiştin.' : `Elendin. Kazancın: ${puanYaz(ben.kazanc||0)} puan`)));
+  if(d.f==='acik' && ben.durum!=='izliyor'){ const ok = ben.cevap===d.d && ben.durum==='oyunda'; v.append(el('div','bilgi', ok ? `Doğru! ${puanYaz(d.M.puan[d.i])} ilim puanı` : (ben.gecilen<d.i && ben.durum==='elendi' && ben.gecilen<d.i-1 ? 'Daha önce elenmiştin.' : `Elendin. Kazancın: ${puanYaz(ben.kazanc||0)} ilim puanı`)));
     if(d.a) v.append(el('p','not',d.a)); }
   if(P._onay!=null && !oynuyor) P._onay=null;
 }
