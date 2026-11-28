@@ -19,10 +19,12 @@
   --varak:#d9b45a; --varak-koyu:#a8873a;
   --firuze:#1f9e9a; --mercan:#d0533f; --kobalt:#3b63c9; --safran:#d39a1e;
   --iyi:#3fbf7a; --kotu:#e0675a;
-  --f-baslik:"Alegreya", "Iowan Old Style", Georgia, serif;
-  --f-govde:"Rubik", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-baslik:"NurOsm","Alegreya", "Iowan Old Style", Georgia, serif;
+  --f-govde:"NurOsm","Rubik", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme:dark;
 }
+/* Osmanlıca harfler Hüsrev hattıyla (e-Kalem); yalnız Arap harfli yazılarda devreye girer */
+@font-face{font-family:"NurOsm";src:url("lugat/husrev.woff") format("woff");font-display:block;unicode-range:U+0600-06FF,U+200C-200D;size-adjust:150%}
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--gece);color:var(--kagit);font-family:var(--f-govde);font-size:16px;line-height:1.5;
@@ -354,6 +356,8 @@ input[type=file]::file-selector-button{font:600 .95rem var(--f-govde);border-rad
       <div class="kart yigin"><span class="etiket">Bölüm</span><div class="cipler" id="c-lugat-bolum"></div></div>
       <div class="kart yigin"><span class="etiket">Seviye</span><div class="cipler" id="c-lugat-seviye"></div>
         <p class="not">Her bölümde 60 kelime var: 20 kolay, 20 orta, 20 zor. Karışık, üç seviyeden rastgele 20 kelime seçer.</p></div>
+      <div class="kart yigin"><span class="etiket">Soru türü</span><div class="cipler" id="c-lugat-tur"></div>
+        <p class="not">Osmanlıca sorularda kelimeler Hüsrev hattıyla yazılır. Yazılışlar senin verdiğin Osmanlıca metinlerden alındı; metinde bulunamayan kelimeler bu türlere girmez.</p></div>
       <p class="not" id="lugatNot">Lügat yükleniyor…</p>
     </section>
 
@@ -722,7 +726,8 @@ function kursuAnim(sr, {yeni, sonra, baslik, ben, sesli}){
 
 
 /* ---------------- LÜGAT YARIŞMASI ---------------- */
-const LUGAT = { veri:null, hata:null, eser:null, bolum:null, seviye:'karisik', yukleniyor:null };
+const LUGAT = { veri:null, hata:null, eser:null, bolum:null, seviye:'karisik', tur:'anlam', yukleniyor:null };
+const LTUR = {anlam:'Anlam', 'osm-lat':'Osmanlıca → Latin', 'lat-osm':'Latin → Osmanlıca', 'osm-karisik':'Osmanlıca karışık'};
 function lugatYukle(){
   if(LUGAT.veri || LUGAT.yukleniyor) return LUGAT.yukleniyor;
   LUGAT.yukleniyor = fetch('lugat/lugat.json',{cache:'no-cache'}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })
@@ -740,6 +745,7 @@ function lugatCiz(){
   cipKur($('#c-lugat-eser'), LUGAT.veri.eserler.map(x=>[x.ad,x.ad]), 'radio', d=>d===LUGAT.eser, d=>{ LUGAT.eser=d; LUGAT.bolum=null; lugatCiz(); });
   cipKur($('#c-lugat-bolum'), e.bolumler.map((b,i)=>[b.id, `${i+1}. ${b.ad}`]), 'radio', d=>d===LUGAT.bolum, d=>{ LUGAT.bolum=d; ayarDurum(); });
   cipKur($('#c-lugat-seviye'), [['kolay','Kolay'],['orta','Orta'],['zor','Zor'],['karisik','Karışık']], 'radio', d=>d===LUGAT.seviye, d=>{ LUGAT.seviye=d; ayarDurum(); });
+  cipKur($('#c-lugat-tur'), Object.entries(LTUR), 'radio', d=>d===LUGAT.tur, d=>{ LUGAT.tur=d; if(d!=='anlam') try{ document.fonts.load('1em NurOsm','ب'); }catch(e){} ayarDurum(); });
   ayarDurum();
 }
 function lugatIncele(){
@@ -747,9 +753,59 @@ function lugatIncele(){
   yzBaglam={kaynak:null};
   taslak=lugatSorulari().map(q=>({tur:'lugat', soru:q.soru, secenekler:q.secenekler, dogru:q.dogru, aciklama:q.aciklama, kaynakNot:q.seviye}));
   const sev=({kolay:'Kolay',orta:'Orta',zor:'Zor',karisik:'Karışık'})[LUGAT.seviye];
-  incelemeBasla(`${e.ad} · ${b.ad} · Lügat`, {id:null}, `Lügat: ${b.ad} (${sev})`);
+  const tr = LUGAT.tur==='anlam' ? '' : ` · ${LTUR[LUGAT.tur]}`;
+  incelemeBasla(`${e.ad} · ${b.ad} · Lügat${tr}`, {id:null}, `Lügat: ${b.ad} (${sev}${tr})`);
+}
+/* Osmanlıca yazılış yardımcıları */
+const OSM_NORM = s => s.normalize('NFC').replace(/[\u064B-\u065F\u0670\u0640\u200c\u200d]/g,'').replace(/[ەۀة]/g,'ه').replace(/[يى]/g,'ی').replace(/[کڭگ]/g,'ك').replace(/[أإآ]/g,'ا').replace(/ؤ/g,'و').replace(/ئ/g,'ی').replace(/ء/g,'');
+function osmMesafe(a,b){ a=OSM_NORM(a); b=OSM_NORM(b); const d=Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=1;i<=a.length;i++){ let on=d[0]; d[0]=i; for(let j=1;j<=b.length;j++){ const t=d[j]; d[j]=Math.min(d[j]+1,d[j-1]+1,on+(a[i-1]===b[j-1]?0:1)); on=t; } } return d[b.length]; }
+// Okunuşu aynı ya da yakın harfler: yazımda en sık karışanlar
+const OSM_YAKIN = [['س','ص','ث'],['ت','ط'],['ز','ذ','ظ','ض'],['ح','ه','خ'],['ق','ك','غ'],['ا','ع'],['د','ض'],['و','ؤ']];
+function osmVaryant(o){
+  const h=[...o], yerler=[];
+  h.forEach((c,i)=>{ const g=OSM_YAKIN.find(x=>x.includes(c)); if(g) g.forEach(y=>{ if(y!==c) yerler.push([i,y]); }); });
+  const out=new Set();
+  for(const [i,y] of karistir(yerler)){ const v=h.slice(); v[i]=y; out.add(v.join('')); }
+  // iki harf birden değişen biçimler (az yer varsa)
+  if(out.size<6) for(const [i,y] of karistir(yerler)) for(const [j,z] of karistir(yerler)){ if(i>=j) continue; const v=h.slice(); v[i]=y; v[j]=z; out.add(v.join('')); if(out.size>=8) break; }
+  // uzun ünlü harfi düşmüş ya da eklenmiş biçim
+  const iy=h.findIndex((c,i)=>i>0&&i<h.length-1&&'اوی'.includes(c)); if(iy>0){ const v=h.slice(); v.splice(iy,1); out.add(v.join('')); }
+  out.delete(o); return [...out].filter(v=>OSM_NORM(v)!==OSM_NORM(o));
+}
+function lugatOsmSorulari(){
+  const e=lugatEser(), b=lugatBolum(); if(!b) return [];
+  const K=b.kelimeler.filter(x=>x.o), sev={kolay:0,orta:1,zor:2}[LUGAT.seviye];
+  const havuz=e.bolumler.flatMap(y=>y.kelimeler.filter(x=>x.o));
+  let secilen;
+  if(sev===undefined){ secilen=[...karistir(K.filter(x=>x.s===0)).slice(0,7), ...karistir(K.filter(x=>x.s===1)).slice(0,7), ...karistir(K.filter(x=>x.s===2)).slice(0,6)];
+    if(secilen.length<20) secilen.push(...karistir(K.filter(x=>!secilen.includes(x))).slice(0,20-secilen.length)); }
+  else { secilen=karistir(K.filter(x=>x.s===sev)).slice(0,20);
+    if(secilen.length<20) secilen.push(...karistir(K.filter(x=>x.s!==sev && Math.abs(x.s-sev)===1)).slice(0,20-secilen.length)); }
+  const sevAd=['kolay','orta','zor'];
+  return karistir(secilen).map((x,qi)=>{
+    const yon = LUGAT.tur==='osm-karisik' ? (qi%2 ? 'lat-osm' : 'osm-lat') : LUGAT.tur;
+    const zor=x.s===2, orta=x.s===1;
+    const aday = karistir(havuz.filter(y=>y!==x && OSM_NORM(y.o)!==OSM_NORM(x.o) && y.k.toLocaleLowerCase('tr')!==x.k.toLocaleLowerCase('tr')));
+    // zor ve ortada yazılışı en çok benzeyen kelimeler öne gelir
+    const yakin = (zor||orta) ? aday.map(y=>[osmMesafe(y.o,x.o)+(y.o.split(' ').length!==x.o.split(' ').length?3:0)+Math.random()*(zor?.5:2),y]).sort((a,b)=>a[0]-b[0]).map(z=>z[1]) : aday;
+    const acik = `${x.o} = ${x.k}: ${x.a}.` + (x.b ? ` Metinde: “${x.b}”` : '');
+    let sec, dogruS;
+    if(yon==='osm-lat'){
+      const yanlis=[]; for(const y of yakin){ if(yanlis.length===3) break; if(!yanlis.includes(y.k)) yanlis.push(y.k); }
+      dogruS=x.k; sec=karistir([x.k,...yanlis]);
+      return {tur:'lugat', soru:`“${x.o}” nasıl okunur?`, secenekler:sec, dogru:sec.indexOf(dogruS), aciklama:acik, seviye:sevAd[x.s]};
+    }
+    const yanlis=[], gor=new Set([OSM_NORM(x.o)]);
+    const ekle=v=>{ const n=OSM_NORM(v); if(yanlis.length<3 && !gor.has(n)){ gor.add(n); yanlis.push(v); } };
+    const vary = zor ? osmVaryant(x.o) : orta ? osmVaryant(x.o).slice(0,1) : [];
+    vary.forEach(ekle); yakin.forEach(y=>ekle(y.o));
+    sec=karistir([x.o,...yanlis]);
+    return {tur:'lugat', soru:`“${x.k}” Osmanlıca nasıl yazılır?`, secenekler:sec, dogru:sec.indexOf(x.o), aciklama:acik, seviye:sevAd[x.s]};
+  });
 }
 function lugatSorulari(){
+  if(LUGAT.tur!=='anlam') return lugatOsmSorulari();
   const e=lugatEser(), b=lugatBolum(); if(!b) return [];
   const K=b.kelimeler, sev={kolay:0,orta:1,zor:2}[LUGAT.seviye];
   let secilen;
@@ -828,7 +884,7 @@ function ayarDurum(){
   if(ayar.kaynak==='lugat'){
     const b2=lugatBolum();
     b.textContent='Soruları göster'; b.disabled=!b2;
-    $('#lugatNot').textContent = !LUGAT.veri ? (LUGAT.hata||'Lügat yükleniyor…') : (b2 ? `${LUGAT.eser} · ${b2.ad} · ${({kolay:'Kolay',orta:'Orta',zor:'Zor',karisik:'Karışık'})[LUGAT.seviye]} · 20 soru` : 'Bir bölüm seç.');
+    $('#lugatNot').textContent = !LUGAT.veri ? (LUGAT.hata||'Lügat yükleniyor…') : (b2 ? `${LUGAT.eser} · ${b2.ad} · ${({kolay:'Kolay',orta:'Orta',zor:'Zor',karisik:'Karışık'})[LUGAT.seviye]} · ${LTUR[LUGAT.tur]} · 20 soru` + (LUGAT.tur!=='anlam' ? ` (Osmanlıcası bulunan ${b2.kelimeler.filter(x=>x.o).length} kelimeden)` : '') : 'Bir bölüm seç.');
     return;
   }
   if(ayar.kaynak==='banka'){
