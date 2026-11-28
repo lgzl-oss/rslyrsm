@@ -119,7 +119,7 @@ function shortKur(v, no, top){
   const ust = el('div','ust'); const cub = el('div','cubuklar');
   const adimSay = v.kartlar.length + 1;
   for(let i=0;i<adimSay;i++){ const c=el('i'); c.append(el('b')); cub.append(c); }
-  const bas = el('div','baslik'); bas.append(el('span','eser',`${v.eser} · ${v.bolum}`), el('span',null,`${no} / ${top}`));
+  const bas = el('div','baslik'); bas.append(el('span','eser',v.bolum), el('span',null,`${no} / ${top}`));
   ust.append(cub, bas);
   const metin = el('div','metin');
   const yan = el('div','yan');
@@ -160,7 +160,9 @@ function adimCiz(s){
     const h=el('div','hakikat'); h.append(el('div','et','Hakikat'), el('p',null,v.hakikat));
     const lg=el('div','lugat'); v.lugat.forEach(x=>{ const r=el('div'); r.append(el('span','lo',x.o||''), el('span','lk',x.k), el('span','la',x.a)); lg.append(r); });
     kutu.append(h, lg); m.append(kutu);
-    for(let i=0;i<8 && m.scrollHeight>m.clientHeight+2;i++){ lg.lastChild && lg.lastChild.remove(); }
+    const yan=s.kok.querySelector('.yan'); const sinir=()=>yan.getBoundingClientRect().top-10;
+    for(let i=0;i<6 && lg.lastChild && lg.lastChild.getBoundingClientRect().bottom>sinir();i++) lg.lastChild.remove();
+    if(!lg.children.length) lg.remove();
   }
   s.cub.querySelectorAll('b').forEach((b,i)=>{ b.style.width = i<s.adim ? '100%' : '0'; });
   s.sol.hidden = s.adim>0;
@@ -251,7 +253,7 @@ async function basla(){
   const hash=decodeURIComponent(location.hash.slice(1));
   let bas = GUN.sira % LISTE.length; const hi=LISTE.findIndex(x=>x.id===hash); if(hi>=0) bas=hi;
   const sirali=[...LISTE.slice(bas), ...LISTE.slice(0,bas)].slice(0, kalan);
-  const shortlar = sirali.map((v,i)=>shortKur(v, LISTE.indexOf(v)+1, LISTE.length));
+  const shortlar = sirali.map((v,i)=>shortKur(v, v.no||LISTE.indexOf(v)+1, v.top||LISTE.length));
   shortlar.forEach(s=>akis.append(s.kok));
   akis.append(sirali.length<kalan ? sonKart('bitti') : sonKart('sinir'));
   bb.onclick=()=>{ muzikAcik=true; MUZIK.ayarla(true); shortlar.forEach(s=>s.kok._sesGoster()); shortlar[0].kok.scrollIntoView({behavior:'smooth'}); };
