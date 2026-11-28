@@ -1,7 +1,337 @@
 {
  "surum": 1,
- "guncelleme": "2026-11-25T21:32:49.810930+00:00",
+ "guncelleme": "2026-11-28T18:49:08.265790+00:00",
  "setler": [
+  {
+   "id": "set-siyer-ortaokul",
+   "ad": "Siyer (Ortaokul)",
+   "kaynak": "Siyer",
+   "tarih": "2026-11-28T18:49:08.265790+00:00",
+   "sorular": [
+    {
+     "tur": "genel",
+     "soru": "Peygamber Efendimiz hangi şehirde doğmuştur?",
+     "secenekler": [
+      "Taif",
+      "Mekke",
+      "Kudüs",
+      "Medine"
+     ],
+     "dogru": 1,
+     "aciklama": "Mekke'de, Fil Vakası'nın olduğu yıl doğdu.",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "Peygamber Efendimizin doğduğu yıl olarak kabul edilen yıl hangisidir?",
+     "secenekler": [
+      "610",
+      "622",
+      "571",
+      "632"
+     ],
+     "dogru": 2,
+     "aciklama": "571 yılı, Fil Yılı olarak da bilinir.",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "Peygamber Efendimizin annesinin adı nedir?",
+     "secenekler": [
+      "Hatice",
+      "Fâtıma",
+      "Halime",
+      "Âmine"
+     ],
+     "dogru": 3,
+     "aciklama": "Annesi Âmine Hatun, babası Abdullah'tır.",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "Peygamber Efendimizin babasının adı nedir?",
+     "secenekler": [
+      "Ebû Tâlib",
+      "Hamza",
+      "Abdullah",
+      "Abdülmuttalib"
+     ],
+     "dogru": 2,
+     "aciklama": "Babası Abdullah, o doğmadan önce vefat etmişti.",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "Peygamber Efendimizin süt annesi kimdir?",
+     "secenekler": [
+      "Ümmü Seleme",
+      "Sevde",
+      "Âmine",
+      "Halime"
+     ],
+     "dogru": 3,
+     "aciklama": "Çocukluğunun ilk yıllarını sütannesi Halime'nin yanında, çölde geçirdi.",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "Annesi vefat edince Peygamber Efendimizi kim yanına aldı?",
+     "secenekler": [
+      "Amcası Hamza",
+      "Sütannesi Halime",
+      "Amcası Ebû Tâlib",
+      "Dedesi Abdülmuttalib"
+     ],
+     "dogru": 3,
+     "aciklama": "Altı yaşında annesini kaybedince dedesi Abdülmuttalib onu himaye etti; dedesi vefat edince amcası Ebû Tâlib büyüttü.",
+     "kaynak": "Siyer",
+     "zorluk": 2
+    },
+    {
+     "tur": "genel",
+     "soru": "Gençliğinde dürüstlüğü sebebiyle Peygamber Efendimize hangi lakap verilmişti?",
+     "secenekler": [
+      "el-Emîn (Güvenilir)",
+      "el-Fârûk",
+      "es-Sâdık (Doğru)",
+      "es-Sıddîk"
+     ],
+     "dogru": 0,
+     "aciklama": "Mekkeliler ona \"Muhammedü'l-Emîn\", yani güvenilir Muhammed derdi.",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "İlk vahiy hangi mağarada geldi?",
+     "secenekler": [
+      "Uhud",
+      "Sevr",
+      "Safa",
+      "Hira"
+     ],
+     "dogru": 3,
+     "aciklama": "Peygamber Efendimiz Nur Dağı'ndaki Hira Mağarası'nda tefekküre çekilirdi; ilk vahiy orada geldi.",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "İlk inen âyetler hangi sûrenin başıdır?",
+     "secenekler": [
+      "Fâtiha Sûresi",
+      "İhlâs Sûresi",
+      "Alak Sûresi",
+      "Bakara Sûresi"
+     ],
+     "dogru": 2,
+     "aciklama": "İlk inen âyet \"Oku! Yaratan Rabbinin adıyla\" diye başlayan Alak Sûresi'nin ilk âyetleridir.",
+     "kaynak": "Siyer",
+     "zorluk": 2
+    },
+    {
+     "tur": "genel",
+     "soru": "Vahyi Peygamber Efendimize getiren melek hangisidir?",
+     "secenekler": [
+      "Cebrâil",
+      "Mîkâil",
+      "Azrâil",
+      "İsrâfil"
+     ],
+     "dogru": 0,
+     "aciklama": "Vahiy meleği Cebrâil'dir (as).",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "Peygamber Efendimize ilk iman eden kişi kimdir?",
+     "secenekler": [
+      "Hz. Ebû Bekir",
+      "Hz. Zeyd",
+      "Hz. Hatice",
+      "Hz. Ali"
+     ],
+     "dogru": 2,
+     "aciklama": "İlk iman eden, eşi Hz. Hatice validemizdir.",
+     "kaynak": "Siyer",
+     "zorluk": 2
+    },
+    {
+     "tur": "genel",
+     "soru": "Çocuklar arasında ilk Müslüman olan kimdir?",
+     "secenekler": [
+      "Hz. Enes",
+      "Hz. Ali",
+      "Hz. Zeyd",
+      "Hz. Hasan"
+     ],
+     "dogru": 1,
+     "aciklama": "Hz. Ali küçük yaşta, çocuklar arasında ilk iman edendir.",
+     "kaynak": "Siyer",
+     "zorluk": 2
+    },
+    {
+     "tur": "genel",
+     "soru": "Mekke'den Medine'ye göç olayına ne ad verilir?",
+     "secenekler": [
+      "Hicret",
+      "Bîat",
+      "Mîrac",
+      "Fetih"
+     ],
+     "dogru": 0,
+     "aciklama": "Hicret 622 yılında oldu ve Hicrî takvimin başlangıcı kabul edildi.",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "Hicret yolculuğunda Peygamber Efendimizin yol arkadaşı kimdi?",
+     "secenekler": [
+      "Hz. Bilal",
+      "Hz. Osman",
+      "Hz. Ebû Bekir",
+      "Hz. Ömer"
+     ],
+     "dogru": 2,
+     "aciklama": "Hz. Ebû Bekir ile birlikte Sevr Mağarası'nda üç gün saklandılar.",
+     "kaynak": "Siyer",
+     "zorluk": 1
+    },
+    {
+     "tur": "genel",
+     "soru": "Hicrette Peygamber Efendimiz ile Hz. Ebû Bekir hangi mağarada saklandılar?",
+     "secenekler": [
+      "Hira",
+      "Sevr",
+      "Uhud",
+      "Kuba"
+     ],
+     "dogru": 1,
+     "aciklama": "Sevr Mağarası'nın ağzına örümceğin ağ örmesi ve güvercinin yuva yapması meşhurdur.",
+     "kaynak": "Siyer",
+     "zorluk": 2
+    },
+    {
+     "tur": "genel",
+     "soru": "Hicret eden Mekkeli Müslümanlara yardım eden Medineli Müslümanlara ne denir?",
+     "secenekler": [
+      "Ensar",
+      "Muhacir",
+      "Ashâb-ı Suffe",
+      "Kureyş"
+     ],
+     "dogru": 0,
+     "aciklama": "Ensar \"yardım edenler\" demektir; Mekke'den göç edenlere ise Muhacir denir.",
+     "kaynak": "Siyer",
+     "zorluk": 2
+    },
+    {
+     "tur": "genel",
+     "soru": "Hicret sırasında Medine'ye varmadan önce yapılan, İslam'ın ilk mescidi hangisidir?",
+     "secenekler": [
+      "Mescid-i Harâm",
+      "Mescid-i Aksâ",
+      "Kubâ Mescidi",
+      "Mescid-i Nebevî"
+     ],
+     "dogru": 2,
+     "aciklama": "Peygamber Efendimiz Medine'ye girmeden önce Kubâ'da konakladı ve ilk mescidi orada yaptı.",
+     "kaynak": "Siyer",
+     "zorluk": 3
+    },
+    {
+     "tur": "genel",
+     "soru": "Müslümanlar ile Mekkeli müşrikler arasındaki ilk büyük savaş hangisidir?",
+     "secenekler": [
+      "Uhud",
+      "Huneyn",
+      "Hendek",
+      "Bedir"
+     ],
+     "dogru": 3,
+     "aciklama": "Bedir Savaşı 624 yılında oldu; sayıca az olan Müslümanlar kazandı.",
+     "kaynak": "Siyer",
+     "zorluk": 2
+    },
+    {
+     "tur": "genel",
+     "soru": "Hangi savaşta okçuların yerlerini terk etmesi yüzünden Müslümanlar zor durumda kaldı?",
+     "secenekler": [
+      "Hayber",
+      "Bedir",
+      "Uhud",
+      "Hendek"
+     ],
+     "dogru": 2,
+     "aciklama": "Uhud'da tepeyi korumakla görevli okçuların bir kısmı yerini bıraktı; Hz. Hamza bu savaşta şehit oldu.",
+     "kaynak": "Siyer",
+     "zorluk": 3
+    },
+    {
+     "tur": "genel",
+     "soru": "Hendek Savaşı'nda Medine'nin etrafına hendek kazılmasını öneren sahabi kimdir?",
+     "secenekler": [
+      "Hz. Ali",
+      "Hz. Ömer",
+      "Hz. Hamza",
+      "Selman-ı Fârisî"
+     ],
+     "dogru": 3,
+     "aciklama": "Hendek kazma fikri İranlı sahabi Selman-ı Fârisî'den gelmiştir.",
+     "kaynak": "Siyer",
+     "zorluk": 3
+    },
+    {
+     "tur": "genel",
+     "soru": "Mekke hangi yıl fethedildi?",
+     "secenekler": [
+      "632",
+      "630",
+      "624",
+      "622"
+     ],
+     "dogru": 1,
+     "aciklama": "Mekke 630 yılında, neredeyse hiç kan dökülmeden fethedildi.",
+     "kaynak": "Siyer",
+     "zorluk": 3
+    },
+    {
+     "tur": "genel",
+     "soru": "Peygamber Efendimiz Veda Hutbesi'ni nerede okudu?",
+     "secenekler": [
+      "Arafat'ta",
+      "Hira'da",
+      "Kubâ'da",
+      "Uhud'da"
+     ],
+     "dogru": 0,
+     "aciklama": "Veda Haccı'nda Arafat'ta okuduğu hutbede insan haklarını ve kardeşliği anlattı.",
+     "kaynak": "Siyer",
+     "zorluk": 2
+    },
+    {
+     "tur": "genel",
+     "soru": "Peygamber Efendimiz hangi yıl vefat etti?",
+     "secenekler": [
+      "630",
+      "622",
+      "640",
+      "632"
+     ],
+     "dogru": 3,
+     "aciklama": "632 yılında Medine'de vefat etti; kabri Mescid-i Nebevî'dedir.",
+     "kaynak": "Siyer",
+     "zorluk": 2
+    }
+   ]
+  },
   {
    "id": "set-hayatin-aynasi",
    "ad": "Hayatın Aynası",
